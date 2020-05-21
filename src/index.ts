@@ -1,15 +1,27 @@
 import {health} from './health'
 import {net} from './net'
 import {ffs} from './ffs'
-import {useToken} from './util'
+import {useToken, useValue} from './util'
 
-const client = (host: string, authToken?: string) => {
-  const {getMeta, setToken} = useToken(authToken)
+export interface Config {
+  host: string
+  authToken?: string
+}
+
+const defaultConfig: Config = {
+  host: 'http://0.0.0.0:6002',
+}
+
+const client = (config?: Partial<Config>) => {
+  const c = {...defaultConfig, ...config}
+
+  const {getMeta, setToken} = useToken(c.authToken)
+
   return {
     setToken,
-    health: health(host),
-    net: net(host),
-    ffs: ffs(host, getMeta)
+    health: health(c.host),
+    net: net(c.host),
+    ffs: ffs(c.host, getMeta)
   }
 }
 
