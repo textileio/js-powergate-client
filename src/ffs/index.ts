@@ -29,7 +29,22 @@ import {
   InfoReply,
   PushConfigRequest,
   CidConfig,
-  PushConfigReply
+  PushConfigReply,
+  ShowRequest,
+  ShowReply,
+  ReplaceRequest,
+  ReplaceReply,
+  RemoveRequest,
+  RemoveReply,
+  SendFilRequest,
+  SendFilReply,
+  CloseRequest,
+  CloseReply,
+  WatchJobsRequest,
+  Job,
+  LogEntry,
+  WatchLogsRequest,
+  GetRequest
 } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
 import {RPCClient, RPC} from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
 import {grpc} from '@improbable-eng/grpc-web'
@@ -52,6 +67,14 @@ export const withConfig = (config: CidConfig.AsObject) => (req: PushConfigReques
   }
   req.setHasconfig(true)
   req.setConfig(c)
+}
+
+type WatchLogsOption = (res: WatchLogsRequest) => void
+export const withHistory = (includeHistory: boolean) => (req: WatchLogsRequest) => {
+  req.setHistory(includeHistory)
+}
+export const withJobId = (jobId: string) => (req: WatchLogsRequest) => {
+  req.setJid(jobId)
 }
 
 export const ffs = (host: string, getMeta: () => grpc.Metadata) => {
@@ -99,10 +122,50 @@ export const ffs = (host: string, getMeta: () => grpc.Metadata) => {
       }
       const req = new SetDefaultConfigRequest()
       req.setConfig(c)
-      return promise((cb) => client.setDefaultConfig(req, getMeta(), cb), (res: SetDefaultConfigReply) => res.toObject())
+      return promise((cb) => client.setDefaultConfig(req, getMeta(), cb), (res: SetDefaultConfigReply) => {})
+    },
+
+    show: (cid: string) => {
+      const req = new ShowRequest()
+      req.setCid(cid)
+      return promise((cb) => client.show(req, getMeta(), cb), (res: ShowReply) => res.toObject())
     },
 
     info: () => promise((cb) => client.info(new InfoRequest(), getMeta(), cb), (res: InfoReply) => res.toObject()),
+
+    watchJobs: (handler: (event: Job.AsObject) => void, ...jobs: string[]) => {
+      const req = new WatchJobsRequest()
+      req.setJidsList(jobs)
+      const stream = client.watchJobs(req, getMeta())
+      stream.on('data', (res) => {
+        const job = res.getJob()?.toObject()
+        if (job) {
+          handler(job)
+        }
+      })
+      return stream.cancel
+    },
+
+    watchLogs: (handler: (event: LogEntry.AsObject) => void, cid: string, ...opts: WatchLogsOption[]) => {
+      const req = new WatchLogsRequest()
+      req.setCid(cid)
+      opts.forEach((opt) => opt(req))
+      const stream = client.watchLogs(req, getMeta())
+      stream.on('data', (res) => {
+        const logEntry = res.getLogentry()?.toObject()
+        if (logEntry) {
+          handler(logEntry)
+        }
+      })
+      return stream.cancel
+    },
+
+    replace: (cid1: string, cid2: string) => {
+      const req = new ReplaceRequest()
+      req.setCid1(cid1)
+      req.setCid2(cid2)
+      return promise((cb) => client.replace(req, getMeta(), cb), (res: ReplaceReply) => res.toObject())
+    },
 
     pushConfig: (cid: string, ...opts: PushConfigOption[]) => {
       const req = new PushConfigRequest()
@@ -112,6 +175,55 @@ export const ffs = (host: string, getMeta: () => grpc.Metadata) => {
       })
       return promise((cb) => client.pushConfig(req, getMeta(), cb), (res: PushConfigReply) => res.toObject())
     },
+
+    remove: (cid: string) => {
+      const req = new RemoveRequest()
+      req.setCid(cid)
+      return promise((cb) => client.remove(req, getMeta(), cb), (res: RemoveReply) => {})
+    },
+
+    // get
+    // get: (cid: string) => {
+    //   const req = new GetRequest()
+    //   req.setCid(cid)
+    //   const stream = client.get(req, getMeta())
+    //   const foo = new ReadableStream({
+    //     start(controller) {
+    //       controller.enqueue()
+    //     }
+    //   })
+    // },
+
+    foobar: () => {
+      const stream = new ReadableStream({
+        start(controller) {
+          const interval = setInterval(() => {
+            let string = "adsfa"
+            // Add the string to the stream
+            controller.enqueue(string);
+          }, 1000);
+        },
+        pull(controller) {
+          // We don't really need a pull in this example
+        },
+        cancel() {
+          // This is called if the reader cancels,
+          // so we should stop generating strings
+          // clearInterval(interval);
+        }
+      })
+      return stream
+    },
+
+    sendFil: (from: string, to: string, amount: number) => {
+      const req = new SendFilRequest()
+      req.setFrom(from)
+      req.setTo(to)
+      req.setAmount(amount)
+      return promise((cb) => client.sendFil(req, getMeta(), cb), (res: SendFilReply) => {})
+    },
+
+    close: () => promise((cb) => client.close(new CloseRequest(), getMeta(), cb), (res: CloseReply) => {}),
 
     addToHot: (input: File | Blob) => {
       // TODO: figure out how to stream data in here, or at least stream to the server
