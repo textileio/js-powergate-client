@@ -46,9 +46,10 @@ import {
   WatchLogsRequest,
   GetRequest
 } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
-import {RPCClient, RPC} from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
-import {grpc} from '@improbable-eng/grpc-web'
-import {promise} from '../util'
+import { RPCClient, RPC } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
+import { grpc } from '@improbable-eng/grpc-web'
+import { promise } from '../util'
+import { Config } from '..'
 
 type PushConfigOption = (req: PushConfigRequest) => void
 export const withOverrideConfig = (override: boolean) => (req: PushConfigRequest) => {
@@ -77,8 +78,8 @@ export const withJobId = (jobId: string) => (req: WatchLogsRequest) => {
   req.setJid(jobId)
 }
 
-export const ffs = (host: string, getMeta: () => grpc.Metadata) => {
-  const client = new RPCClient(host)
+export const ffs = (config: Config, getMeta: () => grpc.Metadata) => {
+  const client = new RPCClient(config.host, config)
 
   return {
     create: () => promise((cb) => client.create(new CreateRequest(), cb), (res: CreateReply) => res.toObject()),
@@ -182,37 +183,29 @@ export const ffs = (host: string, getMeta: () => grpc.Metadata) => {
       return promise((cb) => client.remove(req, getMeta(), cb), (res: RemoveReply) => {})
     },
 
-    // get
-    // get: (cid: string) => {
-    //   const req = new GetRequest()
-    //   req.setCid(cid)
-    //   const stream = client.get(req, getMeta())
-    //   const foo = new ReadableStream({
-    //     start(controller) {
-    //       controller.enqueue()
-    //     }
-    //   })
-    // },
-
-    foobar: () => {
-      const stream = new ReadableStream({
-        start(controller) {
-          const interval = setInterval(() => {
-            let string = "adsfa"
-            // Add the string to the stream
-            controller.enqueue(string);
-          }, 1000);
-        },
-        pull(controller) {
-          // We don't really need a pull in this example
-        },
-        cancel() {
-          // This is called if the reader cancels,
-          // so we should stop generating strings
-          // clearInterval(interval);
+    get: (cid: string) => {
+      return new Promise<Uint8Array>((resolve, reject) => {
+        const append = (l: Uint8Array, r: Uint8Array) => {
+          const tmp = new Uint8Array(l.byteLength + r.byteLength)
+          tmp.set(l, 0)
+          tmp.set(r, l.byteLength)
+          return tmp
         }
+        let final = new Uint8Array()
+        const req = new GetRequest()
+        req.setCid(cid)
+        const stream = client.get(req, getMeta())
+        stream.on('data', (resp) => {
+          final = append(final, resp.getChunk_asU8())
+        })
+        stream.on('end', (status) => {
+          if (status?.code !== grpc.Code.OK) {
+            reject(`error code ${status?.code} - ${status?.details}`)
+          } else {
+            resolve(final)
+          }
+        })
       })
-      return stream
     },
 
     sendFil: (from: string, to: string, amount: number) => {
@@ -225,42 +218,25 @@ export const ffs = (host: string, getMeta: () => grpc.Metadata) => {
 
     close: () => promise((cb) => client.close(new CloseRequest(), getMeta(), cb), (res: CloseReply) => {}),
 
-    addToHot: (input: File | Blob) => {
+    addToHot: (input: Uint8Array) => {
       // TODO: figure out how to stream data in here, or at least stream to the server
       return new Promise<AddToHotReply.AsObject>((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = (e) => {
-          if (!reader.result) {
-            reject('empty reader result')
-          } else if (typeof reader.result == 'string') {
-            reject('unexpected string reader result')
+        const client = grpc.client(RPC.AddToHot, config)
+        client.onMessage((message) => {
+          resolve(message.toObject() as AddToHotReply.AsObject)
+        })
+        client.onEnd((code, msg, _) => {
+          if (code !== grpc.Code.OK) {
+            reject(`error code ${code} - ${msg}`)
           } else {
-            const client = grpc.client(RPC.AddToHot, {host})
-            client.onMessage((message) => {
-              resolve(message.toObject() as AddToHotReply.AsObject)
-            })
-            client.onEnd((code, msg, _) => {
-              if (code !== grpc.Code.OK) {
-                reject(`error code ${code} - ${msg}`)
-              } else {
-                reject('ended with no message')
-              }
-            })
-            client.start(getMeta());
-            const arr = new Uint8Array(reader.result)
-            const req = new AddToHotRequest()
-            req.setChunk(arr)
-            client.send(req);
-            client.finishSend()
+            reject('ended with no message')
           }
-        }
-        reader.onerror = (e) => {
-          reject(reader.error)
-        }
-        reader.onabort = (e) => {
-          reject('aborted')
-        }
-        reader.readAsArrayBuffer(input)
+        })
+        client.start(getMeta());
+        const req = new AddToHotRequest()
+        req.setChunk(input)
+        client.send(req);
+        client.finishSend()
       })
     }
   }

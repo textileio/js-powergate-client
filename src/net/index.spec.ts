@@ -1,9 +1,10 @@
-import {net} from '.'
-import {expect, assert} from 'chai'
-import {PeersReply, Connectedness} from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb'
+import { net } from '.'
+import { expect, assert } from 'chai'
+import { PeersReply, Connectedness } from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb'
+import { getTransport } from '../util'
 
 describe('net', () => {
-  const c = net('http://0.0.0.0:6002')
+  const c = net({ host: 'http://0.0.0.0:6002', transport: getTransport() })
   
   let peers: PeersReply.AsObject
 

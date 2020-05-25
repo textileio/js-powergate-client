@@ -1,4 +1,5 @@
-import {grpc} from '@improbable-eng/grpc-web'
+import { grpc } from '@improbable-eng/grpc-web'
+import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
 const tokenKey = 'X-ffs-Token'
 
@@ -34,3 +35,5 @@ export const useToken = (initialToken?: string) => {
 
   return Object.freeze({ getMeta, setToken })
 }
+
+export const getTransport = () => typeof window === 'undefined' ? NodeHttpTransport() : undefined

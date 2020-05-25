@@ -1,4 +1,4 @@
-import {RPCClient} from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb_service'
+import { RPCClient } from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb_service'
 import {
   PeersRequest, 
   PeersReply, 
@@ -14,10 +14,11 @@ import {
   ConnectednessRequest,
   ConnectednessReply
 } from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb'
-import {promise} from '../util'
+import { promise } from '../util'
+import { Config } from '..'
 
-export const net = (host: string) => {
-  let client = new RPCClient(host)
+export const net = (config: Config) => {
+  let client = new RPCClient(config.host, config)
   return {
     listenAddr: () => promise((cb) => client.listenAddr(new ListenAddrRequest(), cb), (res: ListenAddrReply) => res.toObject()),
 
