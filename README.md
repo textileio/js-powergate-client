@@ -1,17 +1,17 @@
-# TS Template _(ts-template)_
+# Powergate JS Client _(@textile/powergate-client)_
 
-[![GitHub license](https://img.shields.io/github/license/carsonfarmer/ts-template.svg)](./LICENSE)
-[![GitHub package.json version](https://img.shields.io/github/package-json/v/carsonfarmer/ts-template.svg?style=popout-square)](./package.json)
-[![npm (scoped)](https://img.shields.io/npm/v/@carsonfarmer/ts-template.svg?style=popout-square)](https://www.npmjs.com/package/@carsonfarmer/ts-template)
-[![Release](https://img.shields.io/github/release/carsonfarmer/ts-template.svg)](https://github.com/carsonfarmer/ts-template/releases/latest)
+[![GitHub license](https://img.shields.io/github/license/textileio/js-powergate-client.svg)](./LICENSE)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/textileio/js-powergate-client.svg?style=popout-square)](./package.json)
+[![npm (scoped)](https://img.shields.io/npm/v/@textile/powergate-client.svg?style=popout-square)](https://www.npmjs.com/package/@textile/powergate-client)
+[![Release](https://img.shields.io/github/release/textileio/js-powergate-client.svg)](https://github.com/textileio/js-powergate-client/releases/latest)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg)](https://github.com/RichardLitt/standard-readme)
 
-![Tests](https://github.com/carsonfarmer/ts-template/workflows/Test/badge.svg)
-[![Docs](https://github.com/carsonfarmer/ts-template/workflows/Docs/badge.svg)](https://carsonfarmer.github.io/ts-template)
+![Tests](https://github.com/textileio/js-powergate-client/workflows/Test/badge.svg)
+[![Docs](https://github.com/textileio/js-powergate-client/workflows/Docs/badge.svg)](https://textileio.github.io/js-powergate-client)
 
-> Package description.
+> Typesctipt/Javascript client for Textile's [Powergate](https://github.com/textileio/powergate).
 
-A bit more information here.
+Use Powergate's multitiered file storage API built on Filecoin and IPFS from javascript environments such as Node, React Native, web browsers, and more.
 
 ## Table of Contents
 
@@ -30,24 +30,102 @@ TODO
 ## Install
 
 ```
-npm i @carsonfarmer/ts-template
+npm i @textile/powergate-client
 ```
 
 ## Usage
 
+Start by creating an instance of the client.
+
 ```typescript
-// TODO
+import client from '@textile/powergate-client'
+
+const host = 'http://0.0.0.0:6002' // or whatever powergate instance you want
+
+const c = client({ host })
+```
+
+Many APIs are immediately available and don't require authorization.
+
+```typescript
+const { status, messageList } = await c.health.check()
+
+const { peersList } = await c.net.peers()
+```
+
+Other APIs require authorization. The main API you'll interact with is the Filecoin File System (FFS), and it requires authorization. First, create a new FFS instance.
+
+```typescript
+const { token } = await c.ffs.create() // save this token for later use!
+```
+
+Currently, the returned auth token is the only thing that gives you access to your FFS instance at a later time, so be sure to save it securely.
+
+Once you have an auth token, either by creating a new FFS instance or by reading one you previously saved, set the auth token you'd like the Powergate client to use.
+
+```typescript
+c.setToken(authToken)
+```
+
+Now, the FFS API is available for you to use.
+
+```typescript
+import fs from 'fs'
+
+// get wallet addresses associated with your FFS instance
+const { addrsList } = await c.ffs.addrs()
+
+// create a new address associated with your ffs instance
+const { addr } = await c.ffs.newAddr('my new addr')
+
+// get general info about your ffs instance
+const { info } = await c.ffs.info()
+
+// cache data in IPFS in preparation to store it using FFS
+const buffer = fs.readFileSync(`path/to/a/file`)
+const { cid } = await c.ffs.addToHot(buffer)
+
+// store the data in FFS using the default storage configuration
+const { jobId } = await c.ffs.pushConfig(cid)
+
+// watch the FFS job status to see the storage process progressing
+const cancel = c.ffs.watchJobs((job) => {
+  if (job.status === JobStatus.CANCELED) {
+    console.log('job canceled')
+  } else if (job.status === JobStatus.FAILED) {
+    console.log('job failed')
+  } else if (job.status === JobStatus.SUCCESS) {
+    console.log('job success!')
+  }
+}, jobId)
+
+// watch all FFS events for a cid
+const cancel = c.ffs.watchLogs((logEvent) => {
+  console.log(`received event for cid ${logEvent.cid}`)
+}, cid)
+
+// get the current desired storage configuration for a cid (this configuration may not be realized yet)
+const { config } = await c.ffs.getCidConfig(cid)
+
+// get the current actual storage configuration for a cid
+const { cidinfo } = await c.ffs.show(cid)
+
+// retreive data from FFS by cid
+const bytes = await c.ffs.get(cid)
+
+// senf FIL from an address managed by your FFS instance to any other address
+await c.ffs.sendFil(addrsList[0].addr, '<some other address>', 1000)
 ```
 
 There are also several useful examples included in the `*.spec.ts` files of this repo.
 
 ## API
 
-See [https://carsonfarmer.github.io/ts-template](https://carsonfarmer.github.io/ts-template)
+TODO
 
 ## Maintainers
 
-[Carson Farmer](https://github.com/carsonfarmer)
+[Textile](https://github.com/textileio)
 
 ## Contributing
 
@@ -59,4 +137,4 @@ Small note: If editing the README, please conform to the [standard-readme](https
 
 ## License
 
-[MIT](LICENSE) (c) 2020 Carson Farmer
+[MIT](LICENSE) (c) 2020 Textile
