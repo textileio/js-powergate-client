@@ -1,6 +1,8 @@
 import { grpc } from '@improbable-eng/grpc-web'
 import { NodeHttpTransport } from '@improbable-eng/grpc-web-node-http-transport'
 
+export const host = 'http://0.0.0.0:6002'
+
 const tokenKey = 'X-ffs-Token'
 
 export function promise<U, V, W>(handler: (callback: (error: V | null, resp: U | null) => void) => void, mapper: (resp: U) => W): Promise<W> {

@@ -1,13 +1,13 @@
 import {expect} from 'chai'
 import { AddrInfo, DefaultConfig, CidConfig, JobStatus } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
 import fs from 'fs'
-import { ffs, withOverrideConfig, withConfig } from '.'
-import { useToken, getTransport } from '../util'
+import { ffs, withOverrideConfig, withConfig, withHistory } from '.'
+import { useToken, getTransport, host } from '../util'
 
 describe('ffs', () => {
   const {getMeta, setToken} = useToken('')
 
-  let c = ffs({ host: 'http://0.0.0.0:6002', transport: getTransport() }, getMeta)
+  let c = ffs({ host, transport: getTransport() }, getMeta)
 
   let instanceId: string
   let initialAddrs: AddrInfo.AsObject[]
@@ -65,12 +65,8 @@ describe('ffs', () => {
   })
 
   it('should add to hot', async () => {
-    const result = fs.readFileSync(`/Users/aaron/code/textile/powergate/samplefile`)
-    // let buffer = new Uint8Array(Array.from(Array(700).keys()))
-
-    // const obj = {hello: 'world'}
-    // const blob = new Blob([buffer])
-    const res = await c.addToHot(result)
+    const buffer = fs.readFileSync(`src/test-util/sample-data/samplefile`)
+    const res = await c.addToHot(buffer)
     expect(res.cid).length.greaterThan(0)
     cid = res.cid
   })
@@ -90,18 +86,26 @@ describe('ffs', () => {
   })
 
   it('should watch job', function(done) {
-    this.timeout(0)
+    this.timeout(180000)
     const cancel = c.watchJobs((job) => {
       expect(job.errcause).empty
       expect(job.status).not.equal(JobStatus.CANCELED)
       expect(job.status).not.equal(JobStatus.FAILED)
       if (job.status === JobStatus.SUCCESS) {
+        cancel()
         done()
       }
     }, jobId)
   })
 
-  // watch logs
+  it('should watch logs', function(done) {
+    this.timeout(10000)
+    const cancel = c.watchLogs((logEvent) => {
+      expect(logEvent.cid).not.empty
+      cancel()
+      done()
+    }, cid, withHistory(true))
+  })
 
   it('should get cid config', async () => {
     const res = await c.getCidConfig(cid)
@@ -113,38 +117,69 @@ describe('ffs', () => {
     expect(res.cidinfo).not.undefined
   })
 
-  // it('should replace', async () => {
-  //   const obj = {hello: 'how are you?'}
-  //   const blob = new Blob([JSON.stringify(obj, null, 2)], {type: 'application/json'})
-  //   const res0 = await c.addToHot(blob)
-  //   expect(res0.cid).length.greaterThan(0)
-  //   const res1 = await c.replace(cid, res0.cid)
-  //   expect(res1.jobid).length.greaterThan(0)
-  //   cid = res0.cid
-  // })
+  let buffer: Buffer
+
+  it('should replace', async () => {
+    buffer = fs.readFileSync(`src/test-util/sample-data/samplefile2`)
+    const res0 = await c.addToHot(buffer)
+    expect(res0.cid).length.greaterThan(0)
+    const res1 = await c.replace(cid, res0.cid)
+    expect(res1.jobid).length.greaterThan(0)
+    cid = res0.cid
+    jobId = res1.jobid
+  })
+
+  it('should watch replace job', function(done) {
+    this.timeout(180000)
+    const cancel = c.watchJobs((job) => {
+      expect(job.errcause).empty
+      expect(job.status).not.equal(JobStatus.CANCELED)
+      expect(job.status).not.equal(JobStatus.FAILED)
+      if (job.status === JobStatus.SUCCESS) {
+        cancel()
+        done()
+      }
+    }, jobId)
+  })
 
   it('should get', async () => {
     const bytes = await c.get(cid)
-    expect(bytes).not.empty
+    expect(bytes.byteLength).equal(buffer.byteLength)
   })
 
-  // it('should remove', async () => {
-  //   const newConf: CidConfig.AsObject = {
-  //     cid,
-  //     repairable: false,
-  //     cold: {
-  //       enabled: false
-  //     },
-  //     hot: {
-  //       allowunfreeze: false,
-  //       enabled: false
-  //     }
-  //   }
-  //   const res0 = c.pushConfig(cid, withOverrideConfig(true), withConfig(newConf))
-  //   expect(res0).not.undefined
-  //   const res = await c.remove(cid)
-  //   expect(res).not.undefined
-  // })
+  it('should push disable storage job', async () => {
+    const newConf: CidConfig.AsObject = {
+      cid,
+      repairable: false,
+      cold: {
+        enabled: false
+      },
+      hot: {
+        allowunfreeze: false,
+        enabled: false
+      }
+    }
+    const res0 = await c.pushConfig(cid, withOverrideConfig(true), withConfig(newConf))
+    expect(res0).not.undefined
+    jobId = res0.jobid
+  })
+
+  it('should watch disable storage job', function(done) {
+    this.timeout(180000)
+    const cancel = c.watchJobs((job) => {
+      expect(job.errcause).empty
+      expect(job.status).not.equal(JobStatus.CANCELED)
+      expect(job.status).not.equal(JobStatus.FAILED)
+      if (job.status === JobStatus.SUCCESS) {
+        cancel()
+        done()
+      }
+    }, jobId)
+  })
+
+  it('should remove', async () => {
+    await c.remove(cid)
+  })
 
   it('should send fil', async () => {
     const addrs = await c.addrs()

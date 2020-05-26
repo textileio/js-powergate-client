@@ -2,7 +2,7 @@ import { grpc } from '@improbable-eng/grpc-web'
 import { health } from './health'
 import { net } from './net'
 import { ffs } from './ffs'
-import { useToken, getTransport } from './util'
+import { useToken, getTransport, host } from './util'
 
 export interface Config extends grpc.RpcOptions {
   host: string
@@ -10,14 +10,14 @@ export interface Config extends grpc.RpcOptions {
 }
 
 const defaultConfig: Config = {
-  host: 'http://0.0.0.0:6002',
+  host,
   transport: getTransport()
 }
 
 const client = (config?: Partial<Config>) => {
-  const c = {...defaultConfig, ...config}
+  const c = { ...defaultConfig, ...config }
 
-  const {getMeta, setToken} = useToken(c.authToken)
+  const { getMeta, setToken } = useToken(c.authToken)
 
   return {
     setToken,
