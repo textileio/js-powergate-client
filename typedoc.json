@@ -1,6 +1,6 @@
 {
   "readme": "./README.md",
-  "name": "Threads",
+  "name": "Powergate Client",
   "mode": "modules",
   "out": "docs",
   "exclude": [
