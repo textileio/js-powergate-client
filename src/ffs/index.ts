@@ -103,10 +103,10 @@ export const withJobId = (jobId: string) => (req: WatchLogsRequest) => {
 }
 
 /**
- * Provides access to FFS APIs
- * @param config The API config
+ * Creates the FFS API client
+ * @param config A config object that changes the behavior of the client
  * @param getMeta A funtion that returns request metadata
- * @returns The FFS API
+ * @returns The FFS API client
  */
 export const ffs = (config: Config, getMeta: () => grpc.Metadata) => {
   const client = new RPCClient(config.host, config)
@@ -114,21 +114,18 @@ export const ffs = (config: Config, getMeta: () => grpc.Metadata) => {
     /**
      * Creates a new FFS instance
      * @returns Information about the new FFS instance
-     * @category One
      */
     create: () => promise((cb) => client.create(new CreateRequest(), cb), (res: CreateReply) => res.toObject()),
 
     /**
      * Lists all FFS instance IDs
      * @returns A list off all FFS instance IDs
-     * @category Two
      */
     list: () => promise((cb) => client.listAPI(new ListAPIRequest(), cb), (res: ListAPIReply) => res.toObject()),
 
     /**
      * Get the FFS instance ID associated with the current auth token
      * @returns A Promise containing the FFS instance ID
-     * @category One
      */
     id: () => promise((cb) => client.iD(new IDRequest(), getMeta(), cb), (res: IDReply) => res.toObject()),
 

@@ -42,9 +42,7 @@ describe('net', () => {
     if (!peerInfo) {
       assert.fail('no peer info')
     }
-    const disconnectResp = await c.disconnectPeer(peerInfo.id)
-    expect(disconnectResp).not.undefined
-    const connectResp = await c.connectPeer(peerInfo)
-    expect(connectResp).not.undefined
+    await c.disconnectPeer(peerInfo.id)
+    await c.connectPeer(peerInfo)
   })
 })
