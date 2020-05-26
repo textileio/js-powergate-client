@@ -19,7 +19,7 @@
     "noImplicitAny": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "rootDir": ".",
+    "rootDir": "src",
     "esModuleInterop": true,
     "inlineSourceMap": false,
     "inlineSources": false,
