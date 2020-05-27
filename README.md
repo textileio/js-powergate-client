@@ -121,7 +121,7 @@ There are also several useful examples included in the `*.spec.ts` files of this
 
 ## API
 
-TODO
+You can read the [generated API docs](https://textileio.github.io/js-powergate-client/) to see the available Powergate API.
 
 ## Maintainers
 
