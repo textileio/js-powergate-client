@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;util/util&quot; | Powergate Client</title>
+	<title>&quot;miners/index&quot; | Powergate Client</title>
 	<meta name="description" content="Documentation for Powergate Client">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_util_util_.html">&quot;util/util&quot;</a>
+					<a href="_miners_index_.html">&quot;miners/index&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;util/util&quot;</h1>
+			<h1>Module &quot;miners/index&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter"><a href="_util_util_.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_miners_index_.html#createminers" class="tsd-kind-icon">create<wbr>Miners</a></li>
 							</ul>
 						</section>
 					</div>
@@ -79,33 +79,60 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-					<a name="usevalue" class="tsd-anchor"></a>
-					<h3>use<wbr>Value</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">use<wbr>Value&lt;T&gt;<span class="tsd-signature-symbol">(</span>initialValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="createminers" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> create<wbr>Miners</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Miners<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/_index_.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>get<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/util/util.ts#L1">src/util/util.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/miners/index.ts#L11">src/miners/index.ts:11</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T</h4>
-								</li>
-							</ul>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates the Miners API client</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>initialValue: <span class="tsd-signature-type">T</span></h5>
+									<h5>config: <a href="../interfaces/_index_.config.html" class="tsd-signature-type">Config</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>A config object that changes the behavior of the client</p>
+										</div>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{}</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>get<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h4>
+							<p>The Miners API client</p>
 							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>get<span class="tsd-signature-symbol">: </span>function</h5>
+									<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>index<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Index.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<aside class="tsd-sources">
+												<ul>
+													<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/miners/index.ts#L18">src/miners/index.ts:18</a></li>
+												</ul>
+											</aside>
+											<div class="tsd-comment tsd-typography">
+												<div class="lead">
+													<p>Gets the miner index</p>
+												</div>
+											</div>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>index<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Index.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+											<p>The miner index</p>
+										</li>
+									</ul>
+								</li>
 							</ul>
 						</li>
 					</ul>
@@ -127,7 +154,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_index_.html">&quot;index&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_miners_index_.html">&quot;miners/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -139,15 +166,15 @@
 					<li class=" tsd-kind-module">
 						<a href="_util_index_.html">&quot;util/index&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_util_util_.html">&quot;util/util&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="_util_util_.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_miners_index_.html#createminers" class="tsd-kind-icon">create<wbr>Miners</a>
 					</li>
 				</ul>
 			</nav>
