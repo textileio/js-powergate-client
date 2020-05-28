@@ -2,6 +2,7 @@ import { grpc } from '@improbable-eng/grpc-web'
 import { health } from './health'
 import { net } from './net'
 import { ffs } from './ffs'
+import { miners } from './miners'
 import { useToken, getTransport, host } from './util'
 
 /**
@@ -47,7 +48,12 @@ const client = (config?: Partial<Config>) => {
     /**
      * The FFS API
      */
-    ffs: ffs(c, getMeta)
+    ffs: ffs(c, getMeta),
+
+    /**
+     * The Miners API
+     */
+    miners: miners(c)
   }
 }
 

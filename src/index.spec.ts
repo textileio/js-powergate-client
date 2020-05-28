@@ -9,5 +9,6 @@ describe('client', () => {
     expect(c.ffs).not.undefined
     expect(c.health).not.undefined
     expect(c.net).not.undefined
+    expect(c.miners).not.undefined
   })
 })
