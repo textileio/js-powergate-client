@@ -22,7 +22,7 @@ import { Config } from '..'
  * @param config A config object that changes the behavior of the client
  * @returns The Net API client
  */
-export const net = (config: Config) => {
+export const createNet = (config: Config) => {
   let client = new RPCClient(config.host, config)
   return {
     /**

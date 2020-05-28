@@ -1,8 +1,8 @@
 import { grpc } from '@improbable-eng/grpc-web'
-import { health } from './health'
-import { net } from './net'
-import { ffs } from './ffs'
-import { miners } from './miners'
+import { createHealth } from './health'
+import { createNet } from './net'
+import { createFFS } from './ffs'
+import { createMiners } from './miners'
 import { useToken, getTransport, host } from './util'
 
 /**
@@ -23,7 +23,7 @@ const defaultConfig: Config = {
  * @param config A config object that changes the behavior of the client
  * @returns A Powergate client API
  */
-const client = (config?: Partial<Config>) => {
+export const createPow = (config?: Partial<Config>) => {
   const c = { ...defaultConfig, ...config }
 
   const { getMeta, setToken } = useToken(c.authToken)
@@ -38,23 +38,21 @@ const client = (config?: Partial<Config>) => {
     /**
      * The Health API
      */
-    health: health(c),
+    health: createHealth(c),
 
     /**
      * The Net API
      */
-    net: net(c),
+    net: createNet(c),
 
     /**
      * The FFS API
      */
-    ffs: ffs(c, getMeta),
+    ffs: createFFS(c, getMeta),
 
     /**
      * The Miners API
      */
-    miners: miners(c)
+    miners: createMiners(c)
   }
 }
-
-export default client

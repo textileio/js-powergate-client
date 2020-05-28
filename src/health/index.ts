@@ -8,7 +8,7 @@ import { Config } from '..'
  * @param config A config object that changes the behavior of the client
  * @returns The Health API client
  */
-export const health = (config: Config) => {
+export const createHealth = (config: Config) => {
   let client = new RPCClient(config.host, config)
   return {
     /**

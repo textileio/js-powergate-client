@@ -110,7 +110,7 @@ export const withJobId = (jobId: string) => (req: WatchLogsRequest) => {
  * @param getMeta A funtion that returns request metadata
  * @returns The FFS API client
  */
-export const ffs = (config: Config, getMeta: () => grpc.Metadata) => {
+export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
   const client = new RPCClient(config.host, config)
   return {
     /**

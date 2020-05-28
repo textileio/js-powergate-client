@@ -38,25 +38,25 @@ npm i @textile/powergate-client
 Start by creating an instance of the client.
 
 ```typescript
-import powergate from '@textile/powergate-client'
+import { createPow } from '@textile/powergate-client'
 
 const host = 'http://0.0.0.0:6002' // or whatever powergate instance you want
 
-const pg = powergate({ host })
+const pow = createPow({ host })
 ```
 
 Many APIs are immediately available and don't require authorization.
 
 ```typescript
-const { status, messageList } = await pg.health.check()
+const { status, messageList } = await pow.health.check()
 
-const { peersList } = await pg.net.peers()
+const { peersList } = await pow.net.peers()
 ```
 
 Other APIs require authorization. The main API you'll interact with is the Filecoin File System (FFS), and it requires authorization. First, create a new FFS instance.
 
 ```typescript
-const { token } = await pg.ffs.create() // save this token for later use!
+const { token } = await pow.ffs.create() // save this token for later use!
 ```
 
 Currently, the returned auth token is the only thing that gives you access to your FFS instance at a later time, so be sure to save it securely.
@@ -64,7 +64,7 @@ Currently, the returned auth token is the only thing that gives you access to yo
 Once you have an auth token, either by creating a new FFS instance or by reading one you previously saved, set the auth token you'd like the Powergate client to use.
 
 ```typescript
-pg.setToken(authToken)
+pow.setToken(authToken)
 ```
 
 Now, the FFS API is available for you to use.
@@ -73,23 +73,23 @@ Now, the FFS API is available for you to use.
 import fs from 'fs'
 
 // get wallet addresses associated with your FFS instance
-const { addrsList } = await pg.ffs.addrs()
+const { addrsList } = await pow.ffs.addrs()
 
 // create a new address associated with your ffs instance
-const { addr } = await pg.ffs.newAddr('my new addr')
+const { addr } = await pow.ffs.newAddr('my new addr')
 
 // get general info about your ffs instance
-const { info } = await pg.ffs.info()
+const { info } = await pow.ffs.info()
 
 // cache data in IPFS in preparation to store it using FFS
 const buffer = fs.readFileSync(`path/to/a/file`)
-const { cid } = await pg.ffs.addToHot(buffer)
+const { cid } = await pow.ffs.addToHot(buffer)
 
 // store the data in FFS using the default storage configuration
-const { jobId } = await pg.ffs.pushConfig(cid)
+const { jobId } = await pow.ffs.pushConfig(cid)
 
 // watch the FFS job status to see the storage process progressing
-const cancel = pg.ffs.watchJobs((job) => {
+const cancel = pow.ffs.watchJobs((job) => {
   if (job.status === JobStatus.CANCELED) {
     console.log('job canceled')
   } else if (job.status === JobStatus.FAILED) {
@@ -100,21 +100,21 @@ const cancel = pg.ffs.watchJobs((job) => {
 }, jobId)
 
 // watch all FFS events for a cid
-const cancel = pg.ffs.watchLogs((logEvent) => {
+const cancel = pow.ffs.watchLogs((logEvent) => {
   console.log(`received event for cid ${logEvent.cid}`)
 }, cid)
 
 // get the current desired storage configuration for a cid (this configuration may not be realized yet)
-const { config } = await pg.ffs.getCidConfig(cid)
+const { config } = await pow.ffs.getCidConfig(cid)
 
 // get the current actual storage configuration for a cid
-const { cidinfo } = await pg.ffs.show(cid)
+const { cidinfo } = await pow.ffs.show(cid)
 
 // retreive data from FFS by cid
-const bytes = await pg.ffs.get(cid)
+const bytes = await pow.ffs.get(cid)
 
 // senf FIL from an address managed by your FFS instance to any other address
-await pg.ffs.sendFil(addrsList[0].addr, '<some other address>', 1000)
+await pow.ffs.sendFil(addrsList[0].addr, '<some other address>', 1000)
 ```
 
 There are also several useful examples included in the `*.spec.ts` files of this repo.
