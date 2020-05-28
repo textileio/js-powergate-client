@@ -44,7 +44,9 @@ import {
   Job,
   LogEntry,
   WatchLogsRequest,
-  GetRequest
+  GetRequest,
+  ShowAllRequest,
+  ShowAllReply
 } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
 import { RPCClient, RPC } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
 import { grpc } from '@improbable-eng/grpc-web'
@@ -366,7 +368,13 @@ export const ffs = (config: Config, getMeta: () => grpc.Metadata) => {
         client.send(req);
         client.finishSend()
       })
-    }
+    },
+
+    /**
+     * List cid infos for all data stored in the current FFS instance
+     * @returns A list of cid info
+     */
+    showAll: () => promise((cb) => client.showAll(new ShowAllRequest(), getMeta(), cb), (res: ShowAllReply) => res.toObject().cidinfosList)
   }
 }
 

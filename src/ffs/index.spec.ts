@@ -117,6 +117,11 @@ describe('ffs', () => {
     expect(res.cidinfo).not.undefined
   })
 
+  it('should show all', async () => {
+    const res = await c.showAll()
+    expect(res).not.empty
+  })
+
   let buffer: Buffer
 
   it('should replace', async () => {
