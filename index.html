@@ -80,18 +80,22 @@
 					<h2>Table of Contents</h2>
 				</a>
 				<ul>
-					<li><a href="#background">Background</a></li>
-					<li><a href="#install">Install</a></li>
-					<li><a href="#usage">Usage</a></li>
-					<li><a href="#api">API</a></li>
-					<li><a href="#maintainers">Maintainers</a></li>
-					<li><a href="#contributing">Contributing</a></li>
-					<li><a href="#license">License</a></li>
+					<li><a href="#powergate-js-client-textilepowergate-client">Powergate JS Client <em>(@textile/powergate-client)</em></a><ul>
+							<li><a href="#background">Background</a></li>
+							<li><a href="#install">Install</a></li>
+							<li><a href="#usage">Usage</a></li>
+							<li><a href="#api">API</a></li>
+							<li><a href="#maintainers">Maintainers</a></li>
+							<li><a href="#contributing">Contributing</a></li>
+							<li><a href="#license">License</a></li>
+						</ul>
+					</li>
 				</ul>
 				<a href="#background" id="background" style="color: inherit; text-decoration: none;">
 					<h2>Background</h2>
 				</a>
-				<p>TODO</p>
+				<p>The Powergate JS Client is built on top of the <a href="https://github.com/textileio/powergate/">Powergate</a> gRPC APIs and contains the logic that makes it straight-forward to build those APIs into JavaScript-based systems. Using the Powergate JS Client requires access to a running instance of the Powergate. Find details on <a href="https://github.com/textileio/powergate/#installation">setting up the Powergate here</a>.</p>
+				<p>The JS Client provides access to the full Powergate API and therefore, does not directly manage access-control. If you plan to use the Powergate JS Client in user-facing systems, we recommend running additional middleware.</p>
 				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
 					<h2>Install</h2>
 				</a>
