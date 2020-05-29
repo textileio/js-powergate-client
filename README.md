@@ -15,13 +15,13 @@ Use Powergate's multitiered file storage API built on Filecoin and IPFS from jav
 
 ## Table of Contents
 
-  - [Background](#background)
-  - [Install](#install)
-  - [Usage](#usage)
-  - [API](#api)
-  - [Maintainers](#maintainers)
-  - [Contributing](#contributing)
-  - [License](#license)
+- [Background](#background)
+- [Install](#install)
+- [Usage](#usage)
+- [API](#api)
+- [Maintainers](#maintainers)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Background
 
