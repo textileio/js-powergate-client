@@ -1,4 +1,5 @@
-# Powergate JS Client _(@textile/powergate-client)_
+Powergate JS Client _(@textile/powergate-client)_
+===
 
 [![GitHub license](https://img.shields.io/github/license/textileio/js-powergate-client.svg)](./LICENSE)
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/textileio/js-powergate-client.svg?style=popout-square)](./package.json)
@@ -15,13 +16,14 @@ Use Powergate's multitiered file storage API built on Filecoin and IPFS from jav
 
 ## Table of Contents
 
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-- [API](#api)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-- [License](#license)
+- [Powergate JS Client _(@textile/powergate-client)_](#powergate-js-client-textilepowergate-client)
+  - [Background](#background)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [API](#api)
+  - [Maintainers](#maintainers)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Background
 
