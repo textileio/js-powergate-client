@@ -15,17 +15,21 @@ Use Powergate's multitiered file storage API built on Filecoin and IPFS from jav
 
 ## Table of Contents
 
-- [Background](#background)
-- [Install](#install)
-- [Usage](#usage)
-- [API](#api)
-- [Maintainers](#maintainers)
-- [Contributing](#contributing)
-- [License](#license)
+- [Powergate JS Client _(@textile/powergate-client)_](#powergate-js-client-textilepowergate-client)
+  - [Table of Contents](#table-of-contents)
+  - [Background](#background)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [API](#api)
+  - [Maintainers](#maintainers)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Background
 
-TODO
+The Powergate JS Client is built on top of the [Powergate](https://github.com/textileio/powergate/) gRPC APIs and contains the logic that makes it straight-forward to build those APIs into JavaScript-based systems. Using the Powergate JS Client requires access to a running instance of the Powergate. Find details on [setting up the Powergate here](https://github.com/textileio/powergate/#installation).
+
+The JS Client provides access to the full Powergate API and is therefore, does not directly manage access-control. If you plan to use the Powergate JS Client in user-facing systems, we recommend running additional middleware.
 
 ## Install
 
