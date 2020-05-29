@@ -15,8 +15,6 @@ Use Powergate's multitiered file storage API built on Filecoin and IPFS from jav
 
 ## Table of Contents
 
-- [Powergate JS Client _(@textile/powergate-client)_](#powergate-js-client-textilepowergate-client)
-  - [Table of Contents](#table-of-contents)
   - [Background](#background)
   - [Install](#install)
   - [Usage](#usage)
