@@ -1,6 +1,6 @@
 {
   "name": "@textile/powergate-client",
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.5",
   "description": "Client for Textile's Powergate",
   "main": "dist/index",
   "types": "dist/index",
@@ -61,6 +61,6 @@
   },
   "dependencies": {
     "@improbable-eng/grpc-web-node-http-transport": "^0.12.0",
-    "@textile/grpc-powergate-client": "0.0.1-beta.3"
+    "@textile/grpc-powergate-client": "0.0.1-beta.5"
   }
 }
