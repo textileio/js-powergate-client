@@ -227,7 +227,7 @@
 										<li class="tsd-parameter">
 											<h5>default<wbr>Config<span class="tsd-signature-symbol">: </span>function</h5>
 											<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon">default<wbr>Config<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>defaultconfig<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">DefaultConfig.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon">default<wbr>Config<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>defaultConfig<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">DefaultConfig.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -241,7 +241,7 @@
 															<p>Get the default storage config associates with the current auth token</p>
 														</div>
 													</div>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>defaultconfig<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">DefaultConfig.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>defaultConfig<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">DefaultConfig.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
 													<p>The default storage config</p>
 												</li>
 											</ul>
@@ -463,7 +463,7 @@
 										<li class="tsd-parameter">
 											<h5>push<wbr>Config<span class="tsd-signature-symbol">: </span>function</h5>
 											<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon">push<wbr>Config<span class="tsd-signature-symbol">(</span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>opts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PushConfigOption</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon">push<wbr>Config<span class="tsd-signature-symbol">(</span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>opts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PushConfigOption</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -496,7 +496,7 @@
 															</div>
 														</li>
 													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
 													<p>The job id of the job executing the storage configuration</p>
 												</li>
 											</ul>
@@ -536,7 +536,7 @@
 										<li class="tsd-parameter">
 											<h5>replace<span class="tsd-signature-symbol">: </span>function</h5>
 											<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon">replace<span class="tsd-signature-symbol">(</span>cid1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cid2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon">replace<span class="tsd-signature-symbol">(</span>cid1<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, cid2<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -569,7 +569,7 @@
 															</div>
 														</li>
 													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
 													<p>The job id of the job executing the storage configuration</p>
 												</li>
 											</ul>
@@ -657,7 +657,7 @@
 										<li class="tsd-parameter">
 											<h5>show<span class="tsd-signature-symbol">: </span>function</h5>
 											<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon">show<span class="tsd-signature-symbol">(</span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cidinfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">CidInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon">show<span class="tsd-signature-symbol">(</span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cidInfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">CidInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -682,7 +682,7 @@
 															</div>
 														</li>
 													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cidinfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">CidInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cidInfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">CidInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
 													<p>The current storage config for the provided cid</p>
 												</li>
 											</ul>
@@ -690,7 +690,7 @@
 										<li class="tsd-parameter">
 											<h5>show<wbr>All<span class="tsd-signature-symbol">: </span>function</h5>
 											<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon">show<wbr>All<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>cold<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ColdInfo.AsObject</span><span class="tsd-signature-symbol">; </span>created<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>hot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HotInfo.AsObject</span><span class="tsd-signature-symbol">; </span>jobid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon">show<wbr>All<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>cold<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ColdInfo.AsObject</span><span class="tsd-signature-symbol">; </span>created<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>hot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HotInfo.AsObject</span><span class="tsd-signature-symbol">; </span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -704,7 +704,7 @@
 															<p>List cid infos for all data stored in the current FFS instance</p>
 														</div>
 													</div>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>cold<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ColdInfo.AsObject</span><span class="tsd-signature-symbol">; </span>created<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>hot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HotInfo.AsObject</span><span class="tsd-signature-symbol">; </span>jobid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>cold<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ColdInfo.AsObject</span><span class="tsd-signature-symbol">; </span>created<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>hot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">HotInfo.AsObject</span><span class="tsd-signature-symbol">; </span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 													<p>A list of cid info</p>
 												</li>
 											</ul>
@@ -1009,7 +1009,7 @@
 										<li class="tsd-parameter">
 											<h5>find<wbr>Peer<span class="tsd-signature-symbol">: </span>function</h5>
 											<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon">find<wbr>Peer<span class="tsd-signature-symbol">(</span>peerId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>peerinfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon">find<wbr>Peer<span class="tsd-signature-symbol">(</span>peerId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>peerInfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -1034,7 +1034,7 @@
 															</div>
 														</li>
 													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>peerinfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>peerInfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
 													<p>The peer info</p>
 												</li>
 											</ul>
@@ -1042,7 +1042,7 @@
 										<li class="tsd-parameter">
 											<h5>listen<wbr>Addr<span class="tsd-signature-symbol">: </span>function</h5>
 											<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon">listen<wbr>Addr<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>addrinfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerAddrInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+												<li class="tsd-signature tsd-kind-icon">listen<wbr>Addr<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>addrInfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerAddrInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
@@ -1056,7 +1056,7 @@
 															<p>Get the listen address of the filecoin node</p>
 														</div>
 													</div>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>addrinfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerAddrInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>addrInfo<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PeerAddrInfo.AsObject</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
 													<p>The listen address info</p>
 												</li>
 											</ul>
