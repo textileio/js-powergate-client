@@ -8,6 +8,6 @@ describe('health', () => {
   
   it('should check health', async () => {
     const status = await health.check()
-    expect(status.status).equal(Status.OK)
+    expect(status.status).equal(Status.STATUS_OK)
   })
 })

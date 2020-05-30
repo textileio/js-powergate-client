@@ -44,8 +44,8 @@ describe('ffs', () => {
 
   it('should get the default config', async () => {
     const res = await ffs.defaultConfig()
-    expect(res.defaultconfig).not.undefined
-    defaultConfig = res.defaultconfig!
+    expect(res.defaultConfig).not.undefined
+    defaultConfig = res.defaultConfig!
   })
 
   it('should create a new addr', async () => {
@@ -81,17 +81,17 @@ describe('ffs', () => {
 
   it('should push config', async () => {
     const res = await ffs.pushConfig(cid, withOverrideConfig(false), withConfig(defaultCidConfig))
-    expect(res.jobid).length.greaterThan(0)
-    jobId = res.jobid
+    expect(res.jobId).length.greaterThan(0)
+    jobId = res.jobId
   })
 
   it('should watch job', function(done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
-      expect(job.errcause).empty
-      expect(job.status).not.equal(JobStatus.CANCELED)
-      expect(job.status).not.equal(JobStatus.FAILED)
-      if (job.status === JobStatus.SUCCESS) {
+      expect(job.errCause).empty
+      expect(job.status).not.equal(JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(JobStatus.JOB_STATUS_FAILED)
+      if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }
@@ -114,7 +114,7 @@ describe('ffs', () => {
 
   it('should show', async () => {
     const res = await ffs.show(cid)
-    expect(res.cidinfo).not.undefined
+    expect(res.cidInfo).not.undefined
   })
 
   it('should show all', async () => {
@@ -129,18 +129,18 @@ describe('ffs', () => {
     const res0 = await ffs.addToHot(buffer)
     expect(res0.cid).length.greaterThan(0)
     const res1 = await ffs.replace(cid, res0.cid)
-    expect(res1.jobid).length.greaterThan(0)
+    expect(res1.jobId).length.greaterThan(0)
     cid = res0.cid
-    jobId = res1.jobid
+    jobId = res1.jobId
   })
 
   it('should watch replace job', function(done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
-      expect(job.errcause).empty
-      expect(job.status).not.equal(JobStatus.CANCELED)
-      expect(job.status).not.equal(JobStatus.FAILED)
-      if (job.status === JobStatus.SUCCESS) {
+      expect(job.errCause).empty
+      expect(job.status).not.equal(JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(JobStatus.JOB_STATUS_FAILED)
+      if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }
@@ -160,22 +160,22 @@ describe('ffs', () => {
         enabled: false
       },
       hot: {
-        allowunfreeze: false,
+        allowUnfreeze: false,
         enabled: false
       }
     }
     const res0 = await ffs.pushConfig(cid, withOverrideConfig(true), withConfig(newConf))
     expect(res0).not.undefined
-    jobId = res0.jobid
+    jobId = res0.jobId
   })
 
   it('should watch disable storage job', function(done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
-      expect(job.errcause).empty
-      expect(job.status).not.equal(JobStatus.CANCELED)
-      expect(job.status).not.equal(JobStatus.FAILED)
-      if (job.status === JobStatus.SUCCESS) {
+      expect(job.errCause).empty
+      expect(job.status).not.equal(JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(JobStatus.JOB_STATUS_FAILED)
+      if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }

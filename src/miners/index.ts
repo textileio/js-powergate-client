@@ -1,5 +1,5 @@
-import { RPCClient } from '@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb_service'
-import { GetRequest, GetReply } from '@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb'
+import { RPCServiceClient } from '@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb_service'
+import { GetRequest, GetResponse } from '@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb'
 import { promise } from '../util'
 import { Config } from '..'
 
@@ -9,12 +9,12 @@ import { Config } from '..'
  * @returns The Miners API client
  */
 export const createMiners = (config: Config) => {
-  let client = new RPCClient(config.host, config)
+  let client = new RPCServiceClient(config.host, config)
   return {
     /**
      * Gets the miner index
      * @returns The miner index
      */
-    get: () => promise((cb) => client.get(new GetRequest(), cb), (resp: GetReply) => resp.toObject())
+    get: () => promise((cb) => client.get(new GetRequest(), cb), (resp: GetResponse) => resp.toObject())
   }
 }

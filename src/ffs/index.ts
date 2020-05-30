@@ -1,22 +1,22 @@
 import {
   CreateRequest,
-  CreateReply,
+  CreateResponse,
   ListAPIRequest,
-  ListAPIReply,
+  ListAPIResponse,
   IDRequest,
-  IDReply,
+  IDResponse,
   AddrsRequest,
-  AddrsReply,
+  AddrsResponse,
   DefaultConfigRequest,
-  DefaultConfigReply,
+  DefaultConfigResponse,
   NewAddrRequest,
-  NewAddrReply,
+  NewAddrResponse,
   AddToHotRequest,
-  AddToHotReply,
+  AddToHotResponse,
   GetDefaultCidConfigRequest,
-  GetDefaultCidConfigReply,
+  GetDefaultCidConfigResponse,
   GetCidConfigRequest,
-  GetCidConfigReply,
+  GetCidConfigResponse,
   DefaultConfig,
   HotConfig,
   IpfsConfig,
@@ -24,31 +24,31 @@ import {
   FilConfig,
   FilRenew,
   SetDefaultConfigRequest,
-  SetDefaultConfigReply,
+  SetDefaultConfigResponse,
   InfoRequest,
-  InfoReply,
+  InfoResponse,
   PushConfigRequest,
   CidConfig,
-  PushConfigReply,
+  PushConfigResponse,
   ShowRequest,
-  ShowReply,
+  ShowResponse,
   ReplaceRequest,
-  ReplaceReply,
+  ReplaceResponse,
   RemoveRequest,
-  RemoveReply,
+  RemoveResponse,
   SendFilRequest,
-  SendFilReply,
+  SendFilResponse,
   CloseRequest,
-  CloseReply,
+  CloseResponse,
   WatchJobsRequest,
   Job,
   LogEntry,
   WatchLogsRequest,
   GetRequest,
   ShowAllRequest,
-  ShowAllReply
+  ShowAllResponse
 } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
-import { RPCClient, RPC } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
+import { RPCServiceClient, RPCService } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
 import { grpc } from '@improbable-eng/grpc-web'
 import { promise } from '../util'
 import { Config } from '..'
@@ -61,8 +61,8 @@ type PushConfigOption = (req: PushConfigRequest) => void
  * @returns The resulting option
  */
 export const withOverrideConfig = (override: boolean) => (req: PushConfigRequest) => {
-  req.setHasoverrideconfig(true)
-  req.setOverrideconfig(override)
+  req.setHasOverrideConfig(true)
+  req.setOverrideConfig(override)
 }
 
 /**
@@ -80,7 +80,7 @@ export const withConfig = (config: CidConfig.AsObject) => (req: PushConfigReques
   if (config.cold) {
     c.setCold(coldObjToMessage(config.cold))
   }
-  req.setHasconfig(true)
+  req.setHasConfig(true)
   req.setConfig(c)
 }
 
@@ -111,37 +111,37 @@ export const withJobId = (jobId: string) => (req: WatchLogsRequest) => {
  * @returns The FFS API client
  */
 export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
-  const client = new RPCClient(config.host, config)
+  const client = new RPCServiceClient(config.host, config)
   return {
     /**
      * Creates a new FFS instance
      * @returns Information about the new FFS instance
      */
-    create: () => promise((cb) => client.create(new CreateRequest(), cb), (res: CreateReply) => res.toObject()),
+    create: () => promise((cb) => client.create(new CreateRequest(), cb), (res: CreateResponse) => res.toObject()),
 
     /**
      * Lists all FFS instance IDs
      * @returns A list off all FFS instance IDs
      */
-    list: () => promise((cb) => client.listAPI(new ListAPIRequest(), cb), (res: ListAPIReply) => res.toObject()),
+    list: () => promise((cb) => client.listAPI(new ListAPIRequest(), cb), (res: ListAPIResponse) => res.toObject()),
 
     /**
      * Get the FFS instance ID associated with the current auth token
      * @returns A Promise containing the FFS instance ID
      */
-    id: () => promise((cb) => client.iD(new IDRequest(), getMeta(), cb), (res: IDReply) => res.toObject()),
+    id: () => promise((cb) => client.iD(new IDRequest(), getMeta(), cb), (res: IDResponse) => res.toObject()),
 
     /**
      * Get all wallet addresses associated with the current auth token
      * @returns A list of wallet addresses
      */
-    addrs: () => promise((cb) => client.addrs(new AddrsRequest(), getMeta(), cb), (res: AddrsReply) => res.toObject()),
+    addrs: () => promise((cb) => client.addrs(new AddrsRequest(), getMeta(), cb), (res: AddrsResponse) => res.toObject()),
 
     /**
      * Get the default storage config associates with the current auth token
      * @returns The default storage config
      */
-    defaultConfig: () => promise((cb) => client.defaultConfig(new DefaultConfigRequest(), getMeta(), cb), (res: DefaultConfigReply) => res.toObject()),
+    defaultConfig: () => promise((cb) => client.defaultConfig(new DefaultConfigRequest(), getMeta(), cb), (res: DefaultConfigResponse) => res.toObject()),
 
     /**
      * Create a new wallete address associates with the current auth token
@@ -153,9 +153,9 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     newAddr: (name: string, type?: 'bls' | 'secp256k1', makeDefault?: boolean) => {
       const req = new NewAddrRequest()
       req.setName(name)
-      req.setAddresstype(type || 'bls')
-      req.setMakedefault(makeDefault || false)
-      return promise((cb) => client.newAddr(req, getMeta(), cb), (res: NewAddrReply) => res.toObject())
+      req.setAddressType(type || 'bls')
+      req.setMakeDefault(makeDefault || false)
+      return promise((cb) => client.newAddr(req, getMeta(), cb), (res: NewAddrResponse) => res.toObject())
     },
 
     /**
@@ -166,7 +166,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     getDefaultCidConfig: (cid: string) => {
       const req = new GetDefaultCidConfigRequest()
       req.setCid(cid)
-      return promise((cb) => client.getDefaultCidConfig(req, getMeta(), cb), (res: GetDefaultCidConfigReply) => res.toObject())
+      return promise((cb) => client.getDefaultCidConfig(req, getMeta(), cb), (res: GetDefaultCidConfigResponse) => res.toObject())
     },
 
     /**
@@ -177,7 +177,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     getCidConfig: (cid: string) => {
       const req = new GetCidConfigRequest()
       req.setCid(cid)
-      return promise((cb) => client.getCidConfig(req, getMeta(), cb), (res: GetCidConfigReply) => res.toObject())
+      return promise((cb) => client.getCidConfig(req, getMeta(), cb), (res: GetCidConfigResponse) => res.toObject())
     },
 
     /**
@@ -195,7 +195,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       }
       const req = new SetDefaultConfigRequest()
       req.setConfig(c)
-      return promise((cb) => client.setDefaultConfig(req, getMeta(), cb), (res: SetDefaultConfigReply) => {})
+      return promise((cb) => client.setDefaultConfig(req, getMeta(), cb), (res: SetDefaultConfigResponse) => {})
     },
 
     /**
@@ -206,14 +206,14 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     show: (cid: string) => {
       const req = new ShowRequest()
       req.setCid(cid)
-      return promise((cb) => client.show(req, getMeta(), cb), (res: ShowReply) => res.toObject())
+      return promise((cb) => client.show(req, getMeta(), cb), (res: ShowResponse) => res.toObject())
     },
 
     /**
      * Get general information about the current FFS instance
      * @returns Information about the FFS instance
      */
-    info: () => promise((cb) => client.info(new InfoRequest(), getMeta(), cb), (res: InfoReply) => res.toObject()),
+    info: () => promise((cb) => client.info(new InfoRequest(), getMeta(), cb), (res: InfoResponse) => res.toObject()),
 
     /**
      * Listen for job updates for the provided job ids
@@ -247,7 +247,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       opts.forEach((opt) => opt(req))
       const stream = client.watchLogs(req, getMeta())
       stream.on('data', (res) => {
-        const logEntry = res.getLogentry()?.toObject()
+        const logEntry = res.getLogEntry()?.toObject()
         if (logEntry) {
           handler(logEntry)
         }
@@ -265,7 +265,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       const req = new ReplaceRequest()
       req.setCid1(cid1)
       req.setCid2(cid2)
-      return promise((cb) => client.replace(req, getMeta(), cb), (res: ReplaceReply) => res.toObject())
+      return promise((cb) => client.replace(req, getMeta(), cb), (res: ReplaceResponse) => res.toObject())
     },
 
     /**
@@ -280,7 +280,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       opts.forEach((opt) => {
         opt(req)
       })
-      return promise((cb) => client.pushConfig(req, getMeta(), cb), (res: PushConfigReply) => res.toObject())
+      return promise((cb) => client.pushConfig(req, getMeta(), cb), (res: PushConfigResponse) => res.toObject())
     },
 
     /**
@@ -290,7 +290,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     remove: (cid: string) => {
       const req = new RemoveRequest()
       req.setCid(cid)
-      return promise((cb) => client.remove(req, getMeta(), cb), (res: RemoveReply) => {})
+      return promise((cb) => client.remove(req, getMeta(), cb), (res: RemoveResponse) => {})
     },
 
     /**
@@ -334,13 +334,13 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setFrom(from)
       req.setTo(to)
       req.setAmount(amount)
-      return promise((cb) => client.sendFil(req, getMeta(), cb), (res: SendFilReply) => {})
+      return promise((cb) => client.sendFil(req, getMeta(), cb), (res: SendFilResponse) => {})
     },
 
     /**
      * Close the current FFS instance
      */
-    close: () => promise((cb) => client.close(new CloseRequest(), getMeta(), cb), (res: CloseReply) => {}),
+    close: () => promise((cb) => client.close(new CloseRequest(), getMeta(), cb), (res: CloseResponse) => {}),
 
     /**
      * A helper method to cache data in IPFS in preparation for storing in FFS.
@@ -350,10 +350,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     addToHot: (input: Uint8Array) => {
       // TODO: figure out how to stream data in here, or at least stream to the server
-      return new Promise<AddToHotReply.AsObject>((resolve, reject) => {
-        const client = grpc.client(RPC.AddToHot, config)
+      return new Promise<AddToHotResponse.AsObject>((resolve, reject) => {
+        const client = grpc.client(RPCService.AddToHot, config)
         client.onMessage((message) => {
-          resolve(message.toObject() as AddToHotReply.AsObject)
+          resolve(message.toObject() as AddToHotResponse.AsObject)
         })
         client.onEnd((code, msg, _) => {
           if (code !== grpc.Code.OK) {
@@ -374,7 +374,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * List cid infos for all data stored in the current FFS instance
      * @returns A list of cid info
      */
-    showAll: () => promise((cb) => client.showAll(new ShowAllRequest(), getMeta(), cb), (res: ShowAllReply) => res.toObject().cidinfosList)
+    showAll: () => promise((cb) => client.showAll(new ShowAllRequest(), getMeta(), cb), (res: ShowAllResponse) => res.toObject().cidInfosList)
   }
 }
 
@@ -384,11 +384,11 @@ function coldObjToMessage(obj: ColdConfig.AsObject) {
   if (obj.filecoin) {
     const fc = new FilConfig()
     fc.setAddr(obj.filecoin.addr)
-    fc.setCountrycodesList(obj.filecoin.countrycodesList)
-    fc.setDealduration(obj.filecoin.dealduration)
-    fc.setExcludedminersList(obj.filecoin.excludedminersList)
-    fc.setRepfactor(obj.filecoin.repfactor)
-    fc.setTrustedminersList(obj.filecoin.trustedminersList)
+    fc.setCountryCodesList(obj.filecoin.countryCodesList)
+    fc.setDealDuration(obj.filecoin.dealDuration)
+    fc.setExcludedMinersList(obj.filecoin.excludedMinersList)
+    fc.setRepFactor(obj.filecoin.repFactor)
+    fc.setTrustedMinersList(obj.filecoin.trustedMinersList)
     if (obj.filecoin.renew) {
       const renew = new FilRenew()
       renew.setEnabled(obj.filecoin.renew.enabled)
@@ -402,11 +402,11 @@ function coldObjToMessage(obj: ColdConfig.AsObject) {
 
 function hotObjToMessage(obj: HotConfig.AsObject) {
   const hot = new HotConfig()
-  hot.setAllowunfreeze(obj.allowunfreeze)
+  hot.setAllowUnfreeze(obj.allowUnfreeze)
   hot.setEnabled(obj.enabled)
   if (obj?.ipfs) {
     const ipfs = new IpfsConfig()
-    ipfs.setAddtimeout(obj.ipfs.addtimeout)
+    ipfs.setAddTimeout(obj.ipfs.addTimeout)
     hot.setIpfs(ipfs)
   }
   return hot
