@@ -10,7 +10,7 @@ Powergate JS Client _(@textile/powergate-client)_
 ![Tests](https://github.com/textileio/js-powergate-client/workflows/Test/badge.svg)
 [![Docs](https://github.com/textileio/js-powergate-client/workflows/Docs/badge.svg)](https://textileio.github.io/js-powergate-client)
 
-> Typesctipt/Javascript client for Textile's [Powergate](https://github.com/textileio/powergate).
+> Typescript/Javascript client for Textile's [Powergate](https://github.com/textileio/powergate).
 
 Use Powergate's multitiered file storage API built on Filecoin and IPFS from javascript environments such as Node, React Native, web browsers, and more.
 
