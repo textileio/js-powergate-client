@@ -9,12 +9,16 @@ import { Config } from '..'
  * @returns The Miners API client
  */
 export const createMiners = (config: Config) => {
-  let client = new RPCServiceClient(config.host, config)
+  const client = new RPCServiceClient(config.host, config)
   return {
     /**
      * Gets the miner index
      * @returns The miner index
      */
-    get: () => promise((cb) => client.get(new GetRequest(), cb), (resp: GetResponse) => resp.toObject())
+    get: () =>
+      promise(
+        (cb) => client.get(new GetRequest(), cb),
+        (resp: GetResponse) => resp.toObject(),
+      ),
   }
 }

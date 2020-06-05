@@ -46,9 +46,18 @@ import {
   WatchLogsRequest,
   GetRequest,
   ShowAllRequest,
-  ShowAllResponse
+  ShowAllResponse,
+  ListPayChannelsRequest,
+  ListPayChannelsResponse,
+  CreatePayChannelRequest,
+  CreatePayChannelResponse,
+  RedeemPayChannelRequest,
+  RedeemPayChannelResponse,
 } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
-import { RPCServiceClient, RPCService } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
+import {
+  RPCServiceClient,
+  RPCService,
+} from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
 import { grpc } from '@improbable-eng/grpc-web'
 import { promise } from '../util'
 import { Config } from '..'
@@ -117,31 +126,51 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * Creates a new FFS instance
      * @returns Information about the new FFS instance
      */
-    create: () => promise((cb) => client.create(new CreateRequest(), cb), (res: CreateResponse) => res.toObject()),
+    create: () =>
+      promise(
+        (cb) => client.create(new CreateRequest(), cb),
+        (res: CreateResponse) => res.toObject(),
+      ),
 
     /**
      * Lists all FFS instance IDs
      * @returns A list off all FFS instance IDs
      */
-    list: () => promise((cb) => client.listAPI(new ListAPIRequest(), cb), (res: ListAPIResponse) => res.toObject()),
+    list: () =>
+      promise(
+        (cb) => client.listAPI(new ListAPIRequest(), cb),
+        (res: ListAPIResponse) => res.toObject(),
+      ),
 
     /**
      * Get the FFS instance ID associated with the current auth token
      * @returns A Promise containing the FFS instance ID
      */
-    id: () => promise((cb) => client.iD(new IDRequest(), getMeta(), cb), (res: IDResponse) => res.toObject()),
+    id: () =>
+      promise(
+        (cb) => client.iD(new IDRequest(), getMeta(), cb),
+        (res: IDResponse) => res.toObject(),
+      ),
 
     /**
      * Get all wallet addresses associated with the current auth token
      * @returns A list of wallet addresses
      */
-    addrs: () => promise((cb) => client.addrs(new AddrsRequest(), getMeta(), cb), (res: AddrsResponse) => res.toObject()),
+    addrs: () =>
+      promise(
+        (cb) => client.addrs(new AddrsRequest(), getMeta(), cb),
+        (res: AddrsResponse) => res.toObject(),
+      ),
 
     /**
      * Get the default storage config associates with the current auth token
      * @returns The default storage config
      */
-    defaultConfig: () => promise((cb) => client.defaultConfig(new DefaultConfigRequest(), getMeta(), cb), (res: DefaultConfigResponse) => res.toObject()),
+    defaultConfig: () =>
+      promise(
+        (cb) => client.defaultConfig(new DefaultConfigRequest(), getMeta(), cb),
+        (res: DefaultConfigResponse) => res.toObject(),
+      ),
 
     /**
      * Create a new wallete address associates with the current auth token
@@ -155,18 +184,24 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setName(name)
       req.setAddressType(type || 'bls')
       req.setMakeDefault(makeDefault || false)
-      return promise((cb) => client.newAddr(req, getMeta(), cb), (res: NewAddrResponse) => res.toObject())
+      return promise(
+        (cb) => client.newAddr(req, getMeta(), cb),
+        (res: NewAddrResponse) => res.toObject(),
+      )
     },
 
     /**
      * Get a cid storage configuration prepped for the provided cid
      * @param cid The cid to make the storage config for
-     * @returns The storage config prepped for the provided cid 
+     * @returns The storage config prepped for the provided cid
      */
     getDefaultCidConfig: (cid: string) => {
       const req = new GetDefaultCidConfigRequest()
       req.setCid(cid)
-      return promise((cb) => client.getDefaultCidConfig(req, getMeta(), cb), (res: GetDefaultCidConfigResponse) => res.toObject())
+      return promise(
+        (cb) => client.getDefaultCidConfig(req, getMeta(), cb),
+        (res: GetDefaultCidConfigResponse) => res.toObject(),
+      )
     },
 
     /**
@@ -177,7 +212,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     getCidConfig: (cid: string) => {
       const req = new GetCidConfigRequest()
       req.setCid(cid)
-      return promise((cb) => client.getCidConfig(req, getMeta(), cb), (res: GetCidConfigResponse) => res.toObject())
+      return promise(
+        (cb) => client.getCidConfig(req, getMeta(), cb),
+        (res: GetCidConfigResponse) => res.toObject(),
+      )
     },
 
     /**
@@ -195,7 +233,12 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       }
       const req = new SetDefaultConfigRequest()
       req.setConfig(c)
-      return promise((cb) => client.setDefaultConfig(req, getMeta(), cb), (res: SetDefaultConfigResponse) => {})
+      return promise(
+        (cb) => client.setDefaultConfig(req, getMeta(), cb),
+        (res: SetDefaultConfigResponse) => {
+          // nothing to return
+        },
+      )
     },
 
     /**
@@ -206,14 +249,21 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     show: (cid: string) => {
       const req = new ShowRequest()
       req.setCid(cid)
-      return promise((cb) => client.show(req, getMeta(), cb), (res: ShowResponse) => res.toObject())
+      return promise(
+        (cb) => client.show(req, getMeta(), cb),
+        (res: ShowResponse) => res.toObject(),
+      )
     },
 
     /**
      * Get general information about the current FFS instance
      * @returns Information about the FFS instance
      */
-    info: () => promise((cb) => client.info(new InfoRequest(), getMeta(), cb), (res: InfoResponse) => res.toObject()),
+    info: () =>
+      promise(
+        (cb) => client.info(new InfoRequest(), getMeta(), cb),
+        (res: InfoResponse) => res.toObject(),
+      ),
 
     /**
      * Listen for job updates for the provided job ids
@@ -241,7 +291,11 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @param opts Options that control the behavior of watching logs
      * @returns A function that can be used to cancel watching
      */
-    watchLogs: (handler: (event: LogEntry.AsObject) => void, cid: string, ...opts: WatchLogsOption[]) => {
+    watchLogs: (
+      handler: (event: LogEntry.AsObject) => void,
+      cid: string,
+      ...opts: WatchLogsOption[]
+    ) => {
       const req = new WatchLogsRequest()
       req.setCid(cid)
       opts.forEach((opt) => opt(req))
@@ -265,7 +319,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       const req = new ReplaceRequest()
       req.setCid1(cid1)
       req.setCid2(cid2)
-      return promise((cb) => client.replace(req, getMeta(), cb), (res: ReplaceResponse) => res.toObject())
+      return promise(
+        (cb) => client.replace(req, getMeta(), cb),
+        (res: ReplaceResponse) => res.toObject(),
+      )
     },
 
     /**
@@ -280,7 +337,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       opts.forEach((opt) => {
         opt(req)
       })
-      return promise((cb) => client.pushConfig(req, getMeta(), cb), (res: PushConfigResponse) => res.toObject())
+      return promise(
+        (cb) => client.pushConfig(req, getMeta(), cb),
+        (res: PushConfigResponse) => res.toObject(),
+      )
     },
 
     /**
@@ -290,7 +350,12 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     remove: (cid: string) => {
       const req = new RemoveRequest()
       req.setCid(cid)
-      return promise((cb) => client.remove(req, getMeta(), cb), (res: RemoveResponse) => {})
+      return promise(
+        (cb) => client.remove(req, getMeta(), cb),
+        (res: RemoveResponse) => {
+          // nothing to return
+        },
+      )
     },
 
     /**
@@ -334,13 +399,24 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setFrom(from)
       req.setTo(to)
       req.setAmount(amount)
-      return promise((cb) => client.sendFil(req, getMeta(), cb), (res: SendFilResponse) => {})
+      return promise(
+        (cb) => client.sendFil(req, getMeta(), cb),
+        (res: SendFilResponse) => {
+          // nothing to return
+        },
+      )
     },
 
     /**
      * Close the current FFS instance
      */
-    close: () => promise((cb) => client.close(new CloseRequest(), getMeta(), cb), (res: CloseResponse) => {}),
+    close: () =>
+      promise(
+        (cb) => client.close(new CloseRequest(), getMeta(), cb),
+        (res: CloseResponse) => {
+          // nothing to return
+        },
+      ),
 
     /**
      * A helper method to cache data in IPFS in preparation for storing in FFS.
@@ -362,19 +438,66 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
             reject('ended with no message')
           }
         })
-        client.start(getMeta());
+        client.start(getMeta())
         const req = new AddToHotRequest()
         req.setChunk(input)
-        client.send(req);
+        client.send(req)
         client.finishSend()
       })
+    },
+
+    /**
+     * List all payment channels for the current FFS instance
+     * @returns A list of payment channel info
+     */
+    listPayChannels: () =>
+      promise(
+        (cb) => client.listPayChannels(new ListPayChannelsRequest(), getMeta(), cb),
+        (res: ListPayChannelsResponse) => res.toObject().payChannelsList,
+      ),
+
+    /**
+     * Create or get a payment channel
+     * @param from The address to send FIL from
+     * @param to The address to send FIL to
+     * @param amt The amount to ensure exists in the payment channel
+     * @returns Information about the payment channel
+     */
+    createPayChannel: (from: string, to: string, amt: number) => {
+      const req = new CreatePayChannelRequest()
+      req.setFrom(from)
+      req.setTo(to)
+      req.setAmount(amt)
+      return promise(
+        (cb) => client.createPayChannel(req, getMeta(), cb),
+        (res: CreatePayChannelResponse) => res.toObject(),
+      )
+    },
+
+    /**
+     * Redeem a payment channel
+     * @param payChannelAddr The address of the payment channel to redeem
+     */
+    redeemPayChannel: (payChannelAddr: string) => {
+      const req = new RedeemPayChannelRequest()
+      req.setPayChannelAddr(payChannelAddr)
+      return promise(
+        (cb) => client.redeemPayChannel(req, getMeta(), cb),
+        (res: RedeemPayChannelResponse) => {
+          // nothing to return
+        },
+      )
     },
 
     /**
      * List cid infos for all data stored in the current FFS instance
      * @returns A list of cid info
      */
-    showAll: () => promise((cb) => client.showAll(new ShowAllRequest(), getMeta(), cb), (res: ShowAllResponse) => res.toObject().cidInfosList)
+    showAll: () =>
+      promise(
+        (cb) => client.showAll(new ShowAllRequest(), getMeta(), cb),
+        (res: ShowAllResponse) => res.toObject().cidInfosList,
+      ),
   }
 }
 
@@ -385,8 +508,9 @@ function coldObjToMessage(obj: ColdConfig.AsObject) {
     const fc = new FilConfig()
     fc.setAddr(obj.filecoin.addr)
     fc.setCountryCodesList(obj.filecoin.countryCodesList)
-    fc.setDealDuration(obj.filecoin.dealDuration)
+    fc.setDealMinDuration(obj.filecoin.dealMinDuration)
     fc.setExcludedMinersList(obj.filecoin.excludedMinersList)
+    fc.setMaxPrice(obj.filecoin.maxPrice)
     fc.setRepFactor(obj.filecoin.repFactor)
     fc.setTrustedMinersList(obj.filecoin.trustedMinersList)
     if (obj.filecoin.renew) {
