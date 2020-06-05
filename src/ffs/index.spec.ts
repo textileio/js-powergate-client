@@ -163,6 +163,18 @@ describe('ffs', () => {
     expect(bytes.byteLength).equal(buffer.byteLength)
   })
 
+  it('should list payment channels', async () => {
+    const _ = await ffs.listPayChannels()
+  })
+
+  it('should create a payment channel', async () => {
+    // TODO
+  })
+
+  it('should redeem a payment channel', async () => {
+    // TODO
+  })
+
   it('should push disable storage job', async () => {
     const newConf: CidConfig.AsObject = {
       cid,
