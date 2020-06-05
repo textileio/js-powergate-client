@@ -1,7 +1,7 @@
 import { RPCServiceClient } from '@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb_service'
 import { GetRequest, GetResponse } from '@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb'
 import { promise } from '../util'
-import { Config } from '..'
+import { Config } from '../types'
 
 /**
  * Creates the Miners API client

@@ -1,13 +1,18 @@
-import {expect} from 'chai'
-import { AddrInfo, DefaultConfig, CidConfig, JobStatus } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
 import fs from 'fs'
-import { createFFS, withOverrideConfig, withConfig, withHistory } from '.'
+import { expect } from 'chai'
+import {
+  AddrInfo,
+  DefaultConfig,
+  CidConfig,
+  JobStatus,
+} from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
 import { useToken, getTransport, host } from '../util'
+import { createFFS, withOverrideConfig, withConfig, withHistory } from '.'
 
 describe('ffs', () => {
-  const {getMeta, setToken} = useToken('')
+  const { getMeta, setToken } = useToken('')
 
-  let ffs = createFFS({ host, transport: getTransport() }, getMeta)
+  const ffs = createFFS({ host, transport: getTransport() }, getMeta)
 
   let instanceId: string
   let initialAddrs: AddrInfo.AsObject[]
@@ -15,7 +20,7 @@ describe('ffs', () => {
   let cid: string
   let defaultCidConfig: CidConfig.AsObject
 
-  it('should create an instance', async function() {
+  it('should create an instance', async function () {
     this.timeout(30000)
     const res = await ffs.create()
     expect(res.id).not.empty
@@ -23,7 +28,7 @@ describe('ffs', () => {
     instanceId = res.id
     setToken(res.token)
     // wait for 10 seconds so our wallet address gets funded
-    await new Promise(r => setTimeout(r, 10000))
+    await new Promise((r) => setTimeout(r, 10000))
   })
 
   it('should list instances', async () => {
@@ -45,6 +50,7 @@ describe('ffs', () => {
   it('should get the default config', async () => {
     const res = await ffs.defaultConfig()
     expect(res.defaultConfig).not.undefined
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     defaultConfig = res.defaultConfig!
   })
 
@@ -74,6 +80,7 @@ describe('ffs', () => {
   it('should get default cid config', async () => {
     const res = await ffs.getDefaultCidConfig(cid)
     expect(res.config?.cid).equal(cid)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     defaultCidConfig = res.config!
   })
 
@@ -85,7 +92,7 @@ describe('ffs', () => {
     jobId = res.jobId
   })
 
-  it('should watch job', function(done) {
+  it('should watch job', function (done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
       expect(job.errCause).empty
@@ -98,13 +105,17 @@ describe('ffs', () => {
     }, jobId)
   })
 
-  it('should watch logs', function(done) {
+  it('should watch logs', function (done) {
     this.timeout(10000)
-    const cancel = ffs.watchLogs((logEvent) => {
-      expect(logEvent.cid).not.empty
-      cancel()
-      done()
-    }, cid, withHistory(true))
+    const cancel = ffs.watchLogs(
+      (logEvent) => {
+        expect(logEvent.cid).not.empty
+        cancel()
+        done()
+      },
+      cid,
+      withHistory(true),
+    )
   })
 
   it('should get cid config', async () => {
@@ -134,7 +145,7 @@ describe('ffs', () => {
     jobId = res1.jobId
   })
 
-  it('should watch replace job', function(done) {
+  it('should watch replace job', function (done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
       expect(job.errCause).empty
@@ -157,19 +168,19 @@ describe('ffs', () => {
       cid,
       repairable: false,
       cold: {
-        enabled: false
+        enabled: false,
       },
       hot: {
         allowUnfreeze: false,
-        enabled: false
-      }
+        enabled: false,
+      },
     }
     const res0 = await ffs.pushConfig(cid, withOverrideConfig(true), withConfig(newConf))
     expect(res0).not.undefined
     jobId = res0.jobId
   })
 
-  it('should watch disable storage job', function(done) {
+  it('should watch disable storage job', function (done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
       expect(job.errCause).empty

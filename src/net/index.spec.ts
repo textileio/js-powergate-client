@@ -1,11 +1,11 @@
-import { createNet } from '.'
 import { expect, assert } from 'chai'
 import { PeersResponse, Connectedness } from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb'
 import { getTransport, host } from '../util'
+import { createNet } from '.'
 
 describe('net', () => {
   const net = createNet({ host, transport: getTransport() })
-  
+
   let peers: PeersResponse.AsObject
 
   it('should query peers', async () => {

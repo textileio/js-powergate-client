@@ -1,21 +1,13 @@
-import { grpc } from '@improbable-eng/grpc-web'
 import { createHealth } from './health'
 import { createNet } from './net'
 import { createFFS } from './ffs'
 import { createMiners } from './miners'
 import { useToken, getTransport, host } from './util'
-
-/**
- * Object that allows you to configure the Powergate client
- */
-export interface Config extends grpc.RpcOptions {
-  host: string
-  authToken?: string
-}
+import { Config } from './types'
 
 const defaultConfig: Config = {
   host,
-  transport: getTransport()
+  transport: getTransport(),
 }
 
 /**
@@ -53,6 +45,6 @@ export const createPow = (config?: Partial<Config>) => {
     /**
      * The Miners API
      */
-    miners: createMiners(c)
+    miners: createMiners(c),
   }
 }

@@ -60,7 +60,7 @@ import {
 } from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
 import { grpc } from '@improbable-eng/grpc-web'
 import { promise } from '../util'
-import { Config } from '..'
+import { Config } from '../types'
 
 type PushConfigOption = (req: PushConfigRequest) => void
 
