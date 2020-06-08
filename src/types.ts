@@ -1,4 +1,4 @@
-import { grpc } from '@improbable-eng/grpc-web'
+import { grpc } from "@improbable-eng/grpc-web"
 
 /**
  * Object that allows you to configure the Powergate client

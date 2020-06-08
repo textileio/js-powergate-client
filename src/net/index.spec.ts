@@ -1,46 +1,46 @@
-import { expect, assert } from 'chai'
-import { PeersResponse, Connectedness } from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb'
-import { getTransport, host } from '../util'
-import { createNet } from '.'
+import { expect, assert } from "chai"
+import { PeersResponse, Connectedness } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
+import { getTransport, host } from "../util"
+import { createNet } from "."
 
-describe('net', () => {
+describe("net", () => {
   const net = createNet({ host, transport: getTransport() })
 
   let peers: PeersResponse.AsObject
 
-  it('should query peers', async () => {
+  it("should query peers", async () => {
     peers = await net.peers()
     expect(peers.peersList).length.greaterThan(0)
   })
 
-  it('should get listen address', async () => {
+  it("should get listen address", async () => {
     const listenAddr = await net.listenAddr()
     expect(listenAddr.addrInfo?.addrsList).length.greaterThan(0)
     expect(listenAddr.addrInfo?.id).length.greaterThan(0)
   })
 
-  it('should find a peer', async () => {
+  it("should find a peer", async () => {
     const peerId = peers.peersList[0].addrInfo?.id
     if (!peerId) {
-      assert.fail('no peer id')
+      assert.fail("no peer id")
     }
     const peer = await net.findPeer(peerId)
     expect(peer.peerInfo).not.undefined
   })
 
-  it('should get peer connectedness', async () => {
+  it("should get peer connectedness", async () => {
     const peerId = peers.peersList[0].addrInfo?.id
     if (!peerId) {
-      assert.fail('no peer id')
+      assert.fail("no peer id")
     }
     const resp = await net.connectedness(peerId)
     expect(resp.connectedness).equal(Connectedness.CONNECTEDNESS_CONNECTED)
   })
 
-  it('should disconnect and reconnect to a peer', async () => {
+  it("should disconnect and reconnect to a peer", async () => {
     const peerInfo = peers.peersList[0].addrInfo
     if (!peerInfo) {
-      assert.fail('no peer info')
+      assert.fail("no peer info")
     }
     await net.disconnectPeer(peerInfo.id)
     await net.connectPeer(peerInfo)

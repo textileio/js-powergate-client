@@ -1,4 +1,4 @@
-import { RPCServiceClient } from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb_service'
+import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb_service"
 import {
   PeersRequest,
   PeersResponse,
@@ -13,9 +13,9 @@ import {
   DisconnectPeerResponse,
   ConnectednessRequest,
   ConnectednessResponse,
-} from '@textile/grpc-powergate-client/dist/net/rpc/rpc_pb'
-import { promise } from '../util'
-import { Config } from '../types'
+} from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
+import { promise } from "../util"
+import { Config } from "../types"
 
 /**
  * Creates the Net API client

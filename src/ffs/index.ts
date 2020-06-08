@@ -53,14 +53,14 @@ import {
   CreatePayChannelResponse,
   RedeemPayChannelRequest,
   RedeemPayChannelResponse,
-} from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
+} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import {
   RPCServiceClient,
   RPCService,
-} from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service'
-import { grpc } from '@improbable-eng/grpc-web'
-import { promise } from '../util'
-import { Config } from '../types'
+} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
+import { grpc } from "@improbable-eng/grpc-web"
+import { promise } from "../util"
+import { Config } from "../types"
 
 type PushConfigOption = (req: PushConfigRequest) => void
 
@@ -116,7 +116,7 @@ export const withJobId = (jobId: string) => (req: WatchLogsRequest) => {
 /**
  * Creates the FFS API client
  * @param config A config object that changes the behavior of the client
- * @param getMeta A funtion that returns request metadata
+ * @param getMeta A function that returns request metadata
  * @returns The FFS API client
  */
 export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
@@ -173,16 +173,16 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       ),
 
     /**
-     * Create a new wallete address associates with the current auth token
+     * Create a new wallet address associates with the current auth token
      * @param name A human readable name for the address
      * @param type Address type, defaults to bls
      * @param makeDefault Specify if the new address should become the default address for this FFS instance, defaults to false
      * @returns Information about the newly created address
      */
-    newAddr: (name: string, type?: 'bls' | 'secp256k1', makeDefault?: boolean) => {
+    newAddr: (name: string, type?: "bls" | "secp256k1", makeDefault?: boolean) => {
       const req = new NewAddrRequest()
       req.setName(name)
-      req.setAddressType(type || 'bls')
+      req.setAddressType(type || "bls")
       req.setMakeDefault(makeDefault || false)
       return promise(
         (cb) => client.newAddr(req, getMeta(), cb),
@@ -275,7 +275,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       const req = new WatchJobsRequest()
       req.setJidsList(jobs)
       const stream = client.watchJobs(req, getMeta())
-      stream.on('data', (res) => {
+      stream.on("data", (res) => {
         const job = res.getJob()?.toObject()
         if (job) {
           handler(job)
@@ -300,7 +300,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setCid(cid)
       opts.forEach((opt) => opt(req))
       const stream = client.watchLogs(req, getMeta())
-      stream.on('data', (res) => {
+      stream.on("data", (res) => {
         const logEntry = res.getLogEntry()?.toObject()
         if (logEntry) {
           handler(logEntry)
@@ -375,10 +375,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
         const req = new GetRequest()
         req.setCid(cid)
         const stream = client.get(req, getMeta())
-        stream.on('data', (resp) => {
+        stream.on("data", (resp) => {
           final = append(final, resp.getChunk_asU8())
         })
-        stream.on('end', (status) => {
+        stream.on("end", (status) => {
           if (status?.code !== grpc.Code.OK) {
             reject(`error code ${status?.code} - ${status?.details}`)
           } else {
@@ -435,7 +435,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
           if (code !== grpc.Code.OK) {
             reject(`error code ${code} - ${msg}`)
           } else {
-            reject('ended with no message')
+            reject("ended with no message")
           }
         })
         client.start(getMeta())

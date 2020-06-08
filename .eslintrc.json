@@ -1,52 +1,24 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true,
-    "commonjs": true,
-    "node": true
-  },
+  "parser": "@typescript-eslint/parser",
   "extends": [
-    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint",
-    "plugin:import/typescript"
+    "plugin:prettier/recommended"
   ],
-  "plugins": [
-    "@typescript-eslint",
-    "prettier",
-    "import"
-  ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2018,
+    "ecmaVersion": 2020,
     "sourceType": "module"
   },
   "rules": {
-    "prettier/prettier": "error",
-    "@typescript-eslint/no-use-before-define": 0,
-    "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/explicit-member-accessibility": 0,
-    "@typescript-eslint/no-unused-vars": [
-      0,
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": 1,
+    "@typescript-eslint/no-inferrable-types": [
+      "warn",
       {
-        "argsIgnorePattern": "^_"
+        "ignoreParameters": true
       }
     ],
-    "no-undefined": 0,
-    "default-case": 0,
-    "import/no-absolute-path": 2,
-    "import/no-cycle": 1,
-    "import/export": 2,
-    "import/no-named-as-default": 2,
-    "import/no-named-as-default-member": 2,
-    "import/first": 2,
-    "import/order": 2,
-    "import/newline-after-import": 2,
-    "import/no-default-export": 2
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 }

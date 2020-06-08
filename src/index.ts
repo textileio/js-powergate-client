@@ -1,9 +1,9 @@
-import { createHealth } from './health'
-import { createNet } from './net'
-import { createFFS } from './ffs'
-import { createMiners } from './miners'
-import { useToken, getTransport, host } from './util'
-import { Config } from './types'
+import { createHealth } from "./health"
+import { createNet } from "./net"
+import { createFFS } from "./ffs"
+import { createMiners } from "./miners"
+import { useToken, getTransport, host } from "./util"
+import { Config } from "./types"
 
 const defaultConfig: Config = {
   host,

@@ -1,16 +1,16 @@
-import fs from 'fs'
-import { expect } from 'chai'
+import fs from "fs"
+import { expect } from "chai"
 import {
   AddrInfo,
   DefaultConfig,
   CidConfig,
   JobStatus,
-} from '@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb'
-import { useToken, getTransport, host } from '../util'
-import { createFFS, withOverrideConfig, withConfig, withHistory } from '.'
+} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
+import { useToken, getTransport, host } from "../util"
+import { createFFS, withOverrideConfig, withConfig, withHistory } from "."
 
-describe('ffs', () => {
-  const { getMeta, setToken } = useToken('')
+describe("ffs", () => {
+  const { getMeta, setToken } = useToken("")
 
   const ffs = createFFS({ host, transport: getTransport() }, getMeta)
 
@@ -20,7 +20,7 @@ describe('ffs', () => {
   let cid: string
   let defaultCidConfig: CidConfig.AsObject
 
-  it('should create an instance', async function () {
+  it("should create an instance", async function () {
     this.timeout(30000)
     const res = await ffs.create()
     expect(res.id).not.empty
@@ -31,53 +31,53 @@ describe('ffs', () => {
     await new Promise((r) => setTimeout(r, 10000))
   })
 
-  it('should list instances', async () => {
+  it("should list instances", async () => {
     const res = await ffs.list()
     expect(res.instancesList).length.greaterThan(0)
   })
 
-  it('should get instance id', async () => {
+  it("should get instance id", async () => {
     const res = await ffs.id()
     expect(res.id).eq(instanceId)
   })
 
-  it('should get addrs', async () => {
+  it("should get addrs", async () => {
     const res = await ffs.addrs()
     initialAddrs = res.addrsList
     expect(initialAddrs).length.greaterThan(0)
   })
 
-  it('should get the default config', async () => {
+  it("should get the default config", async () => {
     const res = await ffs.defaultConfig()
     expect(res.defaultConfig).not.undefined
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     defaultConfig = res.defaultConfig!
   })
 
-  it('should create a new addr', async () => {
-    const res = await ffs.newAddr('my addr')
+  it("should create a new addr", async () => {
+    const res = await ffs.newAddr("my addr")
     expect(res.addr).length.greaterThan(0)
     const addrsRes = await ffs.addrs()
     expect(addrsRes.addrsList).length(initialAddrs.length + 1)
   })
 
-  it('should set default config', async () => {
+  it("should set default config", async () => {
     await ffs.setDefaultConfig(defaultConfig)
   })
 
-  it('should get info', async () => {
+  it("should get info", async () => {
     const res = await ffs.info()
     expect(res.info).not.undefined
   })
 
-  it('should add to hot', async () => {
+  it("should add to hot", async () => {
     const buffer = fs.readFileSync(`src/test-util/sample-data/samplefile`)
     const res = await ffs.addToHot(buffer)
     expect(res.cid).length.greaterThan(0)
     cid = res.cid
   })
 
-  it('should get default cid config', async () => {
+  it("should get default cid config", async () => {
     const res = await ffs.getDefaultCidConfig(cid)
     expect(res.config?.cid).equal(cid)
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -86,13 +86,13 @@ describe('ffs', () => {
 
   let jobId: string
 
-  it('should push config', async () => {
+  it("should push config", async () => {
     const res = await ffs.pushConfig(cid, withOverrideConfig(false), withConfig(defaultCidConfig))
     expect(res.jobId).length.greaterThan(0)
     jobId = res.jobId
   })
 
-  it('should watch job', function (done) {
+  it("should watch job", function (done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
       expect(job.errCause).empty
@@ -105,7 +105,7 @@ describe('ffs', () => {
     }, jobId)
   })
 
-  it('should watch logs', function (done) {
+  it("should watch logs", function (done) {
     this.timeout(10000)
     const cancel = ffs.watchLogs(
       (logEvent) => {
@@ -118,24 +118,24 @@ describe('ffs', () => {
     )
   })
 
-  it('should get cid config', async () => {
+  it("should get cid config", async () => {
     const res = await ffs.getCidConfig(cid)
     expect(res.config?.cid).equal(cid)
   })
 
-  it('should show', async () => {
+  it("should show", async () => {
     const res = await ffs.show(cid)
     expect(res.cidInfo).not.undefined
   })
 
-  it('should show all', async () => {
+  it("should show all", async () => {
     const res = await ffs.showAll()
     expect(res).not.empty
   })
 
   let buffer: Buffer
 
-  it('should replace', async () => {
+  it("should replace", async () => {
     buffer = fs.readFileSync(`src/test-util/sample-data/samplefile2`)
     const res0 = await ffs.addToHot(buffer)
     expect(res0.cid).length.greaterThan(0)
@@ -145,7 +145,7 @@ describe('ffs', () => {
     jobId = res1.jobId
   })
 
-  it('should watch replace job', function (done) {
+  it("should watch replace job", function (done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
       expect(job.errCause).empty
@@ -158,24 +158,24 @@ describe('ffs', () => {
     }, jobId)
   })
 
-  it('should get', async () => {
+  it("should get", async () => {
     const bytes = await ffs.get(cid)
     expect(bytes.byteLength).equal(buffer.byteLength)
   })
 
-  it('should list payment channels', async () => {
+  it("should list payment channels", async () => {
     const _ = await ffs.listPayChannels()
   })
 
-  it('should create a payment channel', async () => {
+  it("should create a payment channel", async () => {
     // TODO
   })
 
-  it('should redeem a payment channel', async () => {
+  it("should redeem a payment channel", async () => {
     // TODO
   })
 
-  it('should push disable storage job', async () => {
+  it("should push disable storage job", async () => {
     const newConf: CidConfig.AsObject = {
       cid,
       repairable: false,
@@ -192,7 +192,7 @@ describe('ffs', () => {
     jobId = res0.jobId
   })
 
-  it('should watch disable storage job', function (done) {
+  it("should watch disable storage job", function (done) {
     this.timeout(180000)
     const cancel = ffs.watchJobs((job) => {
       expect(job.errCause).empty
@@ -205,17 +205,17 @@ describe('ffs', () => {
     }, jobId)
   })
 
-  it('should remove', async () => {
+  it("should remove", async () => {
     await ffs.remove(cid)
   })
 
-  it('should send fil', async () => {
+  it("should send fil", async () => {
     const addrs = await ffs.addrs()
     expect(addrs.addrsList).lengthOf(2)
     await ffs.sendFil(addrs.addrsList[0].addr, addrs.addrsList[1].addr, 10)
   })
 
-  it('should close', async () => {
+  it("should close", async () => {
     await ffs.close()
   })
 })
