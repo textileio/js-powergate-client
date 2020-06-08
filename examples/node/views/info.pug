@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1 Node Info
+  p.lead A sample of generally available data, no auth required.
+  hr
+  .row
+    - const jsonPeers = JSON.stringify(peers, null, 4)
+    - const jsonAddr = JSON.stringify(listenAddr, null, 4)
+    - const jsonHealth = JSON.stringify(health, null, 4)
+    - const jsonMiners = JSON.stringify(miners, null, 4)
+    .col-sm-6
+      h2 Node Health
+      pre= jsonHealth
+    .col-sm-6
+      h2 Listnen Address
+      pre= jsonAddr
+    .col-sm-6
+      h2 Peers
+      pre= jsonPeers
+    .col-sm-6
+      h2 Miners
+      pre= jsonMiners
+      

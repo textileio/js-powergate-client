@@ -10,13 +10,21 @@
 
 # Editor Files
 .c9/
-.vscode/
 .idea/
-launch.json
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
 
 # Private Files
 .env
 .env.*
+!.env.example
 .cake_task_cache
 
 # Build Caches

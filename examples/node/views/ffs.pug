@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h1 FFS (#{info.id})
+  p.lead Data for your FFS instance.
+  hr
+  .row
+    - const jsonInfo = JSON.stringify(info, null, 4)
+    .col-sm-6
+      h2 Instance Info
+      pre= jsonInfo

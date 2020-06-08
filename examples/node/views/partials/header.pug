@@ -1,0 +1,23 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top
+  .container
+    a.navbar-brand(href='/')
+      img.branding
+      | Powergate Node.js Example
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+      span.navbar-toggler-icon
+
+    .collapse.navbar-collapse
+      .dropdown-divider
+      ul.nav.navbar-nav.mr-auto
+        li.nav-item(class=(title === 'Node Info') ? 'active' : undefined)
+          a.nav-link(href='/') Node Info
+        if user
+          li.nav-item(class=(title.startsWith('FFS')) ? 'active' : undefined)
+            a.nav-link(href='/ffs') FFS for #{user.email}
+      ul.nav.navbar-nav
+        if !user
+          li.nav-item(class=(title === 'Login with GitHub') ? 'active' : undefined)
+            a.nav-link(href='/auth/github') Login with GitHub
+        else
+          li.nav-item
+            a.nav-link(href='/logout') Logout
