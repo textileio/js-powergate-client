@@ -8,37 +8,57 @@ on:
       - master
 
 jobs:
-
   test:
     name: Test
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'skip-ci')"
 
+    services:
+      powergate:
+        image: textile/powergate:sha-31e7fbf
+        ports:
+          - 8889:8889
+          - 8888:8888
+          - 6060:6060
+          - 5002:5002
+          - 6002:6002
+        env:
+          POWD_DEVNET: true
+          POWD_LOTUSHOST: /dns4/lotus/tcp/7777
+          POWD_IPFSAPIADDR: /dns4/ipfs/tcp/5001
+      lotus:
+        image: textile/lotus-devnet:sha-a364621
+        env:
+          TEXLOTUSDEVNET_SPEED: 500
+          TEXLOTUSDEVNET_IPFSADDR: /dns4/ipfs/tcp/5001
+      ipfs:
+        image: ipfs/go-ipfs:v0.5.1
+        env:
+          IPFS_PROFILE: local-discovery
+
     steps:
+      - name: Checkout
+        uses: actions/checkout@v1
 
-    - name: Checkout
-      uses: actions/checkout@v1
+      - name: Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
 
-    - name: Cache
-      uses: actions/cache@v1
-      with:
-        path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+      - name: Setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
 
-    - name: Setup
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12
+      - name: Install
+        run: npm install
 
-    - name: Install
-      run: npm install
-
-    - name: Test Node
-      run: npm run test:node
-
-    - name: Test Browser
-      run: npm run test:browser
+      - name: Test Node
+        run: npm run test:node
+      # - name: Test Browser
+      #   run: npm run test:browser

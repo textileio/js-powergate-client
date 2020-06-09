@@ -1,3 +1,5 @@
+export const isNode = typeof window === "undefined"
+
 export function useValue<T>(initialValue: T) {
   let value = initialValue
   const get = () => value

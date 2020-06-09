@@ -1,5 +1,6 @@
 import { grpc } from "@improbable-eng/grpc-web"
 import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport"
+import { isNode } from "./util"
 
 export const host = "http://0.0.0.0:6002"
 
@@ -41,4 +42,4 @@ export const useToken = (initialToken?: string) => {
   return Object.freeze({ getMeta, setToken })
 }
 
-export const getTransport = () => (typeof window === "undefined" ? NodeHttpTransport() : undefined)
+export const getTransport = () => (isNode ? NodeHttpTransport() : undefined)
