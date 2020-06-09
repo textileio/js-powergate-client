@@ -59,6 +59,11 @@ jobs:
       - name: Install
         run: npm install
 
+      - name: Sleep for 30s
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 30s
+
       - name: Docker ls
         run: docker ps -a
 
