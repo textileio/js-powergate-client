@@ -1,7 +1,25 @@
 import { expect } from "chai"
+import cp from "child_process"
+import path from "path"
 
 import { createPow } from "."
 import { host } from "./util"
+
+const p = path.join(__dirname, "../docker-compose-devnet.yml")
+
+before(async function () {
+  this.timeout(60000)
+  cp.exec(`docker-compose -p devnet -f ${p} up --build -V --detach`, (err) => {
+    if (err) {
+      throw err
+    }
+  })
+  await new Promise((r) => setTimeout(r, 8000))
+})
+
+after(() => {
+  cp.exec(`docker-compose -p devnet -f ${p} down`)
+})
 
 describe("client", () => {
   it("should create a client", () => {
