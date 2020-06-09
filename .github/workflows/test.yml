@@ -15,7 +15,7 @@ jobs:
 
     services:
       powergate:
-        image: textile/powergate:v0.0.1-beta.8
+        image: textile/powergate:sha-31e7fbf
         env:
           POWD_DEVNET: true
           POWD_LOTUSHOST: /dns4/lotus/tcp/7777
@@ -59,10 +59,10 @@ jobs:
       - name: Install
         run: npm install
 
-      - name: Sleep for 30s
-        uses: juliangruber/sleep-action@v1
-        with:
-          time: 30s
+      # - name: Sleep for 30s
+      #   uses: juliangruber/sleep-action@v1
+      #   with:
+      #     time: 30s
 
       - name: Docker ls
         run: docker ps -a
