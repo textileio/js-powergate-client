@@ -8,9 +8,7 @@ import {
   FindPeerResponse,
   ConnectPeerRequest,
   PeerAddrInfo,
-  ConnectPeerResponse,
   DisconnectPeerRequest,
-  DisconnectPeerResponse,
   ConnectednessRequest,
   ConnectednessResponse,
 } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
@@ -71,7 +69,7 @@ export const createNet = (config: Config) => {
       req.setPeerInfo(info)
       return promise(
         (cb) => client.connectPeer(req, cb),
-        (res: ConnectPeerResponse) => {
+        () => {
           // nothing to return
         },
       )
@@ -100,7 +98,7 @@ export const createNet = (config: Config) => {
       req.setPeerId(peerId)
       return promise(
         (cb) => client.disconnectPeer(req, cb),
-        (res: DisconnectPeerResponse) => {
+        () => {
           // nothing to return
         },
       )

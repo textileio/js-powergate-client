@@ -24,7 +24,6 @@ import {
   FilConfig,
   FilRenew,
   SetDefaultConfigRequest,
-  SetDefaultConfigResponse,
   InfoRequest,
   InfoResponse,
   PushConfigRequest,
@@ -35,11 +34,8 @@ import {
   ReplaceRequest,
   ReplaceResponse,
   RemoveRequest,
-  RemoveResponse,
   SendFilRequest,
-  SendFilResponse,
   CloseRequest,
-  CloseResponse,
   WatchJobsRequest,
   Job,
   LogEntry,
@@ -52,7 +48,6 @@ import {
   CreatePayChannelRequest,
   CreatePayChannelResponse,
   RedeemPayChannelRequest,
-  RedeemPayChannelResponse,
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import {
   RPCServiceClient,
@@ -235,7 +230,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setConfig(c)
       return promise(
         (cb) => client.setDefaultConfig(req, getMeta(), cb),
-        (res: SetDefaultConfigResponse) => {
+        () => {
           // nothing to return
         },
       )
@@ -352,7 +347,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setCid(cid)
       return promise(
         (cb) => client.remove(req, getMeta(), cb),
-        (res: RemoveResponse) => {
+        () => {
           // nothing to return
         },
       )
@@ -401,7 +396,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setAmount(amount)
       return promise(
         (cb) => client.sendFil(req, getMeta(), cb),
-        (res: SendFilResponse) => {
+        () => {
           // nothing to return
         },
       )
@@ -413,7 +408,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     close: () =>
       promise(
         (cb) => client.close(new CloseRequest(), getMeta(), cb),
-        (res: CloseResponse) => {
+        () => {
           // nothing to return
         },
       ),
@@ -431,7 +426,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
         client.onMessage((message) => {
           resolve(message.toObject() as AddToHotResponse.AsObject)
         })
-        client.onEnd((code, msg, _) => {
+        client.onEnd((code, msg) => {
           if (code !== grpc.Code.OK) {
             reject(`error code ${code} - ${msg}`)
           } else {
@@ -483,7 +478,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setPayChannelAddr(payChannelAddr)
       return promise(
         (cb) => client.redeemPayChannel(req, getMeta(), cb),
-        (res: RedeemPayChannelResponse) => {
+        () => {
           // nothing to return
         },
       )
