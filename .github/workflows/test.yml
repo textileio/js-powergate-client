@@ -43,6 +43,11 @@ jobs:
           - "8080:8080"
 
     steps:
+      - name: Sleep
+        uses: jakejarvis/wait-action@master
+        with:
+          time: "30s"
+
       - name: Checkout
         uses: actions/checkout@v1
 
