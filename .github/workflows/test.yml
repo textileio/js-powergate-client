@@ -38,11 +38,6 @@ jobs:
           IPFS_PROFILE: local-discovery
 
     steps:
-      - name: Sleep
-        uses: jakejarvis/wait-action@master
-        with:
-          time: "30s"
-
       - name: Checkout
         uses: actions/checkout@v1
 
