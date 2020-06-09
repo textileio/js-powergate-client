@@ -17,11 +17,11 @@ jobs:
       powergate:
         image: textile/powergate:sha-31e7fbf
         ports:
-          - 8889:8889
-          - 8888:8888
-          - 6060:6060
-          - 5002:5002
-          - 6002:6002
+          - "8889:8889"
+          - "8888:8888"
+          - "6060:6060"
+          - "5002:5002"
+          - "0.0.0.0:6002:6002"
         env:
           POWD_DEVNET: true
           POWD_LOTUSHOST: /dns4/lotus/tcp/7777
