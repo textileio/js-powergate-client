@@ -14,7 +14,7 @@ before(async function () {
       throw err
     }
   })
-  await new Promise((r) => setTimeout(r, 8000))
+  await new Promise((r) => setTimeout(r, 15000))
 })
 
 after(() => {
