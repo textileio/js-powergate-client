@@ -15,7 +15,7 @@ jobs:
 
     services:
       powergate:
-        image: textile/powergate:sha-31e7fbf
+        image: textile/powergate:v0.0.1-beta.8
         env:
           POWD_DEVNET: true
           POWD_LOTUSHOST: /dns4/lotus/tcp/7777
