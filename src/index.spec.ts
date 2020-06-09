@@ -1,6 +1,7 @@
 import { expect } from "chai"
 import cp from "child_process"
 import path from "path"
+import wait from "wait-on"
 
 import { createPow } from "."
 import { host } from "./util"
@@ -8,13 +9,17 @@ import { host } from "./util"
 const p = path.join(__dirname, "../docker-compose-devnet.yml")
 
 before(async function () {
-  this.timeout(60000)
+  this.timeout(130000)
   cp.exec(`docker-compose -p devnet -f ${p} up --build -V --detach`, (err) => {
     if (err) {
       throw err
     }
   })
-  await new Promise((r) => setTimeout(r, 50000))
+  await wait({
+    resources: ["tcp:6002", "tcp:7777", "tcp:5001"],
+    timeout: 120000,
+  })
+  await new Promise((r) => setTimeout(r, 10000))
 })
 
 after(() => {

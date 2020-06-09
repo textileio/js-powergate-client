@@ -20,11 +20,15 @@ services:
 
   lotus:
     image: textile/lotus-devnet:sha-a364621
+    ports:
+      - 7777:7777
     environment:
       - TEXLOTUSDEVNET_SPEED=500
       - TEXLOTUSDEVNET_IPFSADDR=/dns4/ipfs/tcp/5001
 
   ipfs:
     image: ipfs/go-ipfs:v0.5.1
+    ports:
+      - 5001:5001
     environment:
       - IPFS_PROFILE=local-discovery
