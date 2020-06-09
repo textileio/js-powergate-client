@@ -71,7 +71,7 @@ describe("ffs", () => {
   })
 
   it("should add to hot", async () => {
-    const buffer = fs.readFileSync(`src/test-util/sample-data/samplefile`)
+    const buffer = fs.readFileSync(`sample-data/samplefile`)
     const res = await ffs.addToHot(buffer)
     expect(res.cid).length.greaterThan(0)
     cid = res.cid
@@ -136,7 +136,7 @@ describe("ffs", () => {
   let buffer: Buffer
 
   it("should replace", async () => {
-    buffer = fs.readFileSync(`src/test-util/sample-data/samplefile2`)
+    buffer = fs.readFileSync(`sample-data/samplefile2`)
     const res0 = await ffs.addToHot(buffer)
     expect(res0.cid).length.greaterThan(0)
     const res1 = await ffs.replace(cid, res0.cid)
@@ -164,7 +164,7 @@ describe("ffs", () => {
   })
 
   it("should list payment channels", async () => {
-    const _ = await ffs.listPayChannels()
+    await ffs.listPayChannels()
   })
 
   it("should create a payment channel", async () => {
