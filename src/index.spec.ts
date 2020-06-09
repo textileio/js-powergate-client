@@ -16,10 +16,9 @@ before(async function () {
     }
   })
   await wait({
-    resources: ["tcp:6002", "tcp:7777", "tcp:5001"],
+    resources: ["http://0.0.0.0:6002"],
     timeout: 120000,
   })
-  await new Promise((r) => setTimeout(r, 10000))
 })
 
 after(() => {
