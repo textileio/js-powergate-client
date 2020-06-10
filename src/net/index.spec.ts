@@ -4,17 +4,17 @@ import { createNet } from "."
 import { getTransport, host } from "../util"
 
 describe("net", () => {
-  const net = createNet({ host, transport: getTransport() })
+  const c = createNet({ host, transport: getTransport() })
 
   let peers: PeersResponse.AsObject
 
   it("should query peers", async () => {
-    peers = await net.peers()
+    peers = await c.peers()
     expect(peers.peersList).length.greaterThan(0)
   })
 
   it("should get listen address", async () => {
-    const listenAddr = await net.listenAddr()
+    const listenAddr = await c.listenAddr()
     expect(listenAddr.addrInfo?.addrsList).length.greaterThan(0)
     expect(listenAddr.addrInfo?.id).length.greaterThan(0)
   })
@@ -24,7 +24,7 @@ describe("net", () => {
     if (!peerId) {
       assert.fail("no peer id")
     }
-    const peer = await net.findPeer(peerId)
+    const peer = await c.findPeer(peerId)
     expect(peer.peerInfo).not.undefined
   })
 
@@ -33,7 +33,7 @@ describe("net", () => {
     if (!peerId) {
       assert.fail("no peer id")
     }
-    const resp = await net.connectedness(peerId)
+    const resp = await c.connectedness(peerId)
     expect(resp.connectedness).equal(Connectedness.CONNECTEDNESS_CONNECTED)
   })
 
@@ -42,7 +42,7 @@ describe("net", () => {
     if (!peerInfo) {
       assert.fail("no peer info")
     }
-    await net.disconnectPeer(peerInfo.id)
-    await net.connectPeer(peerInfo)
+    await c.disconnectPeer(peerInfo.id)
+    await c.connectPeer(peerInfo)
   })
 })

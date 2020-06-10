@@ -3,10 +3,10 @@ import { createMiners } from "."
 import { getTransport, host } from "../util"
 
 describe("miners", () => {
-  const miners = createMiners({ host, transport: getTransport() })
+  const c = createMiners({ host, transport: getTransport() })
 
   it("should get the index", async () => {
-    const status = await miners.get()
-    expect(status.index).not.undefined
+    const res = await c.get()
+    expect(res.index).not.undefined
   })
 })

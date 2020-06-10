@@ -1,28 +1,23 @@
-import {
-  AddrInfo,
-  CidConfig,
-  DefaultConfig,
-  JobStatus,
-} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import { expect } from "chai"
 import fs from "fs"
 import { createFFS, withConfig, withHistory, withOverrideConfig } from "."
+import { ffs } from "../types"
 import { getTransport, host, useToken } from "../util"
 
 describe("ffs", () => {
   const { getMeta, setToken } = useToken("")
 
-  const ffs = createFFS({ host, transport: getTransport() }, getMeta)
+  const c = createFFS({ host, transport: getTransport() }, getMeta)
 
   let instanceId: string
-  let initialAddrs: AddrInfo.AsObject[]
-  let defaultConfig: DefaultConfig.AsObject
+  let initialAddrs: ffs.AddrInfo.AsObject[]
+  let defaultConfig: ffs.DefaultConfig.AsObject
   let cid: string
-  let defaultCidConfig: CidConfig.AsObject
+  let defaultCidConfig: ffs.CidConfig.AsObject
 
   it("should create an instance", async function () {
     this.timeout(30000)
-    const res = await ffs.create()
+    const res = await c.create()
     expect(res.id).not.empty
     expect(res.token).not.empty
     instanceId = res.id
@@ -32,53 +27,53 @@ describe("ffs", () => {
   })
 
   it("should list instances", async () => {
-    const res = await ffs.list()
+    const res = await c.list()
     expect(res.instancesList).length.greaterThan(0)
   })
 
   it("should get instance id", async () => {
-    const res = await ffs.id()
+    const res = await c.id()
     expect(res.id).eq(instanceId)
   })
 
   it("should get addrs", async () => {
-    const res = await ffs.addrs()
+    const res = await c.addrs()
     initialAddrs = res.addrsList
     expect(initialAddrs).length.greaterThan(0)
   })
 
   it("should get the default config", async () => {
-    const res = await ffs.defaultConfig()
+    const res = await c.defaultConfig()
     expect(res.defaultConfig).not.undefined
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     defaultConfig = res.defaultConfig!
   })
 
   it("should create a new addr", async () => {
-    const res = await ffs.newAddr("my addr")
+    const res = await c.newAddr("my addr")
     expect(res.addr).length.greaterThan(0)
-    const addrsRes = await ffs.addrs()
+    const addrsRes = await c.addrs()
     expect(addrsRes.addrsList).length(initialAddrs.length + 1)
   })
 
   it("should set default config", async () => {
-    await ffs.setDefaultConfig(defaultConfig)
+    await c.setDefaultConfig(defaultConfig)
   })
 
   it("should get info", async () => {
-    const res = await ffs.info()
+    const res = await c.info()
     expect(res.info).not.undefined
   })
 
   it("should add to hot", async () => {
     const buffer = fs.readFileSync(`sample-data/samplefile`)
-    const res = await ffs.addToHot(buffer)
+    const res = await c.addToHot(buffer)
     expect(res.cid).length.greaterThan(0)
     cid = res.cid
   })
 
   it("should get default cid config", async () => {
-    const res = await ffs.getDefaultCidConfig(cid)
+    const res = await c.getDefaultCidConfig(cid)
     expect(res.config?.cid).equal(cid)
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     defaultCidConfig = res.config!
@@ -87,18 +82,18 @@ describe("ffs", () => {
   let jobId: string
 
   it("should push config", async () => {
-    const res = await ffs.pushConfig(cid, withOverrideConfig(false), withConfig(defaultCidConfig))
+    const res = await c.pushConfig(cid, withOverrideConfig(false), withConfig(defaultCidConfig))
     expect(res.jobId).length.greaterThan(0)
     jobId = res.jobId
   })
 
   it("should watch job", function (done) {
     this.timeout(180000)
-    const cancel = ffs.watchJobs((job) => {
+    const cancel = c.watchJobs((job) => {
       expect(job.errCause).empty
-      expect(job.status).not.equal(JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(JobStatus.JOB_STATUS_FAILED)
-      if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
+      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_FAILED)
+      if (job.status === ffs.JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }
@@ -107,7 +102,7 @@ describe("ffs", () => {
 
   it("should watch logs", function (done) {
     this.timeout(10000)
-    const cancel = ffs.watchLogs(
+    const cancel = c.watchLogs(
       (logEvent) => {
         expect(logEvent.cid).not.empty
         cancel()
@@ -119,17 +114,17 @@ describe("ffs", () => {
   })
 
   it("should get cid config", async () => {
-    const res = await ffs.getCidConfig(cid)
+    const res = await c.getCidConfig(cid)
     expect(res.config?.cid).equal(cid)
   })
 
   it("should show", async () => {
-    const res = await ffs.show(cid)
+    const res = await c.show(cid)
     expect(res.cidInfo).not.undefined
   })
 
   it("should show all", async () => {
-    const res = await ffs.showAll()
+    const res = await c.showAll()
     expect(res).not.empty
   })
 
@@ -137,9 +132,9 @@ describe("ffs", () => {
 
   it("should replace", async () => {
     buffer = fs.readFileSync(`sample-data/samplefile2`)
-    const res0 = await ffs.addToHot(buffer)
+    const res0 = await c.addToHot(buffer)
     expect(res0.cid).length.greaterThan(0)
-    const res1 = await ffs.replace(cid, res0.cid)
+    const res1 = await c.replace(cid, res0.cid)
     expect(res1.jobId).length.greaterThan(0)
     cid = res0.cid
     jobId = res1.jobId
@@ -147,11 +142,11 @@ describe("ffs", () => {
 
   it("should watch replace job", function (done) {
     this.timeout(180000)
-    const cancel = ffs.watchJobs((job) => {
+    const cancel = c.watchJobs((job) => {
       expect(job.errCause).empty
-      expect(job.status).not.equal(JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(JobStatus.JOB_STATUS_FAILED)
-      if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
+      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_FAILED)
+      if (job.status === ffs.JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }
@@ -159,12 +154,12 @@ describe("ffs", () => {
   })
 
   it("should get", async () => {
-    const bytes = await ffs.get(cid)
+    const bytes = await c.get(cid)
     expect(bytes.byteLength).equal(buffer.byteLength)
   })
 
   it("should list payment channels", async () => {
-    await ffs.listPayChannels()
+    await c.listPayChannels()
   })
 
   it("should create a payment channel", async () => {
@@ -176,7 +171,7 @@ describe("ffs", () => {
   })
 
   it("should push disable storage job", async () => {
-    const newConf: CidConfig.AsObject = {
+    const newConf: ffs.CidConfig.AsObject = {
       cid,
       repairable: false,
       cold: {
@@ -187,18 +182,18 @@ describe("ffs", () => {
         enabled: false,
       },
     }
-    const res0 = await ffs.pushConfig(cid, withOverrideConfig(true), withConfig(newConf))
+    const res0 = await c.pushConfig(cid, withOverrideConfig(true), withConfig(newConf))
     expect(res0).not.undefined
     jobId = res0.jobId
   })
 
   it("should watch disable storage job", function (done) {
     this.timeout(180000)
-    const cancel = ffs.watchJobs((job) => {
+    const cancel = c.watchJobs((job) => {
       expect(job.errCause).empty
-      expect(job.status).not.equal(JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(JobStatus.JOB_STATUS_FAILED)
-      if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
+      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_FAILED)
+      if (job.status === ffs.JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }
@@ -206,16 +201,16 @@ describe("ffs", () => {
   })
 
   it("should remove", async () => {
-    await ffs.remove(cid)
+    await c.remove(cid)
   })
 
   it("should send fil", async () => {
-    const addrs = await ffs.addrs()
+    const addrs = await c.addrs()
     expect(addrs.addrsList).lengthOf(2)
-    await ffs.sendFil(addrs.addrsList[0].addr, addrs.addrsList[1].addr, 10)
+    await c.sendFil(addrs.addrsList[0].addr, addrs.addrsList[1].addr, 10)
   })
 
   it("should close", async () => {
-    await ffs.close()
+    await c.close()
   })
 })

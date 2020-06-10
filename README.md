@@ -42,9 +42,9 @@ npm i @textile/powergate-client
 Start by creating an instance of the client.
 
 ```typescript
-import { createPow } from '@textile/powergate-client'
+import { createPow } from "@textile/powergate-client"
 
-const host = 'http://0.0.0.0:6002' // or whatever powergate instance you want
+const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 
 const pow = createPow({ host })
 ```
@@ -74,13 +74,14 @@ pow.setToken(authToken)
 Now, the FFS API is available for you to use.
 
 ```typescript
-import fs from 'fs'
+import fs from "fs"
+import { ffs } from "@textile/powergate-client"
 
 // get wallet addresses associated with your FFS instance
 const { addrsList } = await pow.ffs.addrs()
 
 // create a new address associated with your ffs instance
-const { addr } = await pow.ffs.newAddr('my new addr')
+const { addr } = await pow.ffs.newAddr("my new addr")
 
 // get general info about your ffs instance
 const { info } = await pow.ffs.info()
@@ -94,12 +95,12 @@ const { jobId } = await pow.ffs.pushConfig(cid)
 
 // watch the FFS job status to see the storage process progressing
 const cancel = pow.ffs.watchJobs((job) => {
-  if (job.status === JobStatus.CANCELED) {
-    console.log('job canceled')
-  } else if (job.status === JobStatus.FAILED) {
-    console.log('job failed')
-  } else if (job.status === JobStatus.SUCCESS) {
-    console.log('job success!')
+  if (job.status === ffs.JobStatus.CANCELED) {
+    console.log("job canceled")
+  } else if (job.status === ffs.JobStatus.FAILED) {
+    console.log("job failed")
+  } else if (job.status === ffs.JobStatus.SUCCESS) {
+    console.log("job success!")
   }
 }, jobId)
 
@@ -118,7 +119,7 @@ const { cidinfo } = await pow.ffs.show(cid)
 const bytes = await pow.ffs.get(cid)
 
 // senf FIL from an address managed by your FFS instance to any other address
-await pow.ffs.sendFil(addrsList[0].addr, '<some other address>', 1000)
+await pow.ffs.sendFil(addrsList[0].addr, "<some other address>", 1000)
 ```
 
 There are also several useful examples included in the `*.spec.ts` files of this repo.

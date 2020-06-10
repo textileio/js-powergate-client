@@ -2,8 +2,10 @@ import { createFFS } from "./ffs"
 import { createHealth } from "./health"
 import { createMiners } from "./miners"
 import { createNet } from "./net"
-import { Config } from "./types"
+import { Config, ffs, health, miners, net } from "./types"
 import { getTransport, host, useToken } from "./util"
+
+export { ffs, health, miners, net }
 
 const defaultConfig: Config = {
   host,

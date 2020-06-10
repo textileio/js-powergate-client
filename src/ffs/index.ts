@@ -1,70 +1,19 @@
 import { grpc } from "@improbable-eng/grpc-web"
 import {
-  AddrsRequest,
-  AddrsResponse,
-  AddToHotRequest,
-  AddToHotResponse,
-  CidConfig,
-  CloseRequest,
-  ColdConfig,
-  CreatePayChannelRequest,
-  CreatePayChannelResponse,
-  CreateRequest,
-  CreateResponse,
-  DefaultConfig,
-  DefaultConfigRequest,
-  DefaultConfigResponse,
-  FilConfig,
-  FilRenew,
-  GetCidConfigRequest,
-  GetCidConfigResponse,
-  GetDefaultCidConfigRequest,
-  GetDefaultCidConfigResponse,
-  GetRequest,
-  HotConfig,
-  IDRequest,
-  IDResponse,
-  InfoRequest,
-  InfoResponse,
-  IpfsConfig,
-  Job,
-  ListAPIRequest,
-  ListAPIResponse,
-  ListPayChannelsRequest,
-  ListPayChannelsResponse,
-  LogEntry,
-  NewAddrRequest,
-  NewAddrResponse,
-  PushConfigRequest,
-  PushConfigResponse,
-  RedeemPayChannelRequest,
-  RemoveRequest,
-  ReplaceRequest,
-  ReplaceResponse,
-  SendFilRequest,
-  SetDefaultConfigRequest,
-  ShowAllRequest,
-  ShowAllResponse,
-  ShowRequest,
-  ShowResponse,
-  WatchJobsRequest,
-  WatchLogsRequest,
-} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
-import {
   RPCService,
   RPCServiceClient,
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
-import { Config } from "../types"
+import { Config, ffs } from "../types"
 import { promise } from "../util"
 
-type PushConfigOption = (req: PushConfigRequest) => void
+type PushConfigOption = (req: ffs.PushConfigRequest) => void
 
 /**
  * Allows you to override an existing storage configuration
  * @param override Whether or not to override any existing storage configuration
  * @returns The resulting option
  */
-export const withOverrideConfig = (override: boolean) => (req: PushConfigRequest) => {
+export const withOverrideConfig = (override: boolean) => (req: ffs.PushConfigRequest) => {
   req.setHasOverrideConfig(true)
   req.setOverrideConfig(override)
 }
@@ -74,8 +23,8 @@ export const withOverrideConfig = (override: boolean) => (req: PushConfigRequest
  * @param config The storage configuration to use
  * @returns The resulting option
  */
-export const withConfig = (config: CidConfig.AsObject) => (req: PushConfigRequest) => {
-  const c = new CidConfig()
+export const withConfig = (config: ffs.CidConfig.AsObject) => (req: ffs.PushConfigRequest) => {
+  const c = new ffs.CidConfig()
   c.setCid(config.cid)
   c.setRepairable(config.repairable)
   if (config.hot) {
@@ -88,14 +37,14 @@ export const withConfig = (config: CidConfig.AsObject) => (req: PushConfigReques
   req.setConfig(c)
 }
 
-type WatchLogsOption = (res: WatchLogsRequest) => void
+type WatchLogsOption = (res: ffs.WatchLogsRequest) => void
 
 /**
  * Control whether or not to include the history of log events
  * @param includeHistory Whether or not to include the history of log events
  * @returns The resulting option
  */
-export const withHistory = (includeHistory: boolean) => (req: WatchLogsRequest) => {
+export const withHistory = (includeHistory: boolean) => (req: ffs.WatchLogsRequest) => {
   req.setHistory(includeHistory)
 }
 
@@ -104,7 +53,7 @@ export const withHistory = (includeHistory: boolean) => (req: WatchLogsRequest) 
  * @param jobId The job id to show events for
  * @returns The resulting option
  */
-export const withJobId = (jobId: string) => (req: WatchLogsRequest) => {
+export const withJobId = (jobId: string) => (req: ffs.WatchLogsRequest) => {
   req.setJid(jobId)
 }
 
@@ -123,8 +72,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     create: () =>
       promise(
-        (cb) => client.create(new CreateRequest(), cb),
-        (res: CreateResponse) => res.toObject(),
+        (cb) => client.create(new ffs.CreateRequest(), cb),
+        (res: ffs.CreateResponse) => res.toObject(),
       ),
 
     /**
@@ -133,8 +82,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     list: () =>
       promise(
-        (cb) => client.listAPI(new ListAPIRequest(), cb),
-        (res: ListAPIResponse) => res.toObject(),
+        (cb) => client.listAPI(new ffs.ListAPIRequest(), cb),
+        (res: ffs.ListAPIResponse) => res.toObject(),
       ),
 
     /**
@@ -143,8 +92,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     id: () =>
       promise(
-        (cb) => client.iD(new IDRequest(), getMeta(), cb),
-        (res: IDResponse) => res.toObject(),
+        (cb) => client.iD(new ffs.IDRequest(), getMeta(), cb),
+        (res: ffs.IDResponse) => res.toObject(),
       ),
 
     /**
@@ -153,8 +102,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     addrs: () =>
       promise(
-        (cb) => client.addrs(new AddrsRequest(), getMeta(), cb),
-        (res: AddrsResponse) => res.toObject(),
+        (cb) => client.addrs(new ffs.AddrsRequest(), getMeta(), cb),
+        (res: ffs.AddrsResponse) => res.toObject(),
       ),
 
     /**
@@ -163,8 +112,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     defaultConfig: () =>
       promise(
-        (cb) => client.defaultConfig(new DefaultConfigRequest(), getMeta(), cb),
-        (res: DefaultConfigResponse) => res.toObject(),
+        (cb) => client.defaultConfig(new ffs.DefaultConfigRequest(), getMeta(), cb),
+        (res: ffs.DefaultConfigResponse) => res.toObject(),
       ),
 
     /**
@@ -175,13 +124,13 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns Information about the newly created address
      */
     newAddr: (name: string, type?: "bls" | "secp256k1", makeDefault?: boolean) => {
-      const req = new NewAddrRequest()
+      const req = new ffs.NewAddrRequest()
       req.setName(name)
       req.setAddressType(type || "bls")
       req.setMakeDefault(makeDefault || false)
       return promise(
         (cb) => client.newAddr(req, getMeta(), cb),
-        (res: NewAddrResponse) => res.toObject(),
+        (res: ffs.NewAddrResponse) => res.toObject(),
       )
     },
 
@@ -191,11 +140,11 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns The storage config prepped for the provided cid
      */
     getDefaultCidConfig: (cid: string) => {
-      const req = new GetDefaultCidConfigRequest()
+      const req = new ffs.GetDefaultCidConfigRequest()
       req.setCid(cid)
       return promise(
         (cb) => client.getDefaultCidConfig(req, getMeta(), cb),
-        (res: GetDefaultCidConfigResponse) => res.toObject(),
+        (res: ffs.GetDefaultCidConfigResponse) => res.toObject(),
       )
     },
 
@@ -205,11 +154,11 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns The storage config for the provided cid
      */
     getCidConfig: (cid: string) => {
-      const req = new GetCidConfigRequest()
+      const req = new ffs.GetCidConfigRequest()
       req.setCid(cid)
       return promise(
         (cb) => client.getCidConfig(req, getMeta(), cb),
-        (res: GetCidConfigResponse) => res.toObject(),
+        (res: ffs.GetCidConfigResponse) => res.toObject(),
       )
     },
 
@@ -217,8 +166,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * Set the default storage config for this FFS instance
      * @param config The new default storage config
      */
-    setDefaultConfig: (config: DefaultConfig.AsObject) => {
-      const c = new DefaultConfig()
+    setDefaultConfig: (config: ffs.DefaultConfig.AsObject) => {
+      const c = new ffs.DefaultConfig()
       c.setRepairable(config.repairable)
       if (config.hot) {
         c.setHot(hotObjToMessage(config.hot))
@@ -226,7 +175,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       if (config.cold) {
         c.setCold(coldObjToMessage(config.cold))
       }
-      const req = new SetDefaultConfigRequest()
+      const req = new ffs.SetDefaultConfigRequest()
       req.setConfig(c)
       return promise(
         (cb) => client.setDefaultConfig(req, getMeta(), cb),
@@ -242,11 +191,11 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns The current storage config for the provided cid
      */
     show: (cid: string) => {
-      const req = new ShowRequest()
+      const req = new ffs.ShowRequest()
       req.setCid(cid)
       return promise(
         (cb) => client.show(req, getMeta(), cb),
-        (res: ShowResponse) => res.toObject(),
+        (res: ffs.ShowResponse) => res.toObject(),
       )
     },
 
@@ -256,8 +205,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     info: () =>
       promise(
-        (cb) => client.info(new InfoRequest(), getMeta(), cb),
-        (res: InfoResponse) => res.toObject(),
+        (cb) => client.info(new ffs.InfoRequest(), getMeta(), cb),
+        (res: ffs.InfoResponse) => res.toObject(),
       ),
 
     /**
@@ -266,8 +215,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @param jobs A list of job ids to watch
      * @returns A function that can be used to cancel watching
      */
-    watchJobs: (handler: (event: Job.AsObject) => void, ...jobs: string[]) => {
-      const req = new WatchJobsRequest()
+    watchJobs: (handler: (event: ffs.Job.AsObject) => void, ...jobs: string[]) => {
+      const req = new ffs.WatchJobsRequest()
       req.setJidsList(jobs)
       const stream = client.watchJobs(req, getMeta())
       stream.on("data", (res) => {
@@ -287,11 +236,11 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns A function that can be used to cancel watching
      */
     watchLogs: (
-      handler: (event: LogEntry.AsObject) => void,
+      handler: (event: ffs.LogEntry.AsObject) => void,
       cid: string,
       ...opts: WatchLogsOption[]
     ) => {
-      const req = new WatchLogsRequest()
+      const req = new ffs.WatchLogsRequest()
       req.setCid(cid)
       opts.forEach((opt) => opt(req))
       const stream = client.watchLogs(req, getMeta())
@@ -311,12 +260,12 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns The job id of the job executing the storage configuration
      */
     replace: (cid1: string, cid2: string) => {
-      const req = new ReplaceRequest()
+      const req = new ffs.ReplaceRequest()
       req.setCid1(cid1)
       req.setCid2(cid2)
       return promise(
         (cb) => client.replace(req, getMeta(), cb),
-        (res: ReplaceResponse) => res.toObject(),
+        (res: ffs.ReplaceResponse) => res.toObject(),
       )
     },
 
@@ -327,14 +276,14 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns The job id of the job executing the storage configuration
      */
     pushConfig: (cid: string, ...opts: PushConfigOption[]) => {
-      const req = new PushConfigRequest()
+      const req = new ffs.PushConfigRequest()
       req.setCid(cid)
       opts.forEach((opt) => {
         opt(req)
       })
       return promise(
         (cb) => client.pushConfig(req, getMeta(), cb),
-        (res: PushConfigResponse) => res.toObject(),
+        (res: ffs.PushConfigResponse) => res.toObject(),
       )
     },
 
@@ -343,7 +292,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @param cid The cid to remove
      */
     remove: (cid: string) => {
-      const req = new RemoveRequest()
+      const req = new ffs.RemoveRequest()
       req.setCid(cid)
       return promise(
         (cb) => client.remove(req, getMeta(), cb),
@@ -367,7 +316,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
           return tmp
         }
         let final = new Uint8Array()
-        const req = new GetRequest()
+        const req = new ffs.GetRequest()
         req.setCid(cid)
         const stream = client.get(req, getMeta())
         stream.on("data", (resp) => {
@@ -390,7 +339,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @param amount The amount of FIL to send
      */
     sendFil: (from: string, to: string, amount: number) => {
-      const req = new SendFilRequest()
+      const req = new ffs.SendFilRequest()
       req.setFrom(from)
       req.setTo(to)
       req.setAmount(amount)
@@ -407,7 +356,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     close: () =>
       promise(
-        (cb) => client.close(new CloseRequest(), getMeta(), cb),
+        (cb) => client.close(new ffs.CloseRequest(), getMeta(), cb),
         () => {
           // nothing to return
         },
@@ -421,10 +370,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     addToHot: (input: Uint8Array) => {
       // TODO: figure out how to stream data in here, or at least stream to the server
-      return new Promise<AddToHotResponse.AsObject>((resolve, reject) => {
+      return new Promise<ffs.AddToHotResponse.AsObject>((resolve, reject) => {
         const client = grpc.client(RPCService.AddToHot, config)
         client.onMessage((message) => {
-          resolve(message.toObject() as AddToHotResponse.AsObject)
+          resolve(message.toObject() as ffs.AddToHotResponse.AsObject)
         })
         client.onEnd((code, msg) => {
           if (code !== grpc.Code.OK) {
@@ -434,7 +383,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
           }
         })
         client.start(getMeta())
-        const req = new AddToHotRequest()
+        const req = new ffs.AddToHotRequest()
         req.setChunk(input)
         client.send(req)
         client.finishSend()
@@ -447,8 +396,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     listPayChannels: () =>
       promise(
-        (cb) => client.listPayChannels(new ListPayChannelsRequest(), getMeta(), cb),
-        (res: ListPayChannelsResponse) => res.toObject().payChannelsList,
+        (cb) => client.listPayChannels(new ffs.ListPayChannelsRequest(), getMeta(), cb),
+        (res: ffs.ListPayChannelsResponse) => res.toObject().payChannelsList,
       ),
 
     /**
@@ -459,13 +408,13 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns Information about the payment channel
      */
     createPayChannel: (from: string, to: string, amt: number) => {
-      const req = new CreatePayChannelRequest()
+      const req = new ffs.CreatePayChannelRequest()
       req.setFrom(from)
       req.setTo(to)
       req.setAmount(amt)
       return promise(
         (cb) => client.createPayChannel(req, getMeta(), cb),
-        (res: CreatePayChannelResponse) => res.toObject(),
+        (res: ffs.CreatePayChannelResponse) => res.toObject(),
       )
     },
 
@@ -474,7 +423,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @param payChannelAddr The address of the payment channel to redeem
      */
     redeemPayChannel: (payChannelAddr: string) => {
-      const req = new RedeemPayChannelRequest()
+      const req = new ffs.RedeemPayChannelRequest()
       req.setPayChannelAddr(payChannelAddr)
       return promise(
         (cb) => client.redeemPayChannel(req, getMeta(), cb),
@@ -490,17 +439,17 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      */
     showAll: () =>
       promise(
-        (cb) => client.showAll(new ShowAllRequest(), getMeta(), cb),
-        (res: ShowAllResponse) => res.toObject().cidInfosList,
+        (cb) => client.showAll(new ffs.ShowAllRequest(), getMeta(), cb),
+        (res: ffs.ShowAllResponse) => res.toObject().cidInfosList,
       ),
   }
 }
 
-function coldObjToMessage(obj: ColdConfig.AsObject) {
-  const cold = new ColdConfig()
+function coldObjToMessage(obj: ffs.ColdConfig.AsObject) {
+  const cold = new ffs.ColdConfig()
   cold.setEnabled(obj.enabled)
   if (obj.filecoin) {
-    const fc = new FilConfig()
+    const fc = new ffs.FilConfig()
     fc.setAddr(obj.filecoin.addr)
     fc.setCountryCodesList(obj.filecoin.countryCodesList)
     fc.setDealMinDuration(obj.filecoin.dealMinDuration)
@@ -509,7 +458,7 @@ function coldObjToMessage(obj: ColdConfig.AsObject) {
     fc.setRepFactor(obj.filecoin.repFactor)
     fc.setTrustedMinersList(obj.filecoin.trustedMinersList)
     if (obj.filecoin.renew) {
-      const renew = new FilRenew()
+      const renew = new ffs.FilRenew()
       renew.setEnabled(obj.filecoin.renew.enabled)
       renew.setThreshold(obj.filecoin.renew.threshold)
       fc.setRenew(renew)
@@ -519,12 +468,12 @@ function coldObjToMessage(obj: ColdConfig.AsObject) {
   return cold
 }
 
-function hotObjToMessage(obj: HotConfig.AsObject) {
-  const hot = new HotConfig()
+function hotObjToMessage(obj: ffs.HotConfig.AsObject) {
+  const hot = new ffs.HotConfig()
   hot.setAllowUnfreeze(obj.allowUnfreeze)
   hot.setEnabled(obj.enabled)
   if (obj?.ipfs) {
-    const ipfs = new IpfsConfig()
+    const ipfs = new ffs.IpfsConfig()
     ipfs.setAddTimeout(obj.ipfs.addTimeout)
     hot.setIpfs(ipfs)
   }
