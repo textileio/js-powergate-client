@@ -104,9 +104,9 @@
 					<h2>Usage</h2>
 				</a>
 				<p>Start by creating an instance of the client.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">'@textile/powergate-client'</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
-<span class="hljs-keyword">const</span> host = <span class="hljs-string">'http://0.0.0.0:6002'</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
 
 <span class="hljs-keyword">const</span> pow = createPow({ host })</code></pre>
 				<p>Many APIs are immediately available and don&#39;t require authorization.</p>
@@ -119,13 +119,14 @@
 				<p>Once you have an auth token, either by creating a new FFS instance or by reading one you previously saved, set the auth token you&#39;d like the Powergate client to use.</p>
 				<pre><code class="language-typescript">pow.setToken(authToken)</code></pre>
 				<p>Now, the FFS API is available for you to use.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">'fs'</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">"fs"</span>
+<span class="hljs-keyword">import</span> { ffs } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
 <span class="hljs-comment">// get wallet addresses associated with your FFS instance</span>
 <span class="hljs-keyword">const</span> { addrsList } = <span class="hljs-keyword">await</span> pow.ffs.addrs()
 
 <span class="hljs-comment">// create a new address associated with your ffs instance</span>
-<span class="hljs-keyword">const</span> { addr } = <span class="hljs-keyword">await</span> pow.ffs.newAddr(<span class="hljs-string">'my new addr'</span>)
+<span class="hljs-keyword">const</span> { addr } = <span class="hljs-keyword">await</span> pow.ffs.newAddr(<span class="hljs-string">"my new addr"</span>)
 
 <span class="hljs-comment">// get general info about your ffs instance</span>
 <span class="hljs-keyword">const</span> { info } = <span class="hljs-keyword">await</span> pow.ffs.info()
@@ -139,12 +140,12 @@
 
 <span class="hljs-comment">// watch the FFS job status to see the storage process progressing</span>
 <span class="hljs-keyword">const</span> cancel = pow.ffs.watchJobs(<span class="hljs-function">(<span class="hljs-params">job</span>) =&gt;</span> {
-  <span class="hljs-keyword">if</span> (job.status === JobStatus.CANCELED) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'job canceled'</span>)
-  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === JobStatus.FAILED) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'job failed'</span>)
-  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === JobStatus.SUCCESS) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'job success!'</span>)
+  <span class="hljs-keyword">if</span> (job.status === ffs.JobStatus.CANCELED) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"job canceled"</span>)
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffs.JobStatus.FAILED) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"job failed"</span>)
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffs.JobStatus.SUCCESS) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"job success!"</span>)
   }
 }, jobId)
 
@@ -163,7 +164,7 @@
 <span class="hljs-keyword">const</span> bytes = <span class="hljs-keyword">await</span> pow.ffs.get(cid)
 
 <span class="hljs-comment">// senf FIL from an address managed by your FFS instance to any other address</span>
-<span class="hljs-keyword">await</span> pow.ffs.sendFil(addrsList[<span class="hljs-number">0</span>].addr, <span class="hljs-string">'&lt;some other address&gt;'</span>, <span class="hljs-number">1000</span>)</code></pre>
+<span class="hljs-keyword">await</span> pow.ffs.sendFil(addrsList[<span class="hljs-number">0</span>].addr, <span class="hljs-string">"&lt;some other address&gt;"</span>, <span class="hljs-number">1000</span>)</code></pre>
 				<p>There are also several useful examples included in the <code>*.spec.ts</code> files of this repo.</p>
 				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
 					<h2>API</h2>
