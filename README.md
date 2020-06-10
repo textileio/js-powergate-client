@@ -122,6 +122,8 @@ const bytes = await pow.ffs.get(cid)
 await pow.ffs.sendFil(addrsList[0].addr, "<some other address>", 1000)
 ```
 
+See the [Node.js example app](https://github.com/textileio/js-powergate-client/tree/master/examples/node) in this repository's `examples` directory.
+
 There are also several useful examples included in the `*.spec.ts` files of this repo.
 
 ## API
