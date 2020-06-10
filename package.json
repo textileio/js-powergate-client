@@ -1,6 +1,6 @@
 {
   "name": "@textile/powergate-client",
-  "version": "0.1.0-beta.7",
+  "version": "0.1.0-beta.8",
   "description": "Client for Textile's Powergate",
   "main": "dist/index",
   "types": "dist/index",
@@ -16,7 +16,9 @@
     "test:node": "TS_NODE_FILES=true mocha --exit",
     "test:browser": "polendina --timeout 3000 --cleanup src/**/*.spec.ts --webpack-config ./webpack.test.js",
     "lint": "eslint --fix --ext .js,.ts src/**/*",
-    "docs": "typedoc"
+    "docs": "typedoc",
+    "devnet:up": "docker-compose -p devnet -f docker-compose-devnet.yml up --build -V",
+    "devnet:down": "docker-compose -p devnet -f docker-compose-devnet.yml down"
   },
   "keywords": [
     "typescript",
@@ -47,6 +49,7 @@
     "mocha": "^7.1.1",
     "polendina": "^1.0.0",
     "prettier": "^2.0.2",
+    "prettier-plugin-organize-imports": "^1.0.4",
     "rimraf": "^3.0.2",
     "touch": "^3.1.0",
     "ts-loader": "^7.0.4",

@@ -1,6 +1,6 @@
 import { expect } from "chai"
-import { getTransport, host } from "../util"
 import { createMiners } from "."
+import { getTransport, host } from "../util"
 
 describe("miners", () => {
   const miners = createMiners({ host, transport: getTransport() })

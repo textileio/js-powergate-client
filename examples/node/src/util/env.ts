@@ -13,6 +13,10 @@ if (fs.existsSync(".env")) {
 export const ENV = process.env.NODE_ENV
 export const PROD = ENV === "production" // Anything else is treated as 'dev'
 
+export const EXPRESS_PORT = process.env["EXPRESS_PORT"]
+
+export const POW_HOST = process.env["POW_HOST"]
+
 export const SESSION_SECRET = mustResolve("SESSION_SECRET")
 
 export const GITHUB_CLIENT_ID = mustResolve("GITHUB_CLIENT_ID")

@@ -1,7 +1,7 @@
-import { expect, assert } from "chai"
-import { PeersResponse, Connectedness } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
-import { getTransport, host } from "../util"
+import { Connectedness, PeersResponse } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
+import { assert, expect } from "chai"
 import { createNet } from "."
+import { getTransport, host } from "../util"
 
 describe("net", () => {
   const net = createNet({ host, transport: getTransport() })

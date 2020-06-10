@@ -1,9 +1,9 @@
-import { createHealth } from "./health"
-import { createNet } from "./net"
 import { createFFS } from "./ffs"
+import { createHealth } from "./health"
 import { createMiners } from "./miners"
-import { useToken, getTransport, host } from "./util"
+import { createNet } from "./net"
 import { Config } from "./types"
+import { getTransport, host, useToken } from "./util"
 
 const defaultConfig: Config = {
   host,
@@ -16,7 +16,7 @@ const defaultConfig: Config = {
  * @returns A Powergate client API
  */
 export const createPow = (config?: Partial<Config>) => {
-  const c = { ...defaultConfig, ...config }
+  const c = { ...defaultConfig, ...removeEmpty(config) }
 
   const { getMeta, setToken } = useToken(c.authToken)
 
@@ -47,4 +47,13 @@ export const createPow = (config?: Partial<Config>) => {
      */
     miners: createMiners(c),
   }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const removeEmpty = (obj: any) => {
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] && typeof obj[key] === "object") removeEmpty(obj[key])
+    else if (obj[key] === undefined) delete obj[key]
+  })
+  return obj
 }

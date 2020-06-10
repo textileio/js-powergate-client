@@ -1,7 +1,7 @@
-import { expect } from "chai"
 import { Status } from "@textile/grpc-powergate-client/dist/health/rpc/rpc_pb"
-import { getTransport, host } from "../util"
+import { expect } from "chai"
 import { createHealth } from "."
+import { getTransport, host } from "../util"
 
 describe("health", () => {
   const health = createHealth({ host, transport: getTransport() })

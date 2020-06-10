@@ -1,13 +1,13 @@
-import fs from "fs"
-import { expect } from "chai"
 import {
   AddrInfo,
-  DefaultConfig,
   CidConfig,
+  DefaultConfig,
   JobStatus,
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
-import { useToken, getTransport, host } from "../util"
-import { createFFS, withOverrideConfig, withConfig, withHistory } from "."
+import { expect } from "chai"
+import fs from "fs"
+import { createFFS, withConfig, withHistory, withOverrideConfig } from "."
+import { getTransport, host, useToken } from "../util"
 
 describe("ffs", () => {
   const { getMeta, setToken } = useToken("")

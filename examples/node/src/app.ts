@@ -5,16 +5,16 @@ import passport from "passport"
 import path from "path"
 import * as passportConfig from "./config/passport"
 import { save, User } from "./models/user"
-import { SESSION_SECRET } from "./util/env"
+import { EXPRESS_PORT, POW_HOST, SESSION_SECRET } from "./util/env"
 
 // Create the Powergate client
-const pow = createPow()
+const pow = createPow({ host: POW_HOST })
 
 // Create Express server
 const app = express()
 
 // Express configuration
-app.set("port", process.env.PORT || 3000)
+app.set("port", EXPRESS_PORT || 3000)
 app.use(express.static(path.join(__dirname, "public"), { maxAge: 31557600000 }))
 app.set("views", path.join(__dirname, "../views"))
 app.set("view engine", "pug")
