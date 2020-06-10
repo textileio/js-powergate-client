@@ -31,10 +31,12 @@ app.use((req, res, next) => {
  */
 app.get("/", async (_, res, next) => {
   try {
-    const respPeers = await pow.net.peers()
-    const respAddr = await pow.net.listenAddr()
-    const respHealth = await pow.health.check()
-    const respMiners = await pow.miners.get()
+    const [respPeers, respAddr, respHealth, respMiners] = await Promise.all([
+      pow.net.peers(),
+      pow.net.listenAddr(),
+      pow.health.check(),
+      pow.miners.get(),
+    ])
     res.render("info", {
       title: "Node Info",
       peers: respPeers.peersList,
