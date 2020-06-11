@@ -9,11 +9,11 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top
     .collapse.navbar-collapse
       .dropdown-divider
       ul.nav.navbar-nav.mr-auto
-        li.nav-item(class=(title === 'Node Info') ? 'active' : undefined)
-          a.nav-link(href='/') Node Info
+        li.nav-item(class=(title === 'Home') ? 'active' : undefined)
+          a.nav-link(href='/') Home
         if user
-          li.nav-item(class=(title.startsWith('FFS')) ? 'active' : undefined)
-            a.nav-link(href='/ffs') FFS for #{user.email}
+          li.nav-item(class=(title.startsWith('User')) ? 'active' : undefined)
+            a.nav-link(href='/user') User #{user.email}
       ul.nav.navbar-nav
         if !user
           li.nav-item(class=(title === 'Login with GitHub') ? 'active' : undefined)

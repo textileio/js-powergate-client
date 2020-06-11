@@ -37,8 +37,8 @@ app.get("/", async (_, res, next) => {
       pow.health.check(),
       pow.miners.get(),
     ])
-    res.render("info", {
-      title: "Node Info",
+    res.render("home", {
+      title: "Home",
       peers: respPeers.peersList,
       listenAddr: respAddr.addrInfo,
       health: respHealth,
@@ -49,11 +49,11 @@ app.get("/", async (_, res, next) => {
   }
 })
 
-app.get("/ffs", passportConfig.isAuthenticated, async (_, res, next) => {
+app.get("/user", passportConfig.isAuthenticated, async (_, res, next) => {
   try {
     const info = await pow.ffs.info()
-    res.render("ffs", {
-      title: "FFS",
+    res.render("user", {
+      title: "User",
       info: info.info,
     })
   } catch (e) {
@@ -96,7 +96,7 @@ app.get(
     }
   },
   (_, res) => {
-    res.redirect("/ffs")
+    res.redirect("/user")
   },
 )
 
