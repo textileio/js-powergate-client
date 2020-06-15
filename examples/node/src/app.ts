@@ -84,7 +84,6 @@ app.get(
           const createResp = await pow.ffs.create()
           user.ffsToken = createResp.token
           await save(user)
-          req.user = user
           pow.setToken(user.ffsToken)
           next()
         } catch (e) {
