@@ -25,6 +25,7 @@ services:
     environment:
       - TEXLOTUSDEVNET_SPEED=500
       - TEXLOTUSDEVNET_IPFSADDR=/dns4/ipfs/tcp/5001
+      - TEXLOTUSDEVNET_BIGSECTORS=${BIGSECTORS}
 
   ipfs:
     image: ipfs/go-ipfs:v0.5.1
