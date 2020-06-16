@@ -74,7 +74,8 @@ img.branding {
   width: 40px;
   height: 40px;
   margin-right: 6px;
-  content:url("https://docs.textile.io/images/hex.svg");
+  content:url("/images/hex.png");
+  object-fit: contain;
 }
 
 .fa {
