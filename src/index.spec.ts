@@ -9,7 +9,7 @@ const p = path.join(__dirname, "../docker-compose-devnet.yml")
 
 before(async function () {
   this.timeout(130000)
-  cp.exec(`docker-compose -p devnet -f ${p} up --build -V --detach`, (err) => {
+  cp.exec(`BIGSECTORS=false docker-compose -p devnet -f ${p} up --build -V --detach`, (err) => {
     if (err) {
       throw err
     }

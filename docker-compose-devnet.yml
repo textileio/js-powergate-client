@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   powergate:
-    image: textile/powergate:sha-31e7fbf
+    image: textile/powergate:sha-3c3e980
     ports:
       - 8889:8889
       - 8888:8888
@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
 
   lotus:
-    image: textile/lotus-devnet:sha-00c969e
+    image: textile/lotus-devnet:sha-ff3d28e
     ports:
       - 7777:7777
     environment:
