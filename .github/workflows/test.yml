@@ -13,31 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'skip-ci')"
 
-    # Running docker-compose directly from tests for now
-    # services:
-    #   powergate:
-    #     image: textile/powergate:sha-31e7fbf
-    #     env:
-    #       POWD_DEVNET: true
-    #       POWD_LOTUSHOST: /dns4/lotus/tcp/7777
-    #       POWD_IPFSAPIADDR: /dns4/ipfs/tcp/5001
-    #     ports:
-    #       - 8889:8889
-    #       - 8888:8888
-    #       - 6060:6060
-    #       - 5002:5002
-    #       - 6002:6002
-    #     options: "--restart unless-stopped"
-    #   lotus:
-    #     image: textile/lotus-devnet:sha-a364621
-    #     env:
-    #       TEXLOTUSDEVNET_SPEED: 500
-    #       TEXLOTUSDEVNET_IPFSADDR: /dns4/ipfs/tcp/5001
-    #   ipfs:
-    #     image: ipfs/go-ipfs:v0.5.1
-    #     env:
-    #       IPFS_PROFILE: local-discovery
-
     steps:
       - name: Checkout
         uses: actions/checkout@v1
