@@ -1,11 +1,8 @@
 import { expect } from "chai"
 import cp from "child_process"
-import path from "path"
 import wait from "wait-on"
 import { createPow } from "."
 import { host } from "./util"
-
-const p = path.join(__dirname, "../docker-compose-devnet.yml")
 
 before(async function () {
   this.timeout(130000)
