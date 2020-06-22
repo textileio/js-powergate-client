@@ -9,7 +9,7 @@ const p = path.join(__dirname, "../docker-compose-devnet.yml")
 
 before(async function () {
   this.timeout(130000)
-  cp.exec(`BIGSECTORS=false docker-compose -p devnet -f ${p} up --build -V --detach`, (err) => {
+  cp.exec(`cd powergate-docker && BIGSECTORS=false make devnet`, (err) => {
     if (err) {
       throw err
     }
@@ -21,7 +21,7 @@ before(async function () {
 })
 
 after(() => {
-  cp.exec(`docker-compose -p devnet -f ${p} down`)
+  cp.exec(`cd powergate-docker && make down`)
 })
 
 describe("client", () => {
