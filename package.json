@@ -17,8 +17,10 @@
     "test:browser": "polendina --timeout 3000 --cleanup src/**/*.spec.ts --webpack-config ./webpack.test.js",
     "lint": "eslint --fix --ext .js,.ts src/**/*",
     "docs": "typedoc",
-    "devnet:up": "docker-compose -p devnet -f docker-compose-devnet.yml up --build -V",
-    "devnet:down": "docker-compose -p devnet -f docker-compose-devnet.yml down"
+    "devnet:up": "cd powergate-docker && make devnet",
+    "devnet:down": "cd powergate-docker && make down",
+    "powergate-docker": "./powergate-docker.sh",
+    "postinstall": "npm run powergate-docker"
   },
   "keywords": [
     "typescript",
@@ -31,7 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-conventional": "^9.0.1",
     "@types/chai": "^4.2.11",
     "@types/dirty-chai": "^2.0.2",
     "@types/mocha": "^7.0.2",
@@ -45,7 +47,8 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
-    "mocha": "^7.1.1",
+    "json": "^9.0.6",
+    "mocha": "^8.0.1",
     "polendina": "^1.0.0",
     "prettier": "^2.0.2",
     "prettier-plugin-organize-imports": "^1.0.4",
@@ -64,6 +67,6 @@
   },
   "dependencies": {
     "@improbable-eng/grpc-web-node-http-transport": "^0.12.0",
-    "@textile/grpc-powergate-client": "0.0.1-beta.8"
+    "@textile/grpc-powergate-client": "0.0.1-beta.10"
   }
 }
