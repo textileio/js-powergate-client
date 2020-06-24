@@ -5,57 +5,8 @@ import {
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
 import { Config, ffs } from "../types"
 import { promise } from "../util"
-
-type PushConfigOption = (req: ffs.PushConfigRequest) => void
-
-/**
- * Allows you to override an existing storage configuration
- * @param override Whether or not to override any existing storage configuration
- * @returns The resulting option
- */
-export const withOverrideConfig = (override: boolean) => (req: ffs.PushConfigRequest) => {
-  req.setHasOverrideConfig(true)
-  req.setOverrideConfig(override)
-}
-
-/**
- * Allows you to override the default storage config with a custom one
- * @param config The storage configuration to use
- * @returns The resulting option
- */
-export const withConfig = (config: ffs.CidConfig.AsObject) => (req: ffs.PushConfigRequest) => {
-  const c = new ffs.CidConfig()
-  c.setCid(config.cid)
-  c.setRepairable(config.repairable)
-  if (config.hot) {
-    c.setHot(hotObjToMessage(config.hot))
-  }
-  if (config.cold) {
-    c.setCold(coldObjToMessage(config.cold))
-  }
-  req.setHasConfig(true)
-  req.setConfig(c)
-}
-
-type WatchLogsOption = (res: ffs.WatchLogsRequest) => void
-
-/**
- * Control whether or not to include the history of log events
- * @param includeHistory Whether or not to include the history of log events
- * @returns The resulting option
- */
-export const withHistory = (includeHistory: boolean) => (req: ffs.WatchLogsRequest) => {
-  req.setHistory(includeHistory)
-}
-
-/**
- * Filter log events to only those associated with the provided job id
- * @param jobId The job id to show events for
- * @returns The resulting option
- */
-export const withJobId = (jobId: string) => (req: ffs.WatchLogsRequest) => {
-  req.setJid(jobId)
-}
+import { PushConfigOption, WatchLogsOption } from "./options"
+import { coldObjToMessage, hotObjToMessage } from "./util"
 
 /**
  * Creates the FFS API client
@@ -443,39 +394,4 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
         (res: ffs.ShowAllResponse) => res.toObject().cidInfosList,
       ),
   }
-}
-
-function coldObjToMessage(obj: ffs.ColdConfig.AsObject) {
-  const cold = new ffs.ColdConfig()
-  cold.setEnabled(obj.enabled)
-  if (obj.filecoin) {
-    const fc = new ffs.FilConfig()
-    fc.setAddr(obj.filecoin.addr)
-    fc.setCountryCodesList(obj.filecoin.countryCodesList)
-    fc.setDealMinDuration(obj.filecoin.dealMinDuration)
-    fc.setExcludedMinersList(obj.filecoin.excludedMinersList)
-    fc.setMaxPrice(obj.filecoin.maxPrice)
-    fc.setRepFactor(obj.filecoin.repFactor)
-    fc.setTrustedMinersList(obj.filecoin.trustedMinersList)
-    if (obj.filecoin.renew) {
-      const renew = new ffs.FilRenew()
-      renew.setEnabled(obj.filecoin.renew.enabled)
-      renew.setThreshold(obj.filecoin.renew.threshold)
-      fc.setRenew(renew)
-    }
-    cold.setFilecoin(fc)
-  }
-  return cold
-}
-
-function hotObjToMessage(obj: ffs.HotConfig.AsObject) {
-  const hot = new ffs.HotConfig()
-  hot.setAllowUnfreeze(obj.allowUnfreeze)
-  hot.setEnabled(obj.enabled)
-  if (obj?.ipfs) {
-    const ipfs = new ffs.IpfsConfig()
-    ipfs.setAddTimeout(obj.ipfs.addTimeout)
-    hot.setIpfs(ipfs)
-  }
-  return hot
 }

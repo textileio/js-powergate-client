@@ -1,8 +1,9 @@
 import { expect } from "chai"
 import fs from "fs"
-import { createFFS, withConfig, withHistory, withOverrideConfig } from "."
+import { createFFS } from "."
 import { ffs } from "../types"
 import { getTransport, host, useToken } from "../util"
+import { withConfig, withHistory, withOverrideConfig } from "./options"
 
 describe("ffs", () => {
   const { getMeta, setToken } = useToken("")
