@@ -145,7 +145,7 @@
 											</aside>
 											<div class="tsd-comment tsd-typography">
 												<div class="lead">
-													<p>A helper method to cache data in IPFS in preparation for storing in FFS.
+													<p>A helper method to cache data in IPFS in preparation for storing in ffsTypes.
 													This doesn&#39;t actually store data in FFS, you&#39;ll want to call pushConfig for that.</p>
 												</div>
 											</div>
@@ -734,7 +734,7 @@
 								<li class="tsd-parameter">
 									<h5>set<wbr>Default<wbr>Config<span class="tsd-signature-symbol">: </span>function</h5>
 									<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-										<li class="tsd-signature tsd-kind-icon">set<wbr>Default<wbr>Config<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.DefaultConfig.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+										<li class="tsd-signature tsd-kind-icon">set<wbr>Default<wbr>Config<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffsTypes.DefaultConfig.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 									</ul>
 									<ul class="tsd-descriptions">
 										<li class="tsd-description">
@@ -751,7 +751,7 @@
 											<h4 class="tsd-parameters-title">Parameters</h4>
 											<ul class="tsd-parameters">
 												<li>
-													<h5>config: <span class="tsd-signature-type">ffs.DefaultConfig.AsObject</span></h5>
+													<h5>config: <span class="tsd-signature-type">ffsTypes.DefaultConfig.AsObject</span></h5>
 													<div class="tsd-comment tsd-typography">
 														<div class="lead">
 															<p>The new default storage config</p>
@@ -821,7 +821,7 @@
 								<li class="tsd-parameter">
 									<h5>watch<wbr>Jobs<span class="tsd-signature-symbol">: </span>function</h5>
 									<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-										<li class="tsd-signature tsd-kind-icon">watch<wbr>Jobs<span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.Job.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, <span class="tsd-signature-symbol">...</span>jobs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">cancel</span></li>
+										<li class="tsd-signature tsd-kind-icon">watch<wbr>Jobs<span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffsTypes.Job.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, <span class="tsd-signature-symbol">...</span>jobs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">cancel</span></li>
 									</ul>
 									<ul class="tsd-descriptions">
 										<li class="tsd-description">
@@ -838,7 +838,7 @@
 											<h4 class="tsd-parameters-title">Parameters</h4>
 											<ul class="tsd-parameters">
 												<li>
-													<h5>handler: <span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.Job.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+													<h5>handler: <span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffsTypes.Job.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 													<div class="tsd-comment tsd-typography">
 														<div class="lead">
 															<p>The callback to receive job updates</p>
@@ -847,14 +847,14 @@
 													<ul class="tsd-parameters">
 														<li class="tsd-parameter-signature">
 															<ul class="tsd-signatures tsd-kind-type-literal">
-																<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.Job.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+																<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffsTypes.Job.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 															</ul>
 															<ul class="tsd-descriptions">
 																<li class="tsd-description">
 																	<h4 class="tsd-parameters-title">Parameters</h4>
 																	<ul class="tsd-parameters">
 																		<li>
-																			<h5>event: <span class="tsd-signature-type">ffs.Job.AsObject</span></h5>
+																			<h5>event: <span class="tsd-signature-type">ffsTypes.Job.AsObject</span></h5>
 																		</li>
 																	</ul>
 																	<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -880,7 +880,7 @@
 								<li class="tsd-parameter">
 									<h5>watch<wbr>Logs<span class="tsd-signature-symbol">: </span>function</h5>
 									<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-										<li class="tsd-signature tsd-kind-icon">watch<wbr>Logs<span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.LogEntry.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>opts<span class="tsd-signature-symbol">: </span><a href="_ffs_options_.html#watchlogsoption" class="tsd-signature-type">WatchLogsOption</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">cancel</span></li>
+										<li class="tsd-signature tsd-kind-icon">watch<wbr>Logs<span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffsTypes.LogEntry.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, <span class="tsd-signature-symbol">...</span>opts<span class="tsd-signature-symbol">: </span><a href="_ffs_options_.html#watchlogsoption" class="tsd-signature-type">WatchLogsOption</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">cancel</span></li>
 									</ul>
 									<ul class="tsd-descriptions">
 										<li class="tsd-description">
@@ -897,7 +897,7 @@
 											<h4 class="tsd-parameters-title">Parameters</h4>
 											<ul class="tsd-parameters">
 												<li>
-													<h5>handler: <span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.LogEntry.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+													<h5>handler: <span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffsTypes.LogEntry.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 													<div class="tsd-comment tsd-typography">
 														<div class="lead">
 															<p>The callback to receive log updates</p>
@@ -906,14 +906,14 @@
 													<ul class="tsd-parameters">
 														<li class="tsd-parameter-signature">
 															<ul class="tsd-signatures tsd-kind-type-literal">
-																<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.LogEntry.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+																<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffsTypes.LogEntry.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 															</ul>
 															<ul class="tsd-descriptions">
 																<li class="tsd-description">
 																	<h4 class="tsd-parameters-title">Parameters</h4>
 																	<ul class="tsd-parameters">
 																		<li>
-																			<h5>event: <span class="tsd-signature-type">ffs.LogEntry.AsObject</span></h5>
+																			<h5>event: <span class="tsd-signature-type">ffsTypes.LogEntry.AsObject</span></h5>
 																		</li>
 																	</ul>
 																	<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
