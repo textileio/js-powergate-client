@@ -1,5 +1,5 @@
 import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/health/rpc/rpc_pb_service"
-import { Config, health } from "../types"
+import { Config, healthTypes } from "../types"
 import { promise } from "../util"
 
 /**
@@ -16,8 +16,8 @@ export const createHealth = (config: Config) => {
      */
     check: () =>
       promise(
-        (cb) => client.check(new health.CheckRequest(), cb),
-        (resp: health.CheckResponse) => resp.toObject(),
+        (cb) => client.check(new healthTypes.CheckRequest(), cb),
+        (resp: healthTypes.CheckResponse) => resp.toObject(),
       ),
   }
 }

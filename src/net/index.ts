@@ -1,5 +1,5 @@
 import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb_service"
-import { Config, net } from "../types"
+import { Config, netTypes } from "../types"
 import { promise } from "../util"
 
 /**
@@ -16,8 +16,8 @@ export const createNet = (config: Config) => {
      */
     listenAddr: () =>
       promise(
-        (cb) => client.listenAddr(new net.ListenAddrRequest(), cb),
-        (res: net.ListenAddrResponse) => res.toObject(),
+        (cb) => client.listenAddr(new netTypes.ListenAddrRequest(), cb),
+        (res: netTypes.ListenAddrResponse) => res.toObject(),
       ),
 
     /**
@@ -26,8 +26,8 @@ export const createNet = (config: Config) => {
      */
     peers: () =>
       promise(
-        (cb) => client.peers(new net.PeersRequest(), cb),
-        (res: net.PeersResponse) => res.toObject(),
+        (cb) => client.peers(new netTypes.PeersRequest(), cb),
+        (res: netTypes.PeersResponse) => res.toObject(),
       ),
 
     /**
@@ -36,11 +36,11 @@ export const createNet = (config: Config) => {
      * @returns The peer info
      */
     findPeer: (peerId: string) => {
-      const req = new net.FindPeerRequest()
+      const req = new netTypes.FindPeerRequest()
       req.setPeerId(peerId)
       return promise(
         (cb) => client.findPeer(req, cb),
-        (res: net.FindPeerResponse) => res.toObject(),
+        (res: netTypes.FindPeerResponse) => res.toObject(),
       )
     },
 
@@ -48,11 +48,11 @@ export const createNet = (config: Config) => {
      * Connect to a peer
      * @param peerInfo The peer info specifying the peer to connect to
      */
-    connectPeer: (peerInfo: net.PeerAddrInfo.AsObject) => {
-      const info = new net.PeerAddrInfo()
+    connectPeer: (peerInfo: netTypes.PeerAddrInfo.AsObject) => {
+      const info = new netTypes.PeerAddrInfo()
       info.setId(peerInfo.id)
       info.setAddrsList(peerInfo.addrsList)
-      const req = new net.ConnectPeerRequest()
+      const req = new netTypes.ConnectPeerRequest()
       req.setPeerInfo(info)
       return promise(
         (cb) => client.connectPeer(req, cb),
@@ -68,11 +68,11 @@ export const createNet = (config: Config) => {
      * @returns Information about the connectedness to the peer
      */
     connectedness: (peerId: string) => {
-      const req = new net.ConnectednessRequest()
+      const req = new netTypes.ConnectednessRequest()
       req.setPeerId(peerId)
       return promise(
         (cb) => client.connectedness(req, cb),
-        (res: net.ConnectednessResponse) => res.toObject(),
+        (res: netTypes.ConnectednessResponse) => res.toObject(),
       )
     },
 
@@ -81,7 +81,7 @@ export const createNet = (config: Config) => {
      * @param peerId The peer id to disconnect from
      */
     disconnectPeer: (peerId: string) => {
-      const req = new net.DisconnectPeerRequest()
+      const req = new netTypes.DisconnectPeerRequest()
       req.setPeerId(peerId)
       return promise(
         (cb) => client.disconnectPeer(req, cb),
