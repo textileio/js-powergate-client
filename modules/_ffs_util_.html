@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;util/index&quot; | Powergate Client</title>
+	<title>&quot;ffs/util&quot; | Powergate Client</title>
 	<meta name="description" content="Documentation for Powergate Client">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_util_index_.html">&quot;util/index&quot;</a>
+					<a href="_ffs_util_.html">&quot;ffs/util&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;util/index&quot;</h1>
+			<h1>Module &quot;ffs/util&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -69,50 +69,62 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>References</h3>
+							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#gettransport" class="tsd-kind-icon">get<wbr>Transport</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#host" class="tsd-kind-icon">host</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#isnode" class="tsd-kind-icon">is<wbr>Node</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#promise" class="tsd-kind-icon">promise</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#usetoken" class="tsd-kind-icon">use<wbr>Token</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_ffs_util_.html#coldobjtomessage" class="tsd-kind-icon">cold<wbr>Obj<wbr>ToMessage</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_ffs_util_.html#hotobjtomessage" class="tsd-kind-icon">hot<wbr>Obj<wbr>ToMessage</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>References</h2>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="gettransport" class="tsd-anchor"></a>
-					<h3>get<wbr>Transport</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#gettransport">getTransport</a>
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="coldobjtomessage" class="tsd-anchor"></a>
+					<h3>cold<wbr>Obj<wbr>ToMessage</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">cold<wbr>Obj<wbr>ToMessage<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.ColdConfig.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ColdConfig</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/ffs/util.ts#L3">src/ffs/util.ts:3</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">ffs.ColdConfig.AsObject</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ColdConfig</span></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="host" class="tsd-anchor"></a>
-					<h3>host</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#host">host</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="isnode" class="tsd-anchor"></a>
-					<h3>is<wbr>Node</h3>
-					Re-exports <a href="_util_util_.html#isnode">isNode</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="promise" class="tsd-anchor"></a>
-					<h3>promise</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#promise">promise</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="usetoken" class="tsd-anchor"></a>
-					<h3>use<wbr>Token</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#usetoken">useToken</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="usevalue" class="tsd-anchor"></a>
-					<h3>use<wbr>Value</h3>
-					Re-exports <a href="_util_util_.html#usevalue">useValue</a>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="hotobjtomessage" class="tsd-anchor"></a>
+					<h3>hot<wbr>Obj<wbr>ToMessage</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">hot<wbr>Obj<wbr>ToMessage<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ffs.HotConfig.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">HotConfig</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/ffs/util.ts#L26">src/ffs/util.ts:26</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">ffs.HotConfig.AsObject</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">HotConfig</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -128,7 +140,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_ffs_options_.html">&quot;ffs/options&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_ffs_util_.html">&quot;ffs/util&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -152,7 +164,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_util_grpc_helpers_.html">&quot;util/grpc-<wbr>helpers&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_util_index_.html">&quot;util/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -162,23 +174,11 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#gettransport" class="tsd-kind-icon">get<wbr>Transport</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_ffs_util_.html#coldobjtomessage" class="tsd-kind-icon">cold<wbr>Obj<wbr>ToMessage</a>
 					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#host" class="tsd-kind-icon">host</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#isnode" class="tsd-kind-icon">is<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#promise" class="tsd-kind-icon">promise</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#usetoken" class="tsd-kind-icon">use<wbr>Token</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_ffs_util_.html#hotobjtomessage" class="tsd-kind-icon">hot<wbr>Obj<wbr>ToMessage</a>
 					</li>
 				</ul>
 			</nav>
