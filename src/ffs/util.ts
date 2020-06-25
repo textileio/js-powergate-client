@@ -1,10 +1,10 @@
-import { ffs } from "../types"
+import { ffsTypes } from "../types"
 
-export function coldObjToMessage(obj: ffs.ColdConfig.AsObject) {
-  const cold = new ffs.ColdConfig()
+export function coldObjToMessage(obj: ffsTypes.ColdConfig.AsObject) {
+  const cold = new ffsTypes.ColdConfig()
   cold.setEnabled(obj.enabled)
   if (obj.filecoin) {
-    const fc = new ffs.FilConfig()
+    const fc = new ffsTypes.FilConfig()
     fc.setAddr(obj.filecoin.addr)
     fc.setCountryCodesList(obj.filecoin.countryCodesList)
     fc.setDealMinDuration(obj.filecoin.dealMinDuration)
@@ -13,7 +13,7 @@ export function coldObjToMessage(obj: ffs.ColdConfig.AsObject) {
     fc.setRepFactor(obj.filecoin.repFactor)
     fc.setTrustedMinersList(obj.filecoin.trustedMinersList)
     if (obj.filecoin.renew) {
-      const renew = new ffs.FilRenew()
+      const renew = new ffsTypes.FilRenew()
       renew.setEnabled(obj.filecoin.renew.enabled)
       renew.setThreshold(obj.filecoin.renew.threshold)
       fc.setRenew(renew)
@@ -23,12 +23,12 @@ export function coldObjToMessage(obj: ffs.ColdConfig.AsObject) {
   return cold
 }
 
-export function hotObjToMessage(obj: ffs.HotConfig.AsObject) {
-  const hot = new ffs.HotConfig()
+export function hotObjToMessage(obj: ffsTypes.HotConfig.AsObject) {
+  const hot = new ffsTypes.HotConfig()
   hot.setAllowUnfreeze(obj.allowUnfreeze)
   hot.setEnabled(obj.enabled)
   if (obj?.ipfs) {
-    const ipfs = new ffs.IpfsConfig()
+    const ipfs = new ffsTypes.IpfsConfig()
     ipfs.setAddTimeout(obj.ipfs.addTimeout)
     hot.setIpfs(ipfs)
   }

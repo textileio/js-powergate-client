@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import { createHealth } from "."
-import { health } from "../types"
+import { healthTypes } from "../types"
 import { getTransport, host } from "../util"
 
 describe("health", () => {
@@ -8,6 +8,6 @@ describe("health", () => {
 
   it("should check health", async () => {
     const status = await c.check()
-    expect(status.status).equal(health.Status.STATUS_OK)
+    expect(status.status).equal(healthTypes.Status.STATUS_OK)
   })
 })

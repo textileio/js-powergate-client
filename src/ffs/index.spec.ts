@@ -1,7 +1,7 @@
 import { expect } from "chai"
 import fs from "fs"
 import { createFFS } from "."
-import { ffs } from "../types"
+import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
 import { withConfig, withHistory, withOverrideConfig } from "./options"
 
@@ -11,10 +11,10 @@ describe("ffs", () => {
   const c = createFFS({ host, transport: getTransport() }, getMeta)
 
   let instanceId: string
-  let initialAddrs: ffs.AddrInfo.AsObject[]
-  let defaultConfig: ffs.DefaultConfig.AsObject
+  let initialAddrs: ffsTypes.AddrInfo.AsObject[]
+  let defaultConfig: ffsTypes.DefaultConfig.AsObject
   let cid: string
-  let defaultCidConfig: ffs.CidConfig.AsObject
+  let defaultCidConfig: ffsTypes.CidConfig.AsObject
 
   it("should create an instance", async function () {
     this.timeout(30000)
@@ -92,9 +92,9 @@ describe("ffs", () => {
     this.timeout(180000)
     const cancel = c.watchJobs((job) => {
       expect(job.errCause).empty
-      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_FAILED)
-      if (job.status === ffs.JobStatus.JOB_STATUS_SUCCESS) {
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
+      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }
@@ -145,9 +145,9 @@ describe("ffs", () => {
     this.timeout(180000)
     const cancel = c.watchJobs((job) => {
       expect(job.errCause).empty
-      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_FAILED)
-      if (job.status === ffs.JobStatus.JOB_STATUS_SUCCESS) {
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
+      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }
@@ -172,7 +172,7 @@ describe("ffs", () => {
   })
 
   it("should push disable storage job", async () => {
-    const newConf: ffs.CidConfig.AsObject = {
+    const newConf: ffsTypes.CidConfig.AsObject = {
       cid,
       repairable: false,
       cold: {
@@ -192,9 +192,9 @@ describe("ffs", () => {
     this.timeout(180000)
     const cancel = c.watchJobs((job) => {
       expect(job.errCause).empty
-      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(ffs.JobStatus.JOB_STATUS_FAILED)
-      if (job.status === ffs.JobStatus.JOB_STATUS_SUCCESS) {
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
+      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
         cancel()
         done()
       }

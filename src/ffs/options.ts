@@ -1,7 +1,7 @@
-import { ffs } from "../types"
+import { ffsTypes } from "../types"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
-export type PushConfigOption = (req: ffs.PushConfigRequest) => void
+export type PushConfigOption = (req: ffsTypes.PushConfigRequest) => void
 
 /**
  * Allows you to override an existing storage configuration
@@ -9,7 +9,7 @@ export type PushConfigOption = (req: ffs.PushConfigRequest) => void
  * @returns The resulting option
  */
 export const withOverrideConfig = (override: boolean) => {
-  const option: PushConfigOption = (req: ffs.PushConfigRequest) => {
+  const option: PushConfigOption = (req: ffsTypes.PushConfigRequest) => {
     req.setHasOverrideConfig(true)
     req.setOverrideConfig(override)
   }
@@ -21,9 +21,9 @@ export const withOverrideConfig = (override: boolean) => {
  * @param config The storage configuration to use
  * @returns The resulting option
  */
-export const withConfig = (config: ffs.CidConfig.AsObject) => {
-  const option: PushConfigOption = (req: ffs.PushConfigRequest) => {
-    const c = new ffs.CidConfig()
+export const withConfig = (config: ffsTypes.CidConfig.AsObject) => {
+  const option: PushConfigOption = (req: ffsTypes.PushConfigRequest) => {
+    const c = new ffsTypes.CidConfig()
     c.setCid(config.cid)
     c.setRepairable(config.repairable)
     if (config.hot) {
@@ -38,7 +38,7 @@ export const withConfig = (config: ffs.CidConfig.AsObject) => {
   return option
 }
 
-export type WatchLogsOption = (res: ffs.WatchLogsRequest) => void
+export type WatchLogsOption = (res: ffsTypes.WatchLogsRequest) => void
 
 /**
  * Control whether or not to include the history of log events
@@ -46,7 +46,7 @@ export type WatchLogsOption = (res: ffs.WatchLogsRequest) => void
  * @returns The resulting option
  */
 export const withHistory = (includeHistory: boolean) => {
-  const option: WatchLogsOption = (req: ffs.WatchLogsRequest) => {
+  const option: WatchLogsOption = (req: ffsTypes.WatchLogsRequest) => {
     req.setHistory(includeHistory)
   }
   return option
@@ -58,7 +58,7 @@ export const withHistory = (includeHistory: boolean) => {
  * @returns The resulting option
  */
 export const withJobId = (jobId: string) => {
-  const option: WatchLogsOption = (req: ffs.WatchLogsRequest) => {
+  const option: WatchLogsOption = (req: ffsTypes.WatchLogsRequest) => {
     req.setJid(jobId)
   }
   return option
