@@ -75,7 +75,7 @@ Now, the FFS API is available for you to use.
 
 ```typescript
 import fs from "fs"
-import { ffs } from "@textile/powergate-client"
+import { ffsTypes } from "@textile/powergate-client"
 
 // get wallet addresses associated with your FFS instance
 const { addrsList } = await pow.ffs.addrs()
@@ -95,11 +95,11 @@ const { jobId } = await pow.ffs.pushConfig(cid)
 
 // watch the FFS job status to see the storage process progressing
 const cancel = pow.ffs.watchJobs((job) => {
-  if (job.status === ffs.JobStatus.CANCELED) {
+  if (job.status === ffsTypes.JobStatus.CANCELED) {
     console.log("job canceled")
-  } else if (job.status === ffs.JobStatus.FAILED) {
+  } else if (job.status === ffsTypes.JobStatus.FAILED) {
     console.log("job failed")
-  } else if (job.status === ffs.JobStatus.SUCCESS) {
+  } else if (job.status === ffsTypes.JobStatus.SUCCESS) {
     console.log("job success!")
   }
 }, jobId)
