@@ -179,6 +179,17 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       return stream.cancel
     },
 
+    cancelJob: (jobId: string) => {
+      const req = new ffsTypes.CancelJobRequest()
+      req.setJid(jobId)
+      return promise(
+        (cb) => client.cancelJob(req, getMeta(), cb),
+        () => {
+          // nothing to return
+        },
+      )
+    },
+
     /**
      * Listen for any updates for a stored cid
      * @param handler The callback to receive log updates

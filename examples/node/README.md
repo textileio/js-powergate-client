@@ -38,10 +38,10 @@ This example app needs to connect to a Powergate instance, so update `.env` with
 
 **- OR -**
 
-Easily fire up a local Powergate instance in devnet mode (along with its dependencies of IPFS and Lotus) using Docker. In the root of this example project's parent repo, run:
+Easily fire up a local Powergate instance in localnet mode (along with its dependencies of IPFS and Lotus) using Docker. In the root of this example project's parent repo, run:
 
 ```
-npm run devnet:up
+npm run localnet:up
 ```
 
 The default settings for `POW_HOST` will connect to this locally running Powergate instance.

@@ -159,6 +159,15 @@ describe("ffs", () => {
     expect(bytes.byteLength).equal(buffer.byteLength)
   })
 
+  it("should cancel a job", async () => {
+    buffer = fs.readFileSync(`sample-data/samplefile3`)
+    const res0 = await c.addToHot(buffer)
+    expect(res0.cid).length.greaterThan(0)
+    const res1 = await c.pushConfig(res0.cid)
+    expect(res1.jobId).length.greaterThan(0)
+    await c.cancelJob(res1.jobId)
+  })
+
   it("should list payment channels", async () => {
     await c.listPayChannels()
   })

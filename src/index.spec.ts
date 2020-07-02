@@ -6,7 +6,7 @@ import { host } from "./util"
 
 before(async function () {
   this.timeout(130000)
-  cp.exec(`cd powergate-docker && BIGSECTORS=false make devnet`, (err) => {
+  cp.exec(`cd powergate-docker && BIGSECTORS=false make localnet`, (err) => {
     if (err) {
       throw err
     }
