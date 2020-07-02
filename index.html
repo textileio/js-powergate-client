@@ -120,7 +120,7 @@
 				<pre><code class="language-typescript">pow.setToken(authToken)</code></pre>
 				<p>Now, the FFS API is available for you to use.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>
-<span class="hljs-keyword">import</span> { ffs } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+<span class="hljs-keyword">import</span> { ffsTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
 
 <span class="hljs-comment">// get wallet addresses associated with your FFS instance</span>
 <span class="hljs-keyword">const</span> { addrsList } = <span class="hljs-keyword">await</span> pow.ffs.addrs()
@@ -140,11 +140,11 @@
 
 <span class="hljs-comment">// watch the FFS job status to see the storage process progressing</span>
 <span class="hljs-keyword">const</span> cancel = pow.ffs.watchJobs(<span class="hljs-function">(<span class="hljs-params">job</span>) =&gt;</span> {
-  <span class="hljs-keyword">if</span> (job.status === ffs.JobStatus.CANCELED) {
+  <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.CANCELED) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job canceled&quot;</span>)
-  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffs.JobStatus.FAILED) {
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.FAILED) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job failed&quot;</span>)
-  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffs.JobStatus.SUCCESS) {
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.SUCCESS) {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job success!&quot;</span>)
   }
 }, jobId)
