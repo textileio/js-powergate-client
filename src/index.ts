@@ -1,3 +1,5 @@
+import { createAsks } from "./asks"
+import { createFaults } from "./faults"
 import { createFFS } from "./ffs"
 import { createHealth } from "./health"
 import { createMiners } from "./miners"
@@ -18,6 +20,7 @@ const defaultConfig: Config = {
  * @param config A config object that changes the behavior of the client
  * @returns A Powergate client API
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const createPow = (config?: Partial<Config>) => {
   const c = { ...defaultConfig, ...removeEmpty(config) }
 
@@ -31,14 +34,14 @@ export const createPow = (config?: Partial<Config>) => {
     setToken,
 
     /**
-     * The Health API
+     * The Asks API
      */
-    health: createHealth(c),
+    asks: createAsks(c),
 
     /**
-     * The Net API
+     * The Faults API
      */
-    net: createNet(c),
+    faults: createFaults(c),
 
     /**
      * The FFS API
@@ -46,9 +49,19 @@ export const createPow = (config?: Partial<Config>) => {
     ffs: createFFS(c, getMeta),
 
     /**
+     * The Health API
+     */
+    health: createHealth(c),
+
+    /**
      * The Miners API
      */
     miners: createMiners(c),
+
+    /**
+     * The Net API
+     */
+    net: createNet(c),
   }
 }
 
