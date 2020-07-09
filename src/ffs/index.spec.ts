@@ -1,6 +1,7 @@
 import { expect } from "chai"
 import fs from "fs"
 import { createFFS } from "."
+import { withIncludeFinal } from "../deals/options"
 import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
 import { withConfig, withHistory, withOverrideConfig } from "./options"
@@ -14,7 +15,6 @@ describe("ffs", () => {
   let initialAddrs: ffsTypes.AddrInfo.AsObject[]
   let defaultConfig: ffsTypes.DefaultConfig.AsObject
   let cid: string
-  let defaultCidConfig: ffsTypes.CidConfig.AsObject
 
   it("should create an instance", async function () {
     this.timeout(30000)
@@ -76,16 +76,22 @@ describe("ffs", () => {
   it("should get default cid config", async () => {
     const res = await c.getDefaultCidConfig(cid)
     expect(res.config?.cid).equal(cid)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    defaultCidConfig = res.config!
   })
 
   let jobId: string
 
   it("should push config", async () => {
-    const res = await c.pushConfig(cid, withOverrideConfig(false), withConfig(defaultCidConfig))
-    expect(res.jobId).length.greaterThan(0)
-    jobId = res.jobId
+    const res0 = await c.getDefaultCidConfig(cid)
+    expect(res0.config?.cid).equal(cid)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const config = res0.config!
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    config.hot!.enabled = false
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    config.hot!.allowUnfreeze = true
+    const res1 = await c.pushConfig(cid, withOverrideConfig(false), withConfig(config))
+    expect(res1.jobId).length.greaterThan(0)
+    jobId = res1.jobId
   })
 
   it("should watch job", function (done) {
@@ -112,6 +118,46 @@ describe("ffs", () => {
       cid,
       withHistory(true),
     )
+  })
+
+  it("should get a storage deal record", async () => {
+    const res = await c.listStorageDealRecords(withIncludeFinal(true))
+    expect(res).length.greaterThan(0)
+  })
+
+  it("should push an unfreeze config change", async () => {
+    const res0 = await c.getDefaultCidConfig(cid)
+    expect(res0.config?.cid).equal(cid)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const config = res0.config!
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    config.hot!.enabled = true
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    config.hot!.allowUnfreeze = true
+    const res1 = await c.pushConfig(cid, withOverrideConfig(true), withConfig(config))
+    expect(res1.jobId).length.greaterThan(0)
+    jobId = res1.jobId
+  })
+
+  it("should watch the config change job", function (done) {
+    this.timeout(180000)
+    const cancel = c.watchJobs((job) => {
+      expect(job.errCause).empty
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
+      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
+      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
+        cancel()
+        done()
+      }
+    }, jobId)
+  })
+
+  it("should get a retrieval deal record", async function () {
+    // ToDo: Figure out hot to make sure the data in the previous push isn't cached in hot
+    // this.timeout(30000)
+    // await new Promise((r) => setTimeout(r, 10000))
+    // const res = await c.listRetrievalDealRecords()
+    // expect(res).length.greaterThan(0)
   })
 
   it("should get cid config", async () => {
