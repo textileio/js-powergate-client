@@ -8,12 +8,11 @@ export type PushConfigOption = (req: ffsTypes.PushConfigRequest) => void
  * @param override Whether or not to override any existing storage configuration
  * @returns The resulting option
  */
-export const withOverrideConfig = (override: boolean) => {
-  const option: PushConfigOption = (req: ffsTypes.PushConfigRequest) => {
+export const withOverrideConfig = (override: boolean): PushConfigOption => {
+  return (req: ffsTypes.PushConfigRequest) => {
     req.setHasOverrideConfig(true)
     req.setOverrideConfig(override)
   }
-  return option
 }
 
 /**
@@ -21,8 +20,8 @@ export const withOverrideConfig = (override: boolean) => {
  * @param config The storage configuration to use
  * @returns The resulting option
  */
-export const withConfig = (config: ffsTypes.CidConfig.AsObject) => {
-  const option: PushConfigOption = (req: ffsTypes.PushConfigRequest) => {
+export const withConfig = (config: ffsTypes.CidConfig.AsObject): PushConfigOption => {
+  return (req: ffsTypes.PushConfigRequest) => {
     const c = new ffsTypes.CidConfig()
     c.setCid(config.cid)
     c.setRepairable(config.repairable)
@@ -35,7 +34,6 @@ export const withConfig = (config: ffsTypes.CidConfig.AsObject) => {
     req.setHasConfig(true)
     req.setConfig(c)
   }
-  return option
 }
 
 export type WatchLogsOption = (res: ffsTypes.WatchLogsRequest) => void
@@ -45,11 +43,10 @@ export type WatchLogsOption = (res: ffsTypes.WatchLogsRequest) => void
  * @param includeHistory Whether or not to include the history of log events
  * @returns The resulting option
  */
-export const withHistory = (includeHistory: boolean) => {
-  const option: WatchLogsOption = (req: ffsTypes.WatchLogsRequest) => {
+export const withHistory = (includeHistory: boolean): WatchLogsOption => {
+  return (req: ffsTypes.WatchLogsRequest) => {
     req.setHistory(includeHistory)
   }
-  return option
 }
 
 /**
@@ -57,9 +54,8 @@ export const withHistory = (includeHistory: boolean) => {
  * @param jobId The job id to show events for
  * @returns The resulting option
  */
-export const withJobId = (jobId: string) => {
-  const option: WatchLogsOption = (req: ffsTypes.WatchLogsRequest) => {
+export const withJobId = (jobId: string): WatchLogsOption => {
+  return (req: ffsTypes.WatchLogsRequest) => {
     req.setJid(jobId)
   }
-  return option
 }
