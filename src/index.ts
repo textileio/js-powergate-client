@@ -4,11 +4,33 @@ import { createFFS } from "./ffs"
 import { createHealth } from "./health"
 import { createMiners } from "./miners"
 import { createNet } from "./net"
-import { ffsOptions } from "./options"
-import { Config, ffsTypes, healthTypes, minersTypes, netTypes } from "./types"
+import { dealsOptions, ffsOptions } from "./options"
+import { createReputation } from "./reputation"
+import {
+  asksTypes,
+  Config,
+  dealsTypes,
+  faultsTypes,
+  ffsTypes,
+  healthTypes,
+  minersTypes,
+  netTypes,
+  reputationTypes,
+} from "./types"
 import { getTransport, host, useToken } from "./util"
 
-export { Config, ffsTypes, healthTypes, minersTypes, netTypes, ffsOptions }
+export { dealsOptions, ffsOptions }
+export {
+  asksTypes,
+  Config,
+  dealsTypes,
+  faultsTypes,
+  ffsTypes,
+  healthTypes,
+  minersTypes,
+  netTypes,
+  reputationTypes,
+}
 
 const defaultConfig: Config = {
   host,
@@ -62,6 +84,11 @@ export const createPow = (config?: Partial<Config>) => {
      * The Net API
      */
     net: createNet(c),
+
+    /**
+     * The Reputation API
+     */
+    reputation: createReputation(c),
   }
 }
 

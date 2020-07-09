@@ -6,6 +6,7 @@ import * as asksTypes from "@textile/grpc-powergate-client/dist/index/ask/rpc/rp
 import * as faultsTypes from "@textile/grpc-powergate-client/dist/index/faults/rpc/rpc_pb"
 import * as minersTypes from "@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb"
 import * as netTypes from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
+import * as reputationTypes from "@textile/grpc-powergate-client/dist/reputation/rpc/rpc_pb"
 
 /**
  * Object that allows you to configure the Powergate client
@@ -15,4 +16,13 @@ export interface Config extends grpc.RpcOptions {
   authToken?: string
 }
 
-export { ffsTypes, healthTypes, minersTypes, netTypes, dealsTypes, asksTypes, faultsTypes }
+export {
+  ffsTypes,
+  healthTypes,
+  minersTypes,
+  netTypes,
+  dealsTypes,
+  asksTypes,
+  faultsTypes,
+  reputationTypes,
+}
