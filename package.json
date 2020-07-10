@@ -19,8 +19,7 @@
     "docs": "typedoc",
     "localnet:up": "cd powergate-docker && make localnet",
     "localnet:down": "cd powergate-docker && make down",
-    "powergate-docker": "./powergate-docker.sh",
-    "postinstall": "npm run powergate-docker"
+    "powergate-docker": "./powergate-docker.sh"
   },
   "keywords": [
     "typescript",
