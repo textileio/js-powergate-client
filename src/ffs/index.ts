@@ -398,6 +398,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
 
     /**
      * List storage deal records for the FFS instance according to the provided options
+     * @param opts Options that control the behavior of listing records
      * @returns A list of storage deal records
      */
     listStorageDealRecords: (...opts: ListDealRecordsOption[]) => {
@@ -415,6 +416,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
 
     /**
      * List retrieval deal records for the FFS instance according to the provided options
+     * @param opts Options that control the behavior of listing records
      * @returns A list of retrieval deal records
      */
     listRetrievalDealRecords: (...opts: ListDealRecordsOption[]) => {
