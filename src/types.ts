@@ -7,6 +7,7 @@ import * as faultsTypes from "@textile/grpc-powergate-client/dist/index/faults/r
 import * as minersTypes from "@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb"
 import * as netTypes from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
 import * as reputationTypes from "@textile/grpc-powergate-client/dist/reputation/rpc/rpc_pb"
+import * as walletTypes from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc_pb"
 
 /**
  * Object that allows you to configure the Powergate client
@@ -25,4 +26,5 @@ export {
   asksTypes,
   faultsTypes,
   reputationTypes,
+  walletTypes,
 }

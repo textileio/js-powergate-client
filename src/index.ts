@@ -16,8 +16,10 @@ import {
   minersTypes,
   netTypes,
   reputationTypes,
+  walletTypes,
 } from "./types"
 import { getTransport, host, useToken } from "./util"
+import { createWallet } from "./wallet"
 
 export { dealsOptions, ffsOptions }
 export {
@@ -30,6 +32,7 @@ export {
   minersTypes,
   netTypes,
   reputationTypes,
+  walletTypes,
 }
 
 const defaultConfig: Config = {
@@ -89,6 +92,11 @@ export const createPow = (config?: Partial<Config>) => {
      * The Reputation API
      */
     reputation: createReputation(c),
+
+    /**
+     * The Wallet API
+     */
+    wallet: createWallet(c),
   }
 }
 
