@@ -35,7 +35,7 @@
     "@commitlint/config-conventional": "^9.0.1",
     "@types/chai": "^4.2.11",
     "@types/dirty-chai": "^2.0.2",
-    "@types/mocha": "^7.0.2",
+    "@types/mocha": "^8.0.0",
     "@types/node": "^14.0.4",
     "@types/wait-on": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^3.5.0",
