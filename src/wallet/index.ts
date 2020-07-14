@@ -41,14 +41,31 @@ export const createWallet = (config: Config) => {
      * @returns The address balance
      */
     balance: (address: string) => {
-      const req = new walletTypes.WalletBalanceRequest()
+      const req = new walletTypes.BalanceRequest()
       req.setAddress(address)
       return promise(
-        (cb) => client.walletBalance(req, cb),
-        (resp: walletTypes.WalletBalanceResponse) => resp.toObject().balance,
+        (cb) => client.balance(req, cb),
+        (resp: walletTypes.BalanceResponse) => resp.toObject().balance,
       )
     },
 
-    // TODO: SendFil after next grpc bindings update
+    /**
+     * Send Fil from one address to another
+     * @param from The address to send from
+     * @param to The address to send to
+     * @param amount The amount of Fil to send
+     */
+    sendFil: (from: string, to: string, amount: number) => {
+      const req = new walletTypes.SendFilRequest()
+      req.setFrom(from)
+      req.setTo(to)
+      req.setAmount(amount)
+      return promise(
+        (cb) => client.sendFil(req, cb),
+        () => {
+          // nothing to return
+        },
+      )
+    },
   }
 }

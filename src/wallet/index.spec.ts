@@ -21,4 +21,16 @@ describe("wallet", () => {
   it("should check balance", async () => {
     await c.balance(address)
   })
+
+  // it("should send fil", async () => {
+  //   const addresses = await c.list()
+  //   expect(addresses).length(1)
+  //   const bal = await c.balance(addresses[0])
+  //   expect(bal).greaterThan(0)
+
+  //   const address = await c.newAddress()
+  //   expect(address).length.greaterThan(0)
+
+  //   await c.sendFil(addresses[0], address, 10)
+  // })
 })
