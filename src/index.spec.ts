@@ -5,7 +5,7 @@ import { createPow } from "."
 import { host } from "./util"
 
 beforeEach(async function () {
-  this.timeout(10000)
+  this.timeout(120000)
   cp.exec(`cd powergate-docker && BIGSECTORS=false make localnet`, (err) => {
     if (err) {
       throw err
