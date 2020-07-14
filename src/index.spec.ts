@@ -4,8 +4,8 @@ import wait from "wait-on"
 import { createPow } from "."
 import { host } from "./util"
 
-before(async function () {
-  this.timeout(130000)
+beforeEach(async function () {
+  this.timeout(10000)
   cp.exec(`cd powergate-docker && BIGSECTORS=false make localnet`, (err) => {
     if (err) {
       throw err
@@ -17,31 +17,17 @@ before(async function () {
   })
 })
 
-after(() => {
-  cp.exec(`cd powergate-docker && make down`)
+afterEach(async function () {
+  this.timeout(10000)
+  await new Promise<string>((resolve, reject) => {
+    cp.exec(`cd powergate-docker && make down`, (err, stdout) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(stdout)
+    })
+  })
 })
-
-// beforeEach(async function () {
-//   this.timeout(130000)
-//   cp.exec(`cd powergate-docker && BIGSECTORS=false make localnet`, (err) => {
-//     if (err) {
-//       throw err
-//     }
-//   })
-//   await wait({
-//     resources: ["http://0.0.0.0:6002"],
-//     timeout: 120000,
-//   })
-// })
-
-// afterEach(function (done) {
-//   cp.exec(`cd powergate-docker && make down`, (err) => {
-//     if (err) {
-//       throw err
-//     }
-//     done()
-//   })
-// })
 
 describe("client", () => {
   it("should create a client", () => {

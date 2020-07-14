@@ -25,7 +25,7 @@ export const createDeals = (config: Config) => {
     import: (data: Uint8Array, isCAR: boolean = false) => {
       // TODO: figure out how to stream data in here, or at least stream to the server
       return new Promise<dealsTypes.ImportResponse.AsObject>((resolve, reject) => {
-        const client = grpc.client(RPCService.Store, config)
+        const client = grpc.client(RPCService.Import, config)
         client.onMessage((message) => {
           resolve(message.toObject() as dealsTypes.ImportResponse.AsObject)
         })

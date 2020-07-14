@@ -4,218 +4,185 @@ import { createFFS } from "."
 import { withIncludeFinal } from "../deals/options"
 import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
-import { withConfig, withHistory, withOverrideConfig } from "./options"
+import { PushConfigOption, withConfig, withHistory, withOverrideConfig } from "./options"
 
-describe("ffs", () => {
+describe("ffs", function () {
+  this.timeout(180000)
+
   const { getMeta, setToken } = useToken("")
 
   const c = createFFS({ host, transport: getTransport() }, getMeta)
 
-  let instanceId: string
-  let initialAddrs: ffsTypes.AddrInfo.AsObject[]
-  let defaultConfig: ffsTypes.DefaultConfig.AsObject
-  let cid: string
-
-  it("should create an instance", async function () {
-    this.timeout(30000)
-    const res = await c.create()
-    expect(res.id).not.empty
-    expect(res.token).not.empty
-    instanceId = res.id
-    setToken(res.token)
-    // wait for 10 seconds so our wallet address gets funded
-    await new Promise((r) => setTimeout(r, 10000))
+  it("should create an instance", async () => {
+    await expectNewInstance()
   })
 
   it("should list instances", async () => {
+    await expectNewInstance()
     const res = await c.list()
     expect(res.instancesList).length.greaterThan(0)
   })
 
   it("should get instance id", async () => {
+    const instanceInfo = await expectNewInstance()
     const res = await c.id()
-    expect(res.id).eq(instanceId)
+    expect(res.id).eq(instanceInfo.id)
   })
 
   it("should get addrs", async () => {
-    const res = await c.addrs()
-    initialAddrs = res.addrsList
-    expect(initialAddrs).length.greaterThan(0)
+    await expectNewInstance()
+    await expectAddrs(1)
   })
 
   it("should get the default config", async () => {
-    const res = await c.defaultConfig()
-    expect(res.defaultConfig).not.undefined
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    defaultConfig = res.defaultConfig!
+    await expectNewInstance()
+    await expectDefaultConfig()
   })
 
   it("should create a new addr", async () => {
-    const res = await c.newAddr("my addr")
-    expect(res.addr).length.greaterThan(0)
-    const addrsRes = await c.addrs()
-    expect(addrsRes.addrsList).length(initialAddrs.length + 1)
+    await expectNewInstance()
+    await expectAddrs(1)
+    await expectNewAddr()
+    await expectAddrs(2)
   })
 
   it("should set default config", async () => {
+    await expectNewInstance()
+    const defaultConfig = await expectDefaultConfig()
     await c.setDefaultConfig(defaultConfig)
   })
 
   it("should get info", async () => {
+    await expectNewInstance()
     const res = await c.info()
     expect(res.info).not.undefined
   })
 
   it("should add to hot", async () => {
-    const buffer = fs.readFileSync(`sample-data/samplefile`)
-    const res = await c.addToHot(buffer)
-    expect(res.cid).length.greaterThan(0)
-    cid = res.cid
+    await expectNewInstance()
+    await expectAddToHot("sample-data/samplefile")
   })
 
   it("should get default cid config", async () => {
-    const res = await c.getDefaultCidConfig(cid)
-    expect(res.config?.cid).equal(cid)
+    await expectNewInstance()
+    const cid = await expectAddToHot("sample-data/samplefile")
+    await expectDefaultCidConfig(cid)
   })
-
-  let jobId: string
 
   it("should push config", async () => {
-    const res0 = await c.getDefaultCidConfig(cid)
-    expect(res0.config?.cid).equal(cid)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const config = res0.config!
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    config.hot!.enabled = false
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    config.hot!.allowUnfreeze = true
-    const res1 = await c.pushConfig(cid, withOverrideConfig(false), withConfig(config))
-    expect(res1.jobId).length.greaterThan(0)
-    jobId = res1.jobId
+    await expectNewInstance()
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const config = await expectDefaultCidConfig(cid)
+    await expectPushConfig(cid, false, config)
   })
 
-  it("should watch job", function (done) {
-    this.timeout(180000)
-    const cancel = c.watchJobs((job) => {
-      expect(job.errCause).empty
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
-      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
-        cancel()
-        done()
-      }
-    }, jobId)
+  it("should watch job", async () => {
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const jobId = await expectPushConfig(cid)
+    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
   })
 
-  it("should watch logs", function (done) {
-    this.timeout(10000)
-    const cancel = c.watchLogs(
-      (logEvent) => {
-        expect(logEvent.cid).not.empty
-        cancel()
-        done()
-      },
-      cid,
-      withHistory(true),
-    )
+  it("should watch logs", async () => {
+    await expectNewInstance()
+    const cid = await expectAddToHot("sample-data/samplefile")
+    await expectPushConfig(cid)
+    await new Promise<void>((resolve, reject) => {
+      const cancel = c.watchLogs(
+        (logEvent) => {
+          if (logEvent.cid.length > 0) {
+            cancel()
+            resolve()
+          } else {
+            cancel()
+            reject("empty log cid")
+          }
+        },
+        cid,
+        withHistory(true),
+      )
+    })
   })
 
   it("should get a storage deal record", async () => {
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const jobId = await expectPushConfig(cid)
+    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     const res = await c.listStorageDealRecords(withIncludeFinal(true))
     expect(res).length.greaterThan(0)
   })
 
-  it("should push an unfreeze config change", async () => {
-    const res0 = await c.getDefaultCidConfig(cid)
-    expect(res0.config?.cid).equal(cid)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const config = res0.config!
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    config.hot!.enabled = true
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    config.hot!.allowUnfreeze = true
-    const res1 = await c.pushConfig(cid, withOverrideConfig(true), withConfig(config))
-    expect(res1.jobId).length.greaterThan(0)
-    jobId = res1.jobId
-  })
-
-  it("should watch the config change job", function (done) {
-    this.timeout(180000)
-    const cancel = c.watchJobs((job) => {
-      expect(job.errCause).empty
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
-      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
-        cancel()
-        done()
-      }
-    }, jobId)
-  })
-
-  it("should get a retrieval deal record", async function () {
+  it("should get a retrieval deal record", async () => {
     // ToDo: Figure out hot to make sure the data in the previous push isn't cached in hot
-    // this.timeout(30000)
-    // await new Promise((r) => setTimeout(r, 10000))
-    // const res = await c.listRetrievalDealRecords()
-    // expect(res).length.greaterThan(0)
   })
 
   it("should get cid config", async () => {
+    await expectNewInstance()
+    const cid = await expectAddToHot("sample-data/samplefile")
+    await expectPushConfig(cid)
     const res = await c.getCidConfig(cid)
     expect(res.config?.cid).equal(cid)
   })
 
   it("should show", async () => {
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const jobId = await expectPushConfig(cid)
+    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     const res = await c.show(cid)
     expect(res.cidInfo).not.undefined
   })
 
   it("should show all", async () => {
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const jobId = await expectPushConfig(cid)
+    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     const res = await c.showAll()
     expect(res).not.empty
   })
 
-  let buffer: Buffer
-
   it("should replace", async () => {
-    buffer = fs.readFileSync(`sample-data/samplefile2`)
-    const res0 = await c.addToHot(buffer)
-    expect(res0.cid).length.greaterThan(0)
-    const res1 = await c.replace(cid, res0.cid)
-    expect(res1.jobId).length.greaterThan(0)
-    cid = res0.cid
-    jobId = res1.jobId
-  })
-
-  it("should watch replace job", function (done) {
-    this.timeout(180000)
-    const cancel = c.watchJobs((job) => {
-      expect(job.errCause).empty
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
-      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
-        cancel()
-        done()
-      }
-    }, jobId)
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const jobId = await expectPushConfig(cid)
+    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
+    const cid2 = await expectAddToHot("sample-data/samplefile2")
+    const res = await c.replace(cid, cid2)
+    expect(res.jobId).length.greaterThan(0)
   })
 
   it("should get", async () => {
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const jobId = await expectPushConfig(cid)
+    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     const bytes = await c.get(cid)
-    expect(bytes.byteLength).equal(buffer.byteLength)
+    expect(bytes.byteLength).greaterThan(0)
   })
 
   it("should cancel a job", async () => {
-    buffer = fs.readFileSync(`sample-data/samplefile3`)
-    const res0 = await c.addToHot(buffer)
-    expect(res0.cid).length.greaterThan(0)
-    const res1 = await c.pushConfig(res0.cid)
-    expect(res1.jobId).length.greaterThan(0)
-    await c.cancelJob(res1.jobId)
+    await expectNewInstance()
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const jobId = await expectPushConfig(cid)
+    await c.cancelJob(jobId)
   })
 
   it("should list payment channels", async () => {
-    await c.listPayChannels()
+    // TODO
   })
 
   it("should create a payment channel", async () => {
@@ -226,8 +193,10 @@ describe("ffs", () => {
     // TODO
   })
 
-  it("should push disable storage job", async () => {
-    const newConf: ffsTypes.CidConfig.AsObject = {
+  it("should remove", async () => {
+    await expectNewInstance()
+    const cid = await expectAddToHot("sample-data/samplefile")
+    const conf: ffsTypes.CidConfig.AsObject = {
       cid,
       repairable: false,
       cold: {
@@ -238,35 +207,131 @@ describe("ffs", () => {
         enabled: false,
       },
     }
-    const res0 = await c.pushConfig(cid, withOverrideConfig(true), withConfig(newConf))
-    expect(res0).not.undefined
-    jobId = res0.jobId
-  })
-
-  it("should watch disable storage job", function (done) {
-    this.timeout(180000)
-    const cancel = c.watchJobs((job) => {
-      expect(job.errCause).empty
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_CANCELED)
-      expect(job.status).not.equal(ffsTypes.JobStatus.JOB_STATUS_FAILED)
-      if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
-        cancel()
-        done()
-      }
-    }, jobId)
-  })
-
-  it("should remove", async () => {
+    const jobId = await expectPushConfig(cid, false, conf)
+    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     await c.remove(cid)
   })
 
   it("should send fil", async () => {
-    const addrs = await c.addrs()
-    expect(addrs.addrsList).lengthOf(2)
-    await c.sendFil(addrs.addrsList[0].addr, addrs.addrsList[1].addr, 10)
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
+    const addr = await expectNewAddr()
+    await c.sendFil(addrs[0].addr, addr, 10)
   })
 
   it("should close", async () => {
+    await expectNewInstance()
     await c.close()
   })
+
+  async function expectNewInstance() {
+    const res = await c.create()
+    expect(res.id).not.empty
+    expect(res.token).not.empty
+    setToken(res.token)
+    return res
+  }
+
+  async function expectAddrs(length: number) {
+    const res = await c.addrs()
+    expect(res.addrsList).length(length)
+    return res.addrsList
+  }
+
+  async function expectNewAddr() {
+    const res = await c.newAddr("my addr")
+    expect(res.addr).length.greaterThan(0)
+    return res.addr
+  }
+
+  async function expectDefaultConfig() {
+    const res = await c.defaultConfig()
+    expect(res.defaultConfig).not.undefined
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return res.defaultConfig!
+  }
+
+  async function expectAddToHot(path: string) {
+    const buffer = fs.readFileSync(path)
+    const res = await c.addToHot(buffer)
+    expect(res.cid).length.greaterThan(0)
+    return res.cid
+  }
+
+  async function expectDefaultCidConfig(cid: string) {
+    const res = await c.getDefaultCidConfig(cid)
+    expect(res.config).not.undefined
+    expect(res.config?.cid).equal(cid)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return res.config!
+  }
+
+  async function expectPushConfig(
+    cid: string,
+    override: boolean = false,
+    config?: ffsTypes.CidConfig.AsObject,
+  ) {
+    const opts: PushConfigOption[] = []
+    opts.push(withOverrideConfig(override))
+    if (config) {
+      opts.push(withConfig(config))
+    }
+    const res = await c.pushConfig(cid, ...opts)
+    expect(res.jobId).length.greaterThan(0)
+    return res.jobId
+  }
+
+  function waitForJobStatus(
+    jobId: string,
+    status: ffsTypes.JobStatusMap[keyof ffsTypes.JobStatusMap],
+  ) {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const cancel = c.watchJobs((job) => {
+          if (job.errCause.length > 0) {
+            reject(job.errCause)
+          }
+          if (job.status === ffsTypes.JobStatus.JOB_STATUS_CANCELED) {
+            reject("job canceled")
+          }
+          if (job.status === ffsTypes.JobStatus.JOB_STATUS_FAILED) {
+            reject("job failed")
+          }
+          if (job.status === status) {
+            cancel()
+            resolve()
+          }
+        }, jobId)
+      } catch (e) {
+        reject(e)
+      }
+    })
+  }
+
+  function waitForBalance(address: string, greaterThan: number) {
+    return new Promise<number>(async (resolve, reject) => {
+      while (true) {
+        try {
+          const res = await c.info()
+          if (!res.info) {
+            reject("no balance info returned")
+            return
+          }
+          const info = res.info.balancesList.find((info) => info.addr?.addr === address)
+          if (!info) {
+            reject("address not in balances list")
+            return
+          }
+          if (info.balance > greaterThan) {
+            resolve(info.balance)
+            return
+          }
+        } catch (e) {
+          reject(e)
+        }
+        await new Promise((r) => setTimeout(r, 1000))
+      }
+    })
+  }
 })

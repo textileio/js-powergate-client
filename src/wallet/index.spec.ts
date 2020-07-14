@@ -5,32 +5,34 @@ import { getTransport, host } from "../util"
 describe("wallet", () => {
   const c = createWallet({ host, transport: getTransport() })
 
-  let address: string
-
   it("should list addresses", async () => {
-    const addresses = await c.list()
-    expect(addresses).length.greaterThan(0)
-    address = addresses[0]
+    await expectAddresses(0)
   })
 
   it("should create a new address", async () => {
-    const address = await c.newAddress()
-    expect(address).length.greaterThan(0)
+    await expectNewAddress()
   })
 
   it("should check balance", async () => {
-    await c.balance(address)
+    const addrs = await expectAddresses(0)
+    await c.balance(addrs[0])
   })
 
-  // it("should send fil", async () => {
-  //   const addresses = await c.list()
-  //   expect(addresses).length(1)
-  //   const bal = await c.balance(addresses[0])
-  //   expect(bal).greaterThan(0)
+  it("should send fil", async () => {
+    const addrs = await expectAddresses(0)
+    const newAddr = await expectNewAddress()
+    await c.sendFil(addrs[0], newAddr, 10)
+  })
 
-  //   const address = await c.newAddress()
-  //   expect(address).length.greaterThan(0)
+  async function expectAddresses(lengthGreaterThan: number) {
+    const addresses = await c.list()
+    expect(addresses).length.greaterThan(lengthGreaterThan)
+    return addresses
+  }
 
-  //   await c.sendFil(addresses[0], address, 10)
-  // })
+  async function expectNewAddress() {
+    const address = await c.newAddress()
+    expect(address).length.greaterThan(0)
+    return address
+  }
 })
