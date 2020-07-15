@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;health/index&quot; | Powergate Client</title>
+	<title>&quot;reputation/index&quot; | Powergate Client</title>
 	<meta name="description" content="Documentation for Powergate Client">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_health_index_.html">&quot;health/index&quot;</a>
+					<a href="_reputation_index_.html">&quot;reputation/index&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;health/index&quot;</h1>
+			<h1>Module &quot;reputation/index&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_health_index_.html#createhealth" class="tsd-kind-icon">create<wbr>Health</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_reputation_index_.html#createreputation" class="tsd-kind-icon">create<wbr>Reputation</a></li>
 							</ul>
 						</section>
 					</div>
@@ -80,21 +80,21 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="createhealth" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> create<wbr>Health</h3>
+					<a name="createreputation" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> create<wbr>Reputation</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Health<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>check<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Reputation<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>addSource<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>getTopMiners<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/health/index.ts#L10">src/health/index.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/reputation/index.ts#L11">src/reputation/index.ts:11</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates the Health API client</p>
+									<p>Creates the Reputation API client</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -108,28 +108,79 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>check<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h4>
-							<p>The Health API client</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>addSource<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>getTopMiners<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h4>
+							<p>The Reputation API client</p>
 							<ul class="tsd-parameters">
 								<li class="tsd-parameter">
-									<h5>check<span class="tsd-signature-symbol">: </span>function</h5>
+									<h5>add<wbr>Source<span class="tsd-signature-symbol">: </span>function</h5>
 									<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
-										<li class="tsd-signature tsd-kind-icon">check<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>messagesList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>status<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">StatusMap</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">StatusMap</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+										<li class="tsd-signature tsd-kind-icon">add<wbr>Source<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, multiaddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 									</ul>
 									<ul class="tsd-descriptions">
 										<li class="tsd-description">
 											<aside class="tsd-sources">
 												<ul>
-													<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/health/index.ts#L17">src/health/index.ts:17</a></li>
+													<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/reputation/index.ts#L19">src/reputation/index.ts:19</a></li>
 												</ul>
 											</aside>
 											<div class="tsd-comment tsd-typography">
 												<div class="lead">
-													<p>Checks the Powergate node health</p>
+													<p>Adds a data source to the reputation index</p>
 												</div>
 											</div>
-											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>messagesList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>status<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">StatusMap</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">StatusMap</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
-											<p>Information about the health of the Powergate node</p>
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5>id: <span class="tsd-signature-type">string</span></h5>
+													<div class="tsd-comment tsd-typography">
+														<div class="lead">
+															<p>The id of the data source</p>
+														</div>
+													</div>
+												</li>
+												<li>
+													<h5>multiaddress: <span class="tsd-signature-type">string</span></h5>
+													<div class="tsd-comment tsd-typography">
+														<div class="lead">
+															<p>The multiaddress of the data source</p>
+														</div>
+													</div>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+										</li>
+									</ul>
+								</li>
+								<li class="tsd-parameter">
+									<h5>get<wbr>Top<wbr>Miners<span class="tsd-signature-symbol">: </span>function</h5>
+									<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon">get<wbr>Top<wbr>Miners<span class="tsd-signature-symbol">(</span>limit<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>addr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>score<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<aside class="tsd-sources">
+												<ul>
+													<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/reputation/index.ts#L36">src/reputation/index.ts:36</a></li>
+												</ul>
+											</aside>
+											<div class="tsd-comment tsd-typography">
+												<div class="lead">
+													<p>Gets the top ranked miners</p>
+												</div>
+											</div>
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5>limit: <span class="tsd-signature-type">number</span></h5>
+													<div class="tsd-comment tsd-typography">
+														<div class="lead">
+															<p>Limits the number of results</p>
+														</div>
+													</div>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>addr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>score<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+											<p>The list of miner scores</p>
 										</li>
 									</ul>
 								</li>
@@ -163,7 +214,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_ffs_util_.html">&quot;ffs/util&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_health_index_.html">&quot;health/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -178,7 +229,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_options_.html">&quot;options&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_reputation_index_.html">&quot;reputation/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -201,7 +252,7 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_health_index_.html#createhealth" class="tsd-kind-icon">create<wbr>Health</a>
+						<a href="_reputation_index_.html#createreputation" class="tsd-kind-icon">create<wbr>Reputation</a>
 					</li>
 				</ul>
 			</nav>

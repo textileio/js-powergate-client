@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;util/index&quot; | Powergate Client</title>
+	<title>&quot;faults/index&quot; | Powergate Client</title>
 	<meta name="description" content="Documentation for Powergate Client">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_util_index_.html">&quot;util/index&quot;</a>
+					<a href="_faults_index_.html">&quot;faults/index&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;util/index&quot;</h1>
+			<h1>Module &quot;faults/index&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -69,50 +69,73 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>References</h3>
+							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#gettransport" class="tsd-kind-icon">get<wbr>Transport</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#host" class="tsd-kind-icon">host</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#isnode" class="tsd-kind-icon">is<wbr>Node</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#promise" class="tsd-kind-icon">promise</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#usetoken" class="tsd-kind-icon">use<wbr>Token</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="_util_index_.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_faults_index_.html#createfaults" class="tsd-kind-icon">create<wbr>Faults</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>References</h2>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="gettransport" class="tsd-anchor"></a>
-					<h3>get<wbr>Transport</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#gettransport">getTransport</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="host" class="tsd-anchor"></a>
-					<h3>host</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#host">host</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="isnode" class="tsd-anchor"></a>
-					<h3>is<wbr>Node</h3>
-					Re-exports <a href="_util_util_.html#isnode">isNode</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="promise" class="tsd-anchor"></a>
-					<h3>promise</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#promise">promise</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="usetoken" class="tsd-anchor"></a>
-					<h3>use<wbr>Token</h3>
-					Re-exports <a href="_util_grpc_helpers_.html#usetoken">useToken</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="usevalue" class="tsd-anchor"></a>
-					<h3>use<wbr>Value</h3>
-					Re-exports <a href="_util_util_.html#usevalue">useValue</a>
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="createfaults" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> create<wbr>Faults</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Faults<span class="tsd-signature-symbol">(</span>config<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_.config.html" class="tsd-signature-type">Config</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>get<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/faults/index.ts#L11">src/faults/index.ts:11</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates the Faults API client</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>config: <a href="../interfaces/_types_.config.html" class="tsd-signature-type">Config</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>A config object that changes the behavior of the client</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>get<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h4>
+							<p>The Faults API client</p>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>get<span class="tsd-signature-symbol">: </span>function</h5>
+									<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>minersMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Faults.AsObject</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>tipsetkey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<aside class="tsd-sources">
+												<ul>
+													<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/master/src/faults/index.ts#L18">src/faults/index.ts:18</a></li>
+												</ul>
+											</aside>
+											<div class="tsd-comment tsd-typography">
+												<div class="lead">
+													<p>Gets the faults index</p>
+												</div>
+											</div>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>minersMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Faults.AsObject</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>tipsetkey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+											<p>The faults index</p>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -128,7 +151,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_asks_util_.html">&quot;asks/util&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_faults_index_.html">&quot;faults/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -164,7 +187,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_util_grpc_helpers_.html">&quot;util/grpc-<wbr>helpers&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_util_index_.html">&quot;util/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -177,23 +200,8 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#gettransport" class="tsd-kind-icon">get<wbr>Transport</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#host" class="tsd-kind-icon">host</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#isnode" class="tsd-kind-icon">is<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#promise" class="tsd-kind-icon">promise</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#usetoken" class="tsd-kind-icon">use<wbr>Token</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="_util_index_.html#usevalue" class="tsd-kind-icon">use<wbr>Value</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_faults_index_.html#createfaults" class="tsd-kind-icon">create<wbr>Faults</a>
 					</li>
 				</ul>
 			</nav>
