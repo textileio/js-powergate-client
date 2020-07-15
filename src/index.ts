@@ -4,12 +4,11 @@ import { createFFS } from "./ffs"
 import { createHealth } from "./health"
 import { createMiners } from "./miners"
 import { createNet } from "./net"
-import { dealsOptions, ffsOptions } from "./options"
+import { ffsOptions } from "./options"
 import { createReputation } from "./reputation"
 import {
   asksTypes,
   Config,
-  dealsTypes,
   faultsTypes,
   ffsTypes,
   healthTypes,
@@ -21,11 +20,10 @@ import {
 import { getTransport, host, useToken } from "./util"
 import { createWallet } from "./wallet"
 
-export { dealsOptions, ffsOptions }
+export { ffsOptions }
 export {
   asksTypes,
   Config,
-  dealsTypes,
   faultsTypes,
   ffsTypes,
   healthTypes,

@@ -1,10 +1,15 @@
 import { expect } from "chai"
 import fs from "fs"
 import { createFFS } from "."
-import { withIncludeFinal } from "../deals/options"
 import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
-import { PushConfigOption, withConfig, withHistory, withOverrideConfig } from "./options"
+import {
+  PushConfigOption,
+  withConfig,
+  withHistory,
+  withIncludeFinal,
+  withOverrideConfig,
+} from "./options"
 
 describe("ffs", function () {
   this.timeout(180000)

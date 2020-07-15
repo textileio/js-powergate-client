@@ -3,10 +3,9 @@ import {
   RPCService,
   RPCServiceClient,
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
-import { ListDealRecordsOption } from "../deals/options"
-import { Config, dealsTypes, ffsTypes } from "../types"
+import { Config, ffsTypes } from "../types"
 import { promise } from "../util"
-import { PushConfigOption, WatchLogsOption } from "./options"
+import { ListDealRecordsOption, PushConfigOption, WatchLogsOption } from "./options"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
 /**
@@ -402,7 +401,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns A list of storage deal records
      */
     listStorageDealRecords: (...opts: ListDealRecordsOption[]) => {
-      const conf = new dealsTypes.ListDealRecordsConfig()
+      const conf = new ffsTypes.ListDealRecordsConfig()
       opts.forEach((opt) => {
         opt(conf)
       })
@@ -420,7 +419,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * @returns A list of retrieval deal records
      */
     listRetrievalDealRecords: (...opts: ListDealRecordsOption[]) => {
-      const conf = new dealsTypes.ListDealRecordsConfig()
+      const conf = new ffsTypes.ListDealRecordsConfig()
       opts.forEach((opt) => {
         opt(conf)
       })

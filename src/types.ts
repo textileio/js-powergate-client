@@ -1,5 +1,4 @@
 import { grpc } from "@improbable-eng/grpc-web"
-import * as dealsTypes from "@textile/grpc-powergate-client/dist/deals/rpc/rpc_pb"
 import * as ffsTypes from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import * as healthTypes from "@textile/grpc-powergate-client/dist/health/rpc/rpc_pb"
 import * as asksTypes from "@textile/grpc-powergate-client/dist/index/ask/rpc/rpc_pb"
@@ -22,7 +21,6 @@ export {
   healthTypes,
   minersTypes,
   netTypes,
-  dealsTypes,
   asksTypes,
   faultsTypes,
   reputationTypes,
