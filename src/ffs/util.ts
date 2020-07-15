@@ -1,6 +1,6 @@
 import { ffsTypes } from "../types"
 
-export function coldObjToMessage(obj: ffsTypes.ColdConfig.AsObject) {
+export function coldObjToMessage(obj: ffsTypes.ColdConfig.AsObject): ffsTypes.ColdConfig {
   const cold = new ffsTypes.ColdConfig()
   cold.setEnabled(obj.enabled)
   if (obj.filecoin) {
@@ -23,7 +23,7 @@ export function coldObjToMessage(obj: ffsTypes.ColdConfig.AsObject) {
   return cold
 }
 
-export function hotObjToMessage(obj: ffsTypes.HotConfig.AsObject) {
+export function hotObjToMessage(obj: ffsTypes.HotConfig.AsObject): ffsTypes.HotConfig {
   const hot = new ffsTypes.HotConfig()
   hot.setAllowUnfreeze(obj.allowUnfreeze)
   hot.setEnabled(obj.enabled)

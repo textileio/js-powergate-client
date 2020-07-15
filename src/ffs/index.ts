@@ -5,7 +5,7 @@ import {
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
 import { Config, ffsTypes } from "../types"
 import { promise } from "../util"
-import { PushConfigOption, WatchLogsOption } from "./options"
+import { ListDealRecordsOption, PushConfigOption, WatchLogsOption } from "./options"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
 /**
@@ -392,6 +392,42 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
         () => {
           // nothing to return
         },
+      )
+    },
+
+    /**
+     * List storage deal records for the FFS instance according to the provided options
+     * @param opts Options that control the behavior of listing records
+     * @returns A list of storage deal records
+     */
+    listStorageDealRecords: (...opts: ListDealRecordsOption[]) => {
+      const conf = new ffsTypes.ListDealRecordsConfig()
+      opts.forEach((opt) => {
+        opt(conf)
+      })
+      const req = new ffsTypes.ListStorageDealRecordsRequest()
+      req.setConfig(conf)
+      return promise(
+        (cb) => client.listStorageDealRecords(req, getMeta(), cb),
+        (res: ffsTypes.ListStorageDealRecordsResponse) => res.toObject().recordsList,
+      )
+    },
+
+    /**
+     * List retrieval deal records for the FFS instance according to the provided options
+     * @param opts Options that control the behavior of listing records
+     * @returns A list of retrieval deal records
+     */
+    listRetrievalDealRecords: (...opts: ListDealRecordsOption[]) => {
+      const conf = new ffsTypes.ListDealRecordsConfig()
+      opts.forEach((opt) => {
+        opt(conf)
+      })
+      const req = new ffsTypes.ListRetrievalDealRecordsRequest()
+      req.setConfig(conf)
+      return promise(
+        (cb) => client.listRetrievalDealRecords(req, getMeta(), cb),
+        (res: ffsTypes.ListRetrievalDealRecordsResponse) => res.toObject().recordsList,
       )
     },
 
