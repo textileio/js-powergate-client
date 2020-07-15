@@ -18,7 +18,7 @@ beforeEach(async function () {
 })
 
 afterEach(async function () {
-  this.timeout(10000)
+  this.timeout(120000)
   await new Promise<string>((resolve, reject) => {
     cp.exec(`cd powergate-docker && make down`, (err, stdout) => {
       if (err) {
