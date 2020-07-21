@@ -3,7 +3,7 @@ import fs from "fs"
 import { createFFS } from "."
 import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
-import { PushStorageConfigOption, withConfig, withHistory, withOverrideConfig } from "./options"
+import { PushStorageConfigOption, withHistory, withOverride, withStorageConfig } from "./options"
 
 describe("ffs", function () {
   this.timeout(180000)
@@ -296,9 +296,9 @@ describe("ffs", function () {
     config?: ffsTypes.StorageConfig.AsObject,
   ) {
     const opts: PushStorageConfigOption[] = []
-    opts.push(withOverrideConfig(override))
+    opts.push(withOverride(override))
     if (config) {
-      opts.push(withConfig(config))
+      opts.push(withStorageConfig(config))
     }
     const res = await c.pushStorageConfig(cid, ...opts)
     expect(res.jobId).length.greaterThan(0)

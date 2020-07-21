@@ -8,7 +8,7 @@ export type PushStorageConfigOption = (req: ffsTypes.PushStorageConfigRequest) =
  * @param override Whether or not to override any existing storage configuration
  * @returns The resulting option
  */
-export const withOverrideConfig = (override: boolean): PushStorageConfigOption => {
+export const withOverride = (override: boolean): PushStorageConfigOption => {
   return (req: ffsTypes.PushStorageConfigRequest) => {
     req.setHasOverrideConfig(true)
     req.setOverrideConfig(override)
@@ -20,7 +20,9 @@ export const withOverrideConfig = (override: boolean): PushStorageConfigOption =
  * @param config The storage configuration to use
  * @returns The resulting option
  */
-export const withConfig = (config: ffsTypes.StorageConfig.AsObject): PushStorageConfigOption => {
+export const withStorageConfig = (
+  config: ffsTypes.StorageConfig.AsObject,
+): PushStorageConfigOption => {
   return (req: ffsTypes.PushStorageConfigRequest) => {
     const c = new ffsTypes.StorageConfig()
     c.setRepairable(config.repairable)
