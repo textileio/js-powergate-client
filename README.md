@@ -88,10 +88,10 @@ const { info } = await pow.ffs.info()
 
 // cache data in IPFS in preparation to store it using FFS
 const buffer = fs.readFileSync(`path/to/a/file`)
-const { cid } = await pow.ffs.addToHot(buffer)
+const { cid } = await pow.ffs.stage(buffer)
 
 // store the data in FFS using the default storage configuration
-const { jobId } = await pow.ffs.pushConfig(cid)
+const { jobId } = await pow.ffs.pushStorageConfig(cid)
 
 // watch the FFS job status to see the storage process progressing
 const cancel = pow.ffs.watchJobs((job) => {
@@ -110,7 +110,7 @@ const cancel = pow.ffs.watchLogs((logEvent) => {
 }, cid)
 
 // get the current desired storage configuration for a cid (this configuration may not be realized yet)
-const { config } = await pow.ffs.getCidConfig(cid)
+const { config } = await pow.ffs.getStorageConfig(cid)
 
 // get the current actual storage configuration for a cid
 const { cidinfo } = await pow.ffs.show(cid)
