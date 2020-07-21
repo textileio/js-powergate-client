@@ -30,18 +30,18 @@
   "author": "Textile <contact@textile.io>",
   "license": "MIT",
   "devDependencies": {
-    "@commitlint/cli": "^9.0.1",
-    "@commitlint/config-conventional": "^9.0.1",
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1",
     "@types/chai": "^4.2.11",
     "@types/dirty-chai": "^2.0.2",
-    "@types/mocha": "^7.0.2",
-    "@types/node": "^14.0.4",
+    "@types/mocha": "^8.0.0",
+    "@types/node": "^14.0.24",
     "@types/wait-on": "^4.0.0",
-    "@typescript-eslint/eslint-plugin": "^3.5.0",
-    "@typescript-eslint/parser": "^3.5.0",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
     "chai": "^4.2.0",
     "dirty-chai": "^2.0.1",
-    "eslint": "^7.3.1",
+    "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
@@ -52,10 +52,10 @@
     "prettier-plugin-organize-imports": "^1.0.4",
     "rimraf": "^3.0.2",
     "touch": "^3.1.0",
-    "ts-loader": "^7.0.4",
+    "ts-loader": "^8.0.1",
     "ts-node": "^8.8.1",
     "typedoc": "^0.17.3",
-    "typescript": "^3.9.6",
+    "typescript": "^3.9.7",
     "wait-on": "^5.0.1"
   },
   "husky": {
@@ -64,7 +64,7 @@
     }
   },
   "dependencies": {
-    "@improbable-eng/grpc-web-node-http-transport": "^0.12.0",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.13.0",
     "@textile/grpc-powergate-client": "0.2.0"
   }
 }
