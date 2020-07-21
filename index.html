@@ -133,10 +133,10 @@
 
 <span class="hljs-comment">// cache data in IPFS in preparation to store it using FFS</span>
 <span class="hljs-keyword">const</span> buffer = fs.readFileSync(<span class="hljs-string">`path/to/a/file`</span>)
-<span class="hljs-keyword">const</span> { cid } = <span class="hljs-keyword">await</span> pow.ffs.addToHot(buffer)
+<span class="hljs-keyword">const</span> { cid } = <span class="hljs-keyword">await</span> pow.ffs.stage(buffer)
 
 <span class="hljs-comment">// store the data in FFS using the default storage configuration</span>
-<span class="hljs-keyword">const</span> { jobId } = <span class="hljs-keyword">await</span> pow.ffs.pushConfig(cid)
+<span class="hljs-keyword">const</span> { jobId } = <span class="hljs-keyword">await</span> pow.ffs.pushStorageConfig(cid)
 
 <span class="hljs-comment">// watch the FFS job status to see the storage process progressing</span>
 <span class="hljs-keyword">const</span> cancel = pow.ffs.watchJobs(<span class="hljs-function">(<span class="hljs-params">job</span>) =&gt;</span> {
@@ -155,7 +155,7 @@
 }, cid)
 
 <span class="hljs-comment">// get the current desired storage configuration for a cid (this configuration may not be realized yet)</span>
-<span class="hljs-keyword">const</span> { config } = <span class="hljs-keyword">await</span> pow.ffs.getCidConfig(cid)
+<span class="hljs-keyword">const</span> { config } = <span class="hljs-keyword">await</span> pow.ffs.getStorageConfig(cid)
 
 <span class="hljs-comment">// get the current actual storage configuration for a cid</span>
 <span class="hljs-keyword">const</span> { cidinfo } = <span class="hljs-keyword">await</span> pow.ffs.show(cid)
