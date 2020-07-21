@@ -19,7 +19,7 @@ export const createAsks = (config: Config) => {
     get: () =>
       promise(
         (cb) => client.get(new asksTypes.GetRequest(), cb),
-        (resp: asksTypes.GetResponse) => resp.toObject().index,
+        (resp: asksTypes.GetResponse) => resp.toObject(),
       ),
 
     /**
@@ -32,7 +32,7 @@ export const createAsks = (config: Config) => {
       req.setQuery(queryObjectToMsg(query))
       return promise(
         (cb) => client.query(req, cb),
-        (resp: asksTypes.QueryResponse) => resp.toObject().asksList,
+        (resp: asksTypes.QueryResponse) => resp.toObject(),
       )
     },
   }

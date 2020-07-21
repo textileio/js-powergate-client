@@ -25,13 +25,13 @@ describe("wallet", () => {
   })
 
   async function expectAddresses(lengthGreaterThan: number) {
-    const addresses = await c.list()
-    expect(addresses).length.greaterThan(lengthGreaterThan)
-    return addresses
+    const { addressesList } = await c.list()
+    expect(addressesList).length.greaterThan(lengthGreaterThan)
+    return addressesList
   }
 
   async function expectNewAddress() {
-    const address = await c.newAddress()
+    const { address } = await c.newAddress()
     expect(address).length.greaterThan(0)
     return address
   }

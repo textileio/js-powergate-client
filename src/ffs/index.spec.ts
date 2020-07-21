@@ -3,13 +3,7 @@ import fs from "fs"
 import { createFFS } from "."
 import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
-import {
-  PushConfigOption,
-  withConfig,
-  withHistory,
-  withIncludeFinal,
-  withOverrideConfig,
-} from "./options"
+import { PushStorageConfigOption, withConfig, withHistory, withOverrideConfig } from "./options"
 
 describe("ffs", function () {
   this.timeout(180000)
@@ -41,7 +35,7 @@ describe("ffs", function () {
 
   it("should get the default config", async () => {
     await expectNewInstance()
-    await expectDefaultConfig()
+    await expectDefaultStorageConfig()
   })
 
   it("should create a new addr", async () => {
@@ -53,8 +47,8 @@ describe("ffs", function () {
 
   it("should set default config", async () => {
     await expectNewInstance()
-    const defaultConfig = await expectDefaultConfig()
-    await c.setDefaultConfig(defaultConfig)
+    const defaultConfig = await expectDefaultStorageConfig()
+    await c.setDefaultStorageConfig(defaultConfig)
   })
 
   it("should get info", async () => {
@@ -65,35 +59,29 @@ describe("ffs", function () {
 
   it("should add to hot", async () => {
     await expectNewInstance()
-    await expectAddToHot("sample-data/samplefile")
-  })
-
-  it("should get default cid config", async () => {
-    await expectNewInstance()
-    const cid = await expectAddToHot("sample-data/samplefile")
-    await expectDefaultCidConfig(cid)
+    await expectStage("sample-data/samplefile")
   })
 
   it("should push config", async () => {
     await expectNewInstance()
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const config = await expectDefaultCidConfig(cid)
-    await expectPushConfig(cid, false, config)
+    const cid = await expectStage("sample-data/samplefile")
+    const config = await expectDefaultStorageConfig()
+    await expectPushStorageConfig(cid, false, config)
   })
 
   it("should watch job", async () => {
     await expectNewInstance()
     const addrs = await expectAddrs(1)
     await waitForBalance(addrs[0].addr, 0)
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const jobId = await expectPushConfig(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    const jobId = await expectPushStorageConfig(cid)
     await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
   })
 
   it("should watch logs", async () => {
     await expectNewInstance()
-    const cid = await expectAddToHot("sample-data/samplefile")
-    await expectPushConfig(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    await expectPushStorageConfig(cid)
     await new Promise<void>((resolve, reject) => {
       const cancel = c.watchLogs(
         (logEvent) => {
@@ -111,35 +99,74 @@ describe("ffs", function () {
     })
   })
 
-  it("should get a storage deal record", async () => {
-    await expectNewInstance()
-    const addrs = await expectAddrs(1)
-    await waitForBalance(addrs[0].addr, 0)
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const jobId = await expectPushConfig(cid)
-    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
-    const res = await c.listStorageDealRecords(withIncludeFinal(true))
-    expect(res).length.greaterThan(0)
-  })
+  // it("should get a storage deal record", async () => {
+  //   await expectNewInstance()
+  //   const addrs = await expectAddrs(1)
+  //   await waitForBalance(addrs[0].addr, 0)
+
+  //   const [cid1, cid2, cid3] = await Promise.all([
+  //     expectStage("sample-data/samplefile"),
+  //     expectStage("sample-data/samplefile2"),
+  //     expectStage("sample-data/samplefile3"),
+  //   ])
+
+  //   const [jobId1, jobId2, jobId3] = await Promise.all([
+  //     expectPushStorageConfig(cid1),
+  //     expectPushStorageConfig(cid2),
+  //     expectPushStorageConfig(cid3),
+  //   ])
+
+  //   await Promise.all([
+  //     waitForJobStatus(jobId1, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
+  //     waitForJobStatus(jobId2, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
+  //     waitForJobStatus(jobId3, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
+  //   ])
+
+  //   const res1 = await c.listStorageDealRecords(
+  //     withIncludePending(true),
+  //     // withAscending(true),
+  //     // withFromAddresses(addrs[0].addr),
+  //     // withDataCids(cid, cid2, cid3),
+  //   )
+  //   expect(res1, "pending").length(3)
+
+  //   const res2 = await c.listStorageDealRecords(
+  //     withIncludeFinal(true),
+  //     // withAscending(true),
+  //     // withFromAddresses(addrs[0].addr),
+  //     // withDataCids(cid, cid2, cid3),
+  //   )
+  //   expect(res2, "final").empty
+
+  //   // const res = await c.listStorageDealRecords(
+  //   //   withIncludeFinal(true),
+  //   //   withIncludePending(true),
+  //   //   withAscending(true),
+  //   //   withFromAddresses(addrs[0].addr),
+  //   //   // withDataCids(cid, cid2, cid3),
+  //   // )
+  //   // expect(res).length(3)
+  // })
 
   it("should get a retrieval deal record", async () => {
     // ToDo: Figure out hot to make sure the data in the previous push isn't cached in hot
   })
 
-  it("should get cid config", async () => {
+  it("should get storage config", async () => {
     await expectNewInstance()
-    const cid = await expectAddToHot("sample-data/samplefile")
-    await expectPushConfig(cid)
-    const res = await c.getCidConfig(cid)
-    expect(res.config?.cid).equal(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    await expectPushStorageConfig(cid)
+    const res = await c.getStorageConfig(cid)
+    expect(res.config?.cold).not.undefined
+    expect(res.config?.hot).not.undefined
   })
 
   it("should show", async () => {
     await expectNewInstance()
     const addrs = await expectAddrs(1)
     await waitForBalance(addrs[0].addr, 0)
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const jobId = await expectPushConfig(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    const jobId = await expectPushStorageConfig(cid)
     await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     const res = await c.show(cid)
     expect(res.cidInfo).not.undefined
@@ -149,21 +176,21 @@ describe("ffs", function () {
     await expectNewInstance()
     const addrs = await expectAddrs(1)
     await waitForBalance(addrs[0].addr, 0)
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const jobId = await expectPushConfig(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    const jobId = await expectPushStorageConfig(cid)
     await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     const res = await c.showAll()
-    expect(res).not.empty
+    expect(res.cidInfosList).not.empty
   })
 
   it("should replace", async () => {
     await expectNewInstance()
     const addrs = await expectAddrs(1)
     await waitForBalance(addrs[0].addr, 0)
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const jobId = await expectPushConfig(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    const jobId = await expectPushStorageConfig(cid)
     await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
-    const cid2 = await expectAddToHot("sample-data/samplefile2")
+    const cid2 = await expectStage("sample-data/samplefile2")
     const res = await c.replace(cid, cid2)
     expect(res.jobId).length.greaterThan(0)
   })
@@ -172,8 +199,8 @@ describe("ffs", function () {
     await expectNewInstance()
     const addrs = await expectAddrs(1)
     await waitForBalance(addrs[0].addr, 0)
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const jobId = await expectPushConfig(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    const jobId = await expectPushStorageConfig(cid)
     await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     const bytes = await c.get(cid)
     expect(bytes.byteLength).greaterThan(0)
@@ -181,8 +208,8 @@ describe("ffs", function () {
 
   it("should cancel a job", async () => {
     await expectNewInstance()
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const jobId = await expectPushConfig(cid)
+    const cid = await expectStage("sample-data/samplefile")
+    const jobId = await expectPushStorageConfig(cid)
     await c.cancelJob(jobId)
   })
 
@@ -200,9 +227,8 @@ describe("ffs", function () {
 
   it("should remove", async () => {
     await expectNewInstance()
-    const cid = await expectAddToHot("sample-data/samplefile")
-    const conf: ffsTypes.CidConfig.AsObject = {
-      cid,
+    const cid = await expectStage("sample-data/samplefile")
+    const conf: ffsTypes.StorageConfig.AsObject = {
       repairable: false,
       cold: {
         enabled: false,
@@ -212,7 +238,7 @@ describe("ffs", function () {
         enabled: false,
       },
     }
-    const jobId = await expectPushConfig(cid, false, conf)
+    const jobId = await expectPushStorageConfig(cid, false, conf)
     await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
     await c.remove(cid)
   })
@@ -250,39 +276,31 @@ describe("ffs", function () {
     return res.addr
   }
 
-  async function expectDefaultConfig() {
-    const res = await c.defaultConfig()
-    expect(res.defaultConfig).not.undefined
+  async function expectDefaultStorageConfig() {
+    const res = await c.defaultStorageConfig()
+    expect(res.defaultStorageConfig).not.undefined
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return res.defaultConfig!
+    return res.defaultStorageConfig!
   }
 
-  async function expectAddToHot(path: string) {
+  async function expectStage(path: string) {
     const buffer = fs.readFileSync(path)
-    const res = await c.addToHot(buffer)
+    const res = await c.stage(buffer)
     expect(res.cid).length.greaterThan(0)
     return res.cid
   }
 
-  async function expectDefaultCidConfig(cid: string) {
-    const res = await c.getDefaultCidConfig(cid)
-    expect(res.config).not.undefined
-    expect(res.config?.cid).equal(cid)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return res.config!
-  }
-
-  async function expectPushConfig(
+  async function expectPushStorageConfig(
     cid: string,
     override: boolean = false,
-    config?: ffsTypes.CidConfig.AsObject,
+    config?: ffsTypes.StorageConfig.AsObject,
   ) {
-    const opts: PushConfigOption[] = []
+    const opts: PushStorageConfigOption[] = []
     opts.push(withOverrideConfig(override))
     if (config) {
       opts.push(withConfig(config))
     }
-    const res = await c.pushConfig(cid, ...opts)
+    const res = await c.pushStorageConfig(cid, ...opts)
     expect(res.jobId).length.greaterThan(0)
     return res.jobId
   }

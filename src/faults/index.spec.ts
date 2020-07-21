@@ -6,7 +6,7 @@ describe("faults", () => {
   const c = createFaults({ host, transport: getTransport() })
 
   it("should get", async () => {
-    const index = await c.get()
+    const { index } = await c.get()
     expect(index).not.undefined
   })
 })
