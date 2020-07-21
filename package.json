@@ -17,7 +17,7 @@
     "lint": "eslint --fix --ext .js,.ts src/**/*",
     "docs": "typedoc",
     "localnet:up": "cd powergate-docker && make localnet",
-    "localnet:down": "cd powergate-docker && make down",
+    "localnet:down": "cd powergate-docker && make localnet-down",
     "powergate-docker": "./powergate-docker.sh"
   },
   "keywords": [
