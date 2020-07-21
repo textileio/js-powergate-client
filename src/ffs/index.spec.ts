@@ -3,7 +3,17 @@ import fs from "fs"
 import { createFFS } from "."
 import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
-import { PushStorageConfigOption, withHistory, withOverride, withStorageConfig } from "./options"
+import {
+  PushStorageConfigOption,
+  withAscending,
+  withDataCids,
+  withFromAddresses,
+  withHistory,
+  withIncludeFinal,
+  withIncludePending,
+  withOverride,
+  withStorageConfig,
+} from "./options"
 
 describe("ffs", function () {
   this.timeout(180000)
@@ -99,54 +109,64 @@ describe("ffs", function () {
     })
   })
 
-  // it("should get a storage deal record", async () => {
-  //   await expectNewInstance()
-  //   const addrs = await expectAddrs(1)
-  //   await waitForBalance(addrs[0].addr, 0)
+  it("should get storage deal records", async () => {
+    await expectNewInstance()
+    const addrs = await expectAddrs(1)
+    await waitForBalance(addrs[0].addr, 0)
 
-  //   const [cid1, cid2, cid3] = await Promise.all([
-  //     expectStage("sample-data/samplefile"),
-  //     expectStage("sample-data/samplefile2"),
-  //     expectStage("sample-data/samplefile3"),
-  //   ])
+    const [cid1, cid2, cid3] = await Promise.all([
+      expectStage("sample-data/samplefile"),
+      expectStage("sample-data/samplefile2"),
+      expectStage("sample-data/samplefile3"),
+    ])
 
-  //   const [jobId1, jobId2, jobId3] = await Promise.all([
-  //     expectPushStorageConfig(cid1),
-  //     expectPushStorageConfig(cid2),
-  //     expectPushStorageConfig(cid3),
-  //   ])
+    const jobId1 = await expectPushStorageConfig(cid1)
+    await new Promise((r) => setTimeout(r, 1000))
+    const jobId2 = await expectPushStorageConfig(cid2)
+    await new Promise((r) => setTimeout(r, 1000))
+    const jobId3 = await expectPushStorageConfig(cid3)
 
-  //   await Promise.all([
-  //     waitForJobStatus(jobId1, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
-  //     waitForJobStatus(jobId2, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
-  //     waitForJobStatus(jobId3, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
-  //   ])
+    await Promise.all([
+      waitForJobStatus(jobId1, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
+      waitForJobStatus(jobId2, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
+      waitForJobStatus(jobId3, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
+    ])
 
-  //   const res1 = await c.listStorageDealRecords(
-  //     withIncludePending(true),
-  //     // withAscending(true),
-  //     // withFromAddresses(addrs[0].addr),
-  //     // withDataCids(cid, cid2, cid3),
-  //   )
-  //   expect(res1, "pending").length(3)
+    // wait for a second so some async work of actually starting a deal happens
+    await new Promise((r) => setTimeout(r, 1000))
 
-  //   const res2 = await c.listStorageDealRecords(
-  //     withIncludeFinal(true),
-  //     // withAscending(true),
-  //     // withFromAddresses(addrs[0].addr),
-  //     // withDataCids(cid, cid2, cid3),
-  //   )
-  //   expect(res2, "final").empty
+    const { recordsList: pendingRecords } = await c.listStorageDealRecords(
+      withIncludePending(true),
+      withAscending(true),
+      withFromAddresses(addrs[0].addr),
+      withDataCids(cid1, cid2, cid3),
+    )
+    expect(pendingRecords, "pending length").length(3)
+    expect(pendingRecords[0].time).lessThan(pendingRecords[1].time).lessThan(pendingRecords[2].time)
 
-  //   // const res = await c.listStorageDealRecords(
-  //   //   withIncludeFinal(true),
-  //   //   withIncludePending(true),
-  //   //   withAscending(true),
-  //   //   withFromAddresses(addrs[0].addr),
-  //   //   // withDataCids(cid, cid2, cid3),
-  //   // )
-  //   // expect(res).length(3)
-  // })
+    const { recordsList: finalRecords } = await c.listStorageDealRecords(withIncludeFinal(true))
+    expect(finalRecords, "final empty").empty
+
+    await Promise.all([
+      waitForJobStatus(jobId1, ffsTypes.JobStatus.JOB_STATUS_SUCCESS),
+      waitForJobStatus(jobId2, ffsTypes.JobStatus.JOB_STATUS_SUCCESS),
+      waitForJobStatus(jobId3, ffsTypes.JobStatus.JOB_STATUS_SUCCESS),
+    ])
+
+    const { recordsList: pendingRecords2 } = await c.listStorageDealRecords(
+      withIncludePending(true),
+    )
+    expect(pendingRecords2, "pending2 empty").empty
+
+    const { recordsList: finalRecords2 } = await c.listStorageDealRecords(
+      withIncludeFinal(true),
+      withAscending(true),
+      withFromAddresses(addrs[0].addr),
+      withDataCids(cid1, cid2, cid3),
+    )
+    expect(finalRecords2, "final2 length").length(3)
+    expect(finalRecords2[0].time).lessThan(finalRecords2[1].time).lessThan(finalRecords2[2].time)
+  })
 
   it("should get a retrieval deal record", async () => {
     // ToDo: Figure out hot to make sure the data in the previous push isn't cached in hot
