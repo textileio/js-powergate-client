@@ -38,7 +38,7 @@ export const createReputation = (config: Config) => {
       req.setLimit(limit)
       return promise(
         (cb) => client.getTopMiners(req, cb),
-        (resp: reputationTypes.GetTopMinersResponse) => resp.toObject().topMinersList,
+        (resp: reputationTypes.GetTopMinersResponse) => resp.toObject(),
       )
     },
   }

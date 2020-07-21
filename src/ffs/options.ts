@@ -1,15 +1,15 @@
 import { ffsTypes } from "../types"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
-export type PushConfigOption = (req: ffsTypes.PushConfigRequest) => void
+export type PushStorageConfigOption = (req: ffsTypes.PushStorageConfigRequest) => void
 
 /**
  * Allows you to override an existing storage configuration
  * @param override Whether or not to override any existing storage configuration
  * @returns The resulting option
  */
-export const withOverrideConfig = (override: boolean): PushConfigOption => {
-  return (req: ffsTypes.PushConfigRequest) => {
+export const withOverride = (override: boolean): PushStorageConfigOption => {
+  return (req: ffsTypes.PushStorageConfigRequest) => {
     req.setHasOverrideConfig(true)
     req.setOverrideConfig(override)
   }
@@ -20,10 +20,11 @@ export const withOverrideConfig = (override: boolean): PushConfigOption => {
  * @param config The storage configuration to use
  * @returns The resulting option
  */
-export const withConfig = (config: ffsTypes.CidConfig.AsObject): PushConfigOption => {
-  return (req: ffsTypes.PushConfigRequest) => {
-    const c = new ffsTypes.CidConfig()
-    c.setCid(config.cid)
+export const withStorageConfig = (
+  config: ffsTypes.StorageConfig.AsObject,
+): PushStorageConfigOption => {
+  return (req: ffsTypes.PushStorageConfigRequest) => {
+    const c = new ffsTypes.StorageConfig()
     c.setRepairable(config.repairable)
     if (config.hot) {
       c.setHot(hotObjToMessage(config.hot))

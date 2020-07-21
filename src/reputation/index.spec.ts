@@ -6,7 +6,7 @@ describe("reputation", () => {
   const c = createReputation({ host, transport: getTransport() })
 
   it("should get top miners", async () => {
-    const scores = await c.getTopMiners(10)
-    expect(scores).not.undefined
+    const { topMinersList } = await c.getTopMiners(10)
+    expect(topMinersList).not.undefined
   })
 })

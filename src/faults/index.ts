@@ -18,7 +18,7 @@ export const createFaults = (config: Config) => {
     get: () =>
       promise(
         (cb) => client.get(new faultsTypes.GetRequest(), cb),
-        (resp: faultsTypes.GetResponse) => resp.toObject().index,
+        (resp: faultsTypes.GetResponse) => resp.toObject(),
       ),
   }
 }

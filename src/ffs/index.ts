@@ -5,7 +5,7 @@ import {
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
 import { Config, ffsTypes } from "../types"
 import { promise } from "../util"
-import { ListDealRecordsOption, PushConfigOption, WatchLogsOption } from "./options"
+import { ListDealRecordsOption, PushStorageConfigOption, WatchLogsOption } from "./options"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
 /**
@@ -58,13 +58,14 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       ),
 
     /**
-     * Get the default storage config associates with the current auth token
+     * Get the default storage config associated with the current auth token
      * @returns The default storage config
      */
-    defaultConfig: () =>
+    defaultStorageConfig: () =>
       promise(
-        (cb) => client.defaultConfig(new ffsTypes.DefaultConfigRequest(), getMeta(), cb),
-        (res: ffsTypes.DefaultConfigResponse) => res.toObject(),
+        (cb) =>
+          client.defaultStorageConfig(new ffsTypes.DefaultStorageConfigRequest(), getMeta(), cb),
+        (res: ffsTypes.DefaultStorageConfigResponse) => res.toObject(),
       ),
 
     /**
@@ -86,30 +87,16 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     },
 
     /**
-     * Get a cid storage configuration prepped for the provided cid
-     * @param cid The cid to make the storage config for
-     * @returns The storage config prepped for the provided cid
-     */
-    getDefaultCidConfig: (cid: string) => {
-      const req = new ffsTypes.GetDefaultCidConfigRequest()
-      req.setCid(cid)
-      return promise(
-        (cb) => client.getDefaultCidConfig(req, getMeta(), cb),
-        (res: ffsTypes.GetDefaultCidConfigResponse) => res.toObject(),
-      )
-    },
-
-    /**
      * Get the desired storage config for the provided cid, this config may not yet be realized
      * @param cid The cid of the desired storage config
      * @returns The storage config for the provided cid
      */
-    getCidConfig: (cid: string) => {
-      const req = new ffsTypes.GetCidConfigRequest()
+    getStorageConfig: (cid: string) => {
+      const req = new ffsTypes.GetStorageConfigRequest()
       req.setCid(cid)
       return promise(
-        (cb) => client.getCidConfig(req, getMeta(), cb),
-        (res: ffsTypes.GetCidConfigResponse) => res.toObject(),
+        (cb) => client.getStorageConfig(req, getMeta(), cb),
+        (res: ffsTypes.GetStorageConfigResponse) => res.toObject(),
       )
     },
 
@@ -117,8 +104,8 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * Set the default storage config for this FFS instance
      * @param config The new default storage config
      */
-    setDefaultConfig: (config: ffsTypes.DefaultConfig.AsObject) => {
-      const c = new ffsTypes.DefaultConfig()
+    setDefaultStorageConfig: (config: ffsTypes.StorageConfig.AsObject) => {
+      const c = new ffsTypes.StorageConfig()
       c.setRepairable(config.repairable)
       if (config.hot) {
         c.setHot(hotObjToMessage(config.hot))
@@ -126,10 +113,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       if (config.cold) {
         c.setCold(coldObjToMessage(config.cold))
       }
-      const req = new ffsTypes.SetDefaultConfigRequest()
+      const req = new ffsTypes.SetDefaultStorageConfigRequest()
       req.setConfig(c)
       return promise(
-        (cb) => client.setDefaultConfig(req, getMeta(), cb),
+        (cb) => client.setDefaultStorageConfig(req, getMeta(), cb),
         () => {
           // nothing to return
         },
@@ -216,9 +203,10 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     },
 
     /**
-     * Replace smth?
-     * @param cid1 smth
-     * @param cid2 hrmmm
+     * Replace pushes a StorageConfig for cid2 equal to that of cid1, and removes cid1. This operation
+     * is more efficient than manually removing and adding in two separate operations.
+     * @param cid1 The cid to replace
+     * @param cid2 The new cid
      * @returns The job id of the job executing the storage configuration
      */
     replace: (cid1: string, cid2: string) => {
@@ -235,17 +223,17 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
      * Push a storage config for the specified cid
      * @param cid The cid to store
      * @param opts Options controlling the behavior storage config execution
-     * @returns The job id of the job executing the storage configuration
+     * @returns An object containing the job id of the job executing the storage configuration
      */
-    pushConfig: (cid: string, ...opts: PushConfigOption[]) => {
-      const req = new ffsTypes.PushConfigRequest()
+    pushStorageConfig: (cid: string, ...opts: PushStorageConfigOption[]) => {
+      const req = new ffsTypes.PushStorageConfigRequest()
       req.setCid(cid)
       opts.forEach((opt) => {
         opt(req)
       })
       return promise(
-        (cb) => client.pushConfig(req, getMeta(), cb),
-        (res: ffsTypes.PushConfigResponse) => res.toObject(),
+        (cb) => client.pushStorageConfig(req, getMeta(), cb),
+        (res: ffsTypes.PushStorageConfigResponse) => res.toObject(),
       )
     },
 
@@ -326,16 +314,16 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
 
     /**
      * A helper method to cache data in IPFS in preparation for storing in ffsTypes.
-     * This doesn't actually store data in FFS, you'll want to call pushConfig for that.
+     * This doesn't actually store data in FFS, you'll want to call pushStorageConfig for that.
      * @param input The raw data to add
      * @returns The cid of the added data
      */
-    addToHot: (input: Uint8Array) => {
+    stage: (input: Uint8Array) => {
       // TODO: figure out how to stream data in here, or at least stream to the server
-      return new Promise<ffsTypes.AddToHotResponse.AsObject>((resolve, reject) => {
-        const client = grpc.client(RPCService.AddToHot, config)
+      return new Promise<ffsTypes.StageResponse.AsObject>((resolve, reject) => {
+        const client = grpc.client(RPCService.Stage, config)
         client.onMessage((message) => {
-          resolve(message.toObject() as ffsTypes.AddToHotResponse.AsObject)
+          resolve(message.toObject() as ffsTypes.StageResponse.AsObject)
         })
         client.onEnd((code, msg) => {
           if (code !== grpc.Code.OK) {
@@ -345,7 +333,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
           }
         })
         client.start(getMeta())
-        const req = new ffsTypes.AddToHotRequest()
+        const req = new ffsTypes.StageRequest()
         req.setChunk(input)
         client.send(req)
         client.finishSend()
@@ -359,7 +347,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     listPayChannels: () =>
       promise(
         (cb) => client.listPayChannels(new ffsTypes.ListPayChannelsRequest(), getMeta(), cb),
-        (res: ffsTypes.ListPayChannelsResponse) => res.toObject().payChannelsList,
+        (res: ffsTypes.ListPayChannelsResponse) => res.toObject(),
       ),
 
     /**
@@ -409,7 +397,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setConfig(conf)
       return promise(
         (cb) => client.listStorageDealRecords(req, getMeta(), cb),
-        (res: ffsTypes.ListStorageDealRecordsResponse) => res.toObject().recordsList,
+        (res: ffsTypes.ListStorageDealRecordsResponse) => res.toObject(),
       )
     },
 
@@ -427,7 +415,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
       req.setConfig(conf)
       return promise(
         (cb) => client.listRetrievalDealRecords(req, getMeta(), cb),
-        (res: ffsTypes.ListRetrievalDealRecordsResponse) => res.toObject().recordsList,
+        (res: ffsTypes.ListRetrievalDealRecordsResponse) => res.toObject(),
       )
     },
 
@@ -438,7 +426,7 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
     showAll: () =>
       promise(
         (cb) => client.showAll(new ffsTypes.ShowAllRequest(), getMeta(), cb),
-        (res: ffsTypes.ShowAllResponse) => res.toObject().cidInfosList,
+        (res: ffsTypes.ShowAllResponse) => res.toObject(),
       ),
   }
 }

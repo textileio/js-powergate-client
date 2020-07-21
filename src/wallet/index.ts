@@ -21,7 +21,7 @@ export const createWallet = (config: Config) => {
       req.setType(type)
       return promise(
         (cb) => client.newAddress(req, cb),
-        (resp: walletTypes.NewAddressResponse) => resp.toObject().address,
+        (resp: walletTypes.NewAddressResponse) => resp.toObject(),
       )
     },
 
@@ -32,7 +32,7 @@ export const createWallet = (config: Config) => {
     list: () =>
       promise(
         (cb) => client.list(new walletTypes.ListRequest(), cb),
-        (resp: walletTypes.ListResponse) => resp.toObject().addressesList,
+        (resp: walletTypes.ListResponse) => resp.toObject(),
       ),
 
     /**
@@ -45,7 +45,7 @@ export const createWallet = (config: Config) => {
       req.setAddress(address)
       return promise(
         (cb) => client.balance(req, cb),
-        (resp: walletTypes.BalanceResponse) => resp.toObject().balance,
+        (resp: walletTypes.BalanceResponse) => resp.toObject(),
       )
     },
 

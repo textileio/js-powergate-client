@@ -7,13 +7,13 @@ describe("asks", () => {
   const c = createAsks({ host, transport: getTransport() })
 
   it("should get", async () => {
-    const index = await c.get()
+    const { index } = await c.get()
     expect(index).not.undefined
   })
 
   it("should query", async () => {
     const q = new asksTypes.Query().toObject()
-    const res = await c.query(q)
-    expect(res).not.undefined
+    const { asksList } = await c.query(q)
+    expect(asksList).not.undefined
   })
 })
