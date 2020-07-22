@@ -35,6 +35,12 @@ jobs:
       - name: Install
         run: npm install
 
+      - name: Test Build
+        run: npm run build
+
+      - name: Test Docs
+        run: npm run docs:test
+
       - name: Test Node
         run: npm run test:node
       # - name: Test Browser

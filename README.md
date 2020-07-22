@@ -52,15 +52,32 @@ const pow = createPow({ host })
 Many APIs are immediately available and don't require authorization.
 
 ```typescript
-const { status, messageList } = await pow.health.check()
+import { createPow } from "@textile/powergate-client"
 
-const { peersList } = await pow.net.peers()
+const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
+
+const pow = createPow({ host })
+
+async function exampleCode () {
+  const { status, messagesList } = await pow.health.check()
+
+  const { peersList } = await pow.net.peers()
+}
 ```
 
 Other APIs require authorization. The main API you'll interact with is the Filecoin File System (FFS), and it requires authorization. First, create a new FFS instance.
 
 ```typescript
-const { token } = await pow.ffs.create() // save this token for later use!
+import { createPow } from "@textile/powergate-client"
+
+const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
+
+const pow = createPow({ host })
+
+async function exampleCode () {
+  const { token } = await pow.ffs.create() // save this token for later use!
+  return token
+}
 ```
 
 Currently, the returned auth token is the only thing that gives you access to your FFS instance at a later time, so be sure to save it securely.
@@ -68,6 +85,14 @@ Currently, the returned auth token is the only thing that gives you access to yo
 Once you have an auth token, either by creating a new FFS instance or by reading one you previously saved, set the auth token you'd like the Powergate client to use.
 
 ```typescript
+import { createPow } from "@textile/powergate-client"
+
+const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
+
+const pow = createPow({ host })
+
+const authToken = '<generated token>'
+
 pow.setToken(authToken)
 ```
 
@@ -75,51 +100,53 @@ Now, the FFS API is available for you to use.
 
 ```typescript
 import fs from "fs"
-import { ffsTypes } from "@textile/powergate-client"
+import { ffsTypes, POW } from "@textile/powergate-client"
 
-// get wallet addresses associated with your FFS instance
-const { addrsList } = await pow.ffs.addrs()
+async function ffsMethods (pow: POW) {
+  // get wallet addresses associated with your FFS instance
+  const { addrsList } = await pow.ffs.addrs()
 
-// create a new address associated with your ffs instance
-const { addr } = await pow.ffs.newAddr("my new addr")
+  // create a new address associated with your ffs instance
+  const { addr } = await pow.ffs.newAddr("my new addr")
 
-// get general info about your ffs instance
-const { info } = await pow.ffs.info()
+  // get general info about your ffs instance
+  const { info } = await pow.ffs.info()
 
-// cache data in IPFS in preparation to store it using FFS
-const buffer = fs.readFileSync(`path/to/a/file`)
-const { cid } = await pow.ffs.stage(buffer)
+  // cache data in IPFS in preparation to store it using FFS
+  const buffer = fs.readFileSync(`path/to/a/file`)
+  const { cid } = await pow.ffs.stage(buffer)
 
-// store the data in FFS using the default storage configuration
-const { jobId } = await pow.ffs.pushStorageConfig(cid)
+  // store the data in FFS using the default storage configuration
+  const { jobId } = await pow.ffs.pushStorageConfig(cid)
 
-// watch the FFS job status to see the storage process progressing
-const cancel = pow.ffs.watchJobs((job) => {
-  if (job.status === ffsTypes.JobStatus.CANCELED) {
-    console.log("job canceled")
-  } else if (job.status === ffsTypes.JobStatus.FAILED) {
-    console.log("job failed")
-  } else if (job.status === ffsTypes.JobStatus.SUCCESS) {
-    console.log("job success!")
-  }
-}, jobId)
+  // watch the FFS job status to see the storage process progressing
+  const jobsCancel = pow.ffs.watchJobs((job) => {
+    if (job.status === ffsTypes.JobStatus.JOB_STATUS_CANCELED) {
+      console.log("job canceled")
+    } else if (job.status === ffsTypes.JobStatus.JOB_STATUS_FAILED) {
+      console.log("job failed")
+    } else if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
+      console.log("job success!")
+    }
+  }, jobId)
 
-// watch all FFS events for a cid
-const cancel = pow.ffs.watchLogs((logEvent) => {
-  console.log(`received event for cid ${logEvent.cid}`)
-}, cid)
+  // watch all FFS events for a cid
+  const logsCancel = pow.ffs.watchLogs((logEvent) => {
+    console.log(`received event for cid ${logEvent.cid}`)
+  }, cid)
 
-// get the current desired storage configuration for a cid (this configuration may not be realized yet)
-const { config } = await pow.ffs.getStorageConfig(cid)
+  // get the current desired storage configuration for a cid (this configuration may not be realized yet)
+  const { config } = await pow.ffs.getStorageConfig(cid)
 
-// get the current actual storage configuration for a cid
-const { cidinfo } = await pow.ffs.show(cid)
+  // get the current actual storage configuration for a cid
+  const { cidInfo } = await pow.ffs.show(cid)
 
-// retreive data from FFS by cid
-const bytes = await pow.ffs.get(cid)
+  // retrieve data from FFS by cid
+  const bytes = await pow.ffs.get(cid)
 
-// senf FIL from an address managed by your FFS instance to any other address
-await pow.ffs.sendFil(addrsList[0].addr, "<some other address>", 1000)
+  // senf FIL from an address managed by your FFS instance to any other address
+  await pow.ffs.sendFil(addrsList[0].addr, "<some other address>", 1000)
+}
 ```
 
 See the [Node.js example app](https://github.com/textileio/js-powergate-client/tree/master/examples/node) in this repository's `examples` directory.

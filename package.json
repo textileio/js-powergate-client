@@ -16,6 +16,10 @@
     "test:browser": "npm run powergate-docker && polendina --timeout 3000 --cleanup src/**/*.spec.ts --webpack-config ./webpack.test.js",
     "lint": "eslint --fix --ext .js,.ts src/**/*",
     "docs": "typedoc",
+    "docs:test": "npm run docs:clean && npm run docs:md && npm run docs:verify",
+    "docs:clean": "rm -rf docs",
+    "docs:md": "typedoc --plugin typedoc-plugin-markdown",
+    "docs:verify": "typescript-docs-verifier --input-files=`find docs -type f -name '**.md'`",
     "localnet:up": "cd powergate-docker && make localnet",
     "localnet:down": "cd powergate-docker && make localnet-down",
     "powergate-docker": "./powergate-docker.sh"
@@ -55,7 +59,9 @@
     "ts-loader": "^8.0.1",
     "ts-node": "^8.8.1",
     "typedoc": "^0.17.3",
+    "typedoc-plugin-markdown": "^2.3.1",
     "typescript": "^3.9.7",
+    "typescript-docs-verifier": "^1.1.2",
     "wait-on": "^5.0.1"
   },
   "husky": {

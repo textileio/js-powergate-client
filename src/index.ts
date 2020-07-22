@@ -38,6 +38,8 @@ const defaultConfig: Config = {
   transport: getTransport(),
 }
 
+export type POW = ReturnType<typeof createPow>
+
 /**
  * Creates a new Powergate client
  * @param config A config object that changes the behavior of the client
