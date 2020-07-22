@@ -52,9 +52,13 @@ const pow = createPow({ host })
 Many APIs are immediately available and don't require authorization.
 
 ```typescript
-import { POW } from "@textile/powergate-client"
+import { createPow } from "@textile/powergate-client"
 
-async function getPeersList (pow: POW) {
+const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
+
+const pow = createPow({ host })
+
+async function exampleCode () {
   const { status, messagesList } = await pow.health.check()
 
   const { peersList } = await pow.net.peers()
@@ -64,9 +68,13 @@ async function getPeersList (pow: POW) {
 Other APIs require authorization. The main API you'll interact with is the Filecoin File System (FFS), and it requires authorization. First, create a new FFS instance.
 
 ```typescript
-import { POW } from "@textile/powergate-client"
+import { createPow } from "@textile/powergate-client"
 
-async function getToken (pow: POW) {
+const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
+
+const pow = createPow({ host })
+
+async function exampleCode () {
   const { token } = await pow.ffs.create() // save this token for later use!
   return token
 }
