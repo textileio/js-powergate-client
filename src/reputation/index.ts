@@ -2,17 +2,13 @@ import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/reputation
 import { Config, reputationTypes } from "../types"
 import { promise } from "../util"
 
-export interface Reputation {
-  addSource: (id: string, multiaddress: string) => Promise<void>
-  getTopMiners: (limit: number) => Promise<reputationTypes.GetTopMinersResponse.AsObject>
-}
 /**
  * Creates the Reputation API client
  * @param config A config object that changes the behavior of the client
  * @returns The Reputation API client
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createReputation = (config: Config): Reputation => {
+export const createReputation = (config: Config) => {
   const client = new RPCServiceClient(config.host, config)
   return {
     /**

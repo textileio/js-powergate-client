@@ -3,18 +3,13 @@ import { asksTypes, Config } from "../types"
 import { promise } from "../util"
 import { queryObjectToMsg } from "./util"
 
-export interface Asks {
-  get: () => Promise<asksTypes.GetResponse.AsObject>
-  query: (query: asksTypes.Query.AsObject) => Promise<asksTypes.QueryResponse.AsObject>
-}
-
 /**
  * Creates the Asks API client
  * @param config A config object that changes the behavior of the client
  * @returns The Asks API client
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createAsks = (config: Config): Asks => {
+export const createAsks = (config: Config) => {
   const client = new RPCServiceClient(config.host, config)
   return {
     /**

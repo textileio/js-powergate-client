@@ -2,19 +2,13 @@ import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/wallet/rpc
 import { Config, walletTypes } from "../types"
 import { promise } from "../util"
 
-export interface Wallet {
-  newAddress: (type?: "bls" | "secp256k1") => Promise<walletTypes.NewAddressResponse.AsObject>
-  list: () => Promise<walletTypes.ListResponse.AsObject>
-  balance: (address: string) => Promise<walletTypes.BalanceResponse.AsObject>
-  sendFil: (from: string, to: string, amount: number) => Promise<void>
-}
 /**
  * Creates the Wallet API client
  * @param config A config object that changes the behavior of the client
  * @returns The Wallet API client
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createWallet = (config: Config): Wallet => {
+export const createWallet = (config: Config) => {
   const client = new RPCServiceClient(config.host, config)
   return {
     /**

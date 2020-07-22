@@ -8,60 +8,13 @@ import { promise } from "../util"
 import { ListDealRecordsOption, PushStorageConfigOption, WatchLogsOption } from "./options"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
-export interface FFS {
-  create: () => Promise<ffsTypes.CreateResponse.AsObject>
-  list: () => Promise<ffsTypes.ListAPIResponse.AsObject>
-  id: () => Promise<ffsTypes.IDResponse.AsObject>
-  addrs: () => Promise<ffsTypes.AddrsResponse.AsObject>
-  defaultStorageConfig: () => Promise<ffsTypes.DefaultStorageConfigResponse.AsObject>
-  newAddr: (
-    name: string,
-    type?: "bls" | "secp256k1",
-    makeDefault?: boolean,
-  ) => Promise<ffsTypes.NewAddrResponse.AsObject>
-  getStorageConfig: (cid: string) => Promise<ffsTypes.GetStorageConfigResponse.AsObject>
-  setDefaultStorageConfig: (config: ffsTypes.StorageConfig.AsObject) => Promise<void>
-  show: (cid: string) => Promise<ffsTypes.ShowResponse.AsObject>
-  info: () => Promise<ffsTypes.InfoResponse.AsObject>
-  watchJobs: (handler: (event: ffsTypes.Job.AsObject) => void, ...jobs: string[]) => () => void
-  cancelJob: (jobId: string) => Promise<void>
-  watchLogs: (
-    handler: (event: ffsTypes.LogEntry.AsObject) => void,
-    cid: string,
-    ...opts: WatchLogsOption[]
-  ) => () => void
-  replace: (cid1: string, cid2: string) => Promise<ffsTypes.ReplaceResponse.AsObject>
-  pushStorageConfig: (
-    cid: string,
-    ...opts: PushStorageConfigOption[]
-  ) => Promise<ffsTypes.PushStorageConfigResponse.AsObject>
-  remove: (cid: string) => Promise<void>
-  get: (cid: string) => Promise<Uint8Array>
-  sendFil: (from: string, to: string, amount: number) => Promise<void>
-  close: () => Promise<void>
-  stage: (input: Uint8Array) => Promise<ffsTypes.StageResponse.AsObject>
-  listPayChannels: () => Promise<ffsTypes.ListPayChannelsResponse.AsObject>
-  createPayChannel: (
-    from: string,
-    to: string,
-    amt: number,
-  ) => Promise<ffsTypes.CreatePayChannelResponse.AsObject>
-  redeemPayChannel: (payChannelAddr: string) => Promise<void>
-  listStorageDealRecords: (
-    ...opts: ListDealRecordsOption[]
-  ) => Promise<ffsTypes.ListStorageDealRecordsResponse.AsObject>
-  listRetrievalDealRecords: (
-    ...opts: ListDealRecordsOption[]
-  ) => Promise<ffsTypes.ListRetrievalDealRecordsResponse.AsObject>
-  showAll: () => Promise<ffsTypes.ShowAllResponse.AsObject>
-}
 /**
  * Creates the FFS API client
  * @param config A config object that changes the behavior of the client
  * @param getMeta A function that returns request metadata
  * @returns The FFS API client
  */
-export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => {
+export const createFFS = (config: Config, getMeta: () => grpc.Metadata) => {
   const client = new RPCServiceClient(config.host, config)
   return {
     /**

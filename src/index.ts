@@ -1,11 +1,11 @@
-import { Asks, createAsks } from "./asks"
-import { createFaults, Faults } from "./faults"
-import { createFFS, FFS } from "./ffs"
-import { createHealth, Health } from "./health"
-import { createMiners, Miners } from "./miners"
-import { createNet, Net } from "./net"
+import { createAsks } from "./asks"
+import { createFaults } from "./faults"
+import { createFFS } from "./ffs"
+import { createHealth } from "./health"
+import { createMiners } from "./miners"
+import { createNet } from "./net"
 import { ffsOptions } from "./options"
-import { createReputation, Reputation } from "./reputation"
+import { createReputation } from "./reputation"
 import {
   asksTypes,
   Config,
@@ -18,10 +18,9 @@ import {
   walletTypes,
 } from "./types"
 import { getTransport, host, useToken } from "./util"
-import { createWallet, Wallet } from "./wallet"
+import { createWallet } from "./wallet"
 
 export { ffsOptions }
-export { Asks, Faults, FFS, Health, Miners, Net, Reputation, Wallet }
 export {
   asksTypes,
   Config,
@@ -39,17 +38,7 @@ const defaultConfig: Config = {
   transport: getTransport(),
 }
 
-export interface POW {
-  setToken: (t: string) => void
-  asks: Asks
-  faults: Faults
-  ffs: FFS
-  health: Health
-  miners: Miners
-  net: Net
-  reputation: Reputation
-  wallet: Wallet
-}
+export type POW = ReturnType<typeof createPow>
 
 /**
  * Creates a new Powergate client
@@ -57,7 +46,7 @@ export interface POW {
  * @returns A Powergate client API
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createPow = (config?: Partial<Config>): POW => {
+export const createPow = (config?: Partial<Config>) => {
   const c = { ...defaultConfig, ...removeEmpty(config) }
 
   const { getMeta, setToken } = useToken(c.authToken)
