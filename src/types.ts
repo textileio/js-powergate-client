@@ -12,7 +12,14 @@ import * as walletTypes from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc
  * Object that allows you to configure the Powergate client
  */
 export interface Config extends grpc.RpcOptions {
+  /**
+   * The gRPC web host URL
+   */
   host: string
+
+  /**
+   * A FFS auth token
+   */
   authToken?: string
 }
 

@@ -2,18 +2,20 @@ import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/index/mine
 import { Config, minersTypes } from "../types"
 import { promise } from "../util"
 
+export interface Miners {
+  /**
+   * Gets the miner index.
+   * @returns The miner index.
+   */
+  get: () => Promise<minersTypes.GetResponse.AsObject>
+}
+
 /**
- * Creates the Miners API client
- * @param config A config object that changes the behavior of the client
- * @returns The Miners API client
+ * @ignore
  */
-export const createMiners = (config: Config) => {
+export const createMiners = (config: Config): Miners => {
   const client = new RPCServiceClient(config.host, config)
   return {
-    /**
-     * Gets the miner index
-     * @returns The miner index
-     */
     get: () =>
       promise(
         (cb) => client.get(new minersTypes.GetRequest(), cb),

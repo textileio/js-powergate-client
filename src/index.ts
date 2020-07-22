@@ -1,11 +1,11 @@
-import { createAsks } from "./asks"
-import { createFaults } from "./faults"
-import { createFFS } from "./ffs"
-import { createHealth } from "./health"
-import { createMiners } from "./miners"
-import { createNet } from "./net"
+import { Asks, createAsks } from "./asks"
+import { createFaults, Faults } from "./faults"
+import { createFFS, FFS } from "./ffs"
+import { createHealth, Health } from "./health"
+import { createMiners, Miners } from "./miners"
+import { createNet, Net } from "./net"
 import { ffsOptions } from "./options"
-import { createReputation } from "./reputation"
+import { createReputation, Reputation } from "./reputation"
 import {
   asksTypes,
   Config,
@@ -18,7 +18,7 @@ import {
   walletTypes,
 } from "./types"
 import { getTransport, host, useToken } from "./util"
-import { createWallet } from "./wallet"
+import { createWallet, Wallet } from "./wallet"
 
 export { ffsOptions }
 export {
@@ -38,15 +38,24 @@ const defaultConfig: Config = {
   transport: getTransport(),
 }
 
-export type POW = ReturnType<typeof createPow>
+export interface Pow {
+  setToken: (t: string) => void
+  asks: Asks
+  faults: Faults
+  ffs: FFS
+  health: Health
+  miners: Miners
+  net: Net
+  reputation: Reputation
+  wallet: Wallet
+}
 
 /**
  * Creates a new Powergate client
  * @param config A config object that changes the behavior of the client
  * @returns A Powergate client API
  */
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createPow = (config?: Partial<Config>) => {
+export const createPow = (config?: Partial<Config>): Pow => {
   const c = { ...defaultConfig, ...removeEmpty(config) }
 
   const { getMeta, setToken } = useToken(c.authToken)
