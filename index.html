@@ -1,0 +1,302 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Powergate Client</title>
+	<meta name="description" content="Documentation for Powergate Client">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Powergate Client</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>Powergate Client</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#powergate-js-client-textilepowergate-client" id="powergate-js-client-textilepowergate-client" style="color: inherit; text-decoration: none;">
+					<h1>Powergate JS Client <em>(@textile/powergate-client)</em></h1>
+				</a>
+				<p><a href="./LICENSE"><img src="https://img.shields.io/github/license/textileio/js-powergate-client.svg" alt="GitHub license"></a>
+					<a href="./package.json"><img src="https://img.shields.io/github/package-json/v/textileio/js-powergate-client.svg?style=popout-square" alt="GitHub package.json version"></a>
+					<a href="https://www.npmjs.com/package/@textile/powergate-client"><img src="https://img.shields.io/npm/v/@textile/powergate-client.svg?style=popout-square" alt="npm (scoped)"></a>
+					<a href="https://github.com/textileio/js-powergate-client/releases/latest"><img src="https://img.shields.io/github/release/textileio/js-powergate-client.svg" alt="Release"></a>
+				<a href="https://github.com/RichardLitt/standard-readme"><img src="https://img.shields.io/badge/standard--readme-OK-green.svg" alt="standard-readme compliant"></a></p>
+				<p><img src="https://github.com/textileio/js-powergate-client/workflows/Test/badge.svg" alt="Tests">
+				<a href="https://textileio.github.io/js-powergate-client"><img src="https://github.com/textileio/js-powergate-client/workflows/Docs/badge.svg" alt="Docs"></a></p>
+				<blockquote>
+					<p>Typescript/Javascript client for Textile&#39;s <a href="https://github.com/textileio/powergate">Powergate</a>.</p>
+				</blockquote>
+				<p>Use Powergate&#39;s multitiered file storage API built on Filecoin and IPFS from javascript environments such as Node, React Native, web browsers, and more.</p>
+				<a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
+					<h2>Table of Contents</h2>
+				</a>
+				<ul>
+					<li><a href="#powergate-js-client-textilepowergate-client">Powergate JS Client <em>(@textile/powergate-client)</em></a><ul>
+							<li><a href="#background">Background</a></li>
+							<li><a href="#install">Install</a></li>
+							<li><a href="#usage">Usage</a></li>
+							<li><a href="#api">API</a></li>
+							<li><a href="#maintainers">Maintainers</a></li>
+							<li><a href="#contributing">Contributing</a></li>
+							<li><a href="#license">License</a></li>
+						</ul>
+					</li>
+				</ul>
+				<a href="#background" id="background" style="color: inherit; text-decoration: none;">
+					<h2>Background</h2>
+				</a>
+				<p>The Powergate JS Client is built on top of the <a href="https://github.com/textileio/powergate/">Powergate</a> gRPC APIs and contains the logic that makes it straight-forward to build those APIs into JavaScript-based systems. Using the Powergate JS Client requires access to a running instance of the Powergate. Find details on <a href="https://github.com/textileio/powergate/#installation">setting up the Powergate here</a>.</p>
+				<p>The JS Client provides access to the full Powergate API and therefore, does not directly manage access-control. If you plan to use the Powergate JS Client in user-facing systems, we recommend running additional middleware.</p>
+				<a href="#install" id="install" style="color: inherit; text-decoration: none;">
+					<h2>Install</h2>
+				</a>
+				<pre><code><span class="hljs-built_in">npm</span> i @textile/powergate-client</code></pre>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<p>Start by creating an instance of the client.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+
+<span class="hljs-keyword">const</span> pow = createPow({ host })</code></pre>
+				<p>Many APIs are immediately available and don&#39;t require authorization.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+
+<span class="hljs-keyword">const</span> pow = createPow({ host })
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exampleCode</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> { status, messagesList } = <span class="hljs-keyword">await</span> pow.health.check()
+
+  <span class="hljs-keyword">const</span> { peersList } = <span class="hljs-keyword">await</span> pow.net.peers()
+}</code></pre>
+				<p>Other APIs require authorization. The main API you&#39;ll interact with is the Filecoin File System (FFS), and it requires authorization. First, create a new FFS instance.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+
+<span class="hljs-keyword">const</span> pow = createPow({ host })
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exampleCode</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> { token } = <span class="hljs-keyword">await</span> pow.ffs.create() <span class="hljs-comment">// save this token for later use!</span>
+  <span class="hljs-keyword">return</span> token
+}</code></pre>
+				<p>Currently, the returned auth token is the only thing that gives you access to your FFS instance at a later time, so be sure to save it securely.</p>
+				<p>Once you have an auth token, either by creating a new FFS instance or by reading one you previously saved, set the auth token you&#39;d like the Powergate client to use.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+
+<span class="hljs-keyword">const</span> pow = createPow({ host })
+
+<span class="hljs-keyword">const</span> authToken = <span class="hljs-string">&#x27;&lt;generated token&gt;&#x27;</span>
+
+pow.setToken(authToken)</code></pre>
+				<p>Now, the FFS API is available for you to use.</p>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>
+<span class="hljs-keyword">import</span> { ffsTypes, POW } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ffsMethods</span> (<span class="hljs-params">pow: POW</span>) </span>{
+  <span class="hljs-comment">// get wallet addresses associated with your FFS instance</span>
+  <span class="hljs-keyword">const</span> { addrsList } = <span class="hljs-keyword">await</span> pow.ffs.addrs()
+
+  <span class="hljs-comment">// create a new address associated with your ffs instance</span>
+  <span class="hljs-keyword">const</span> { addr } = <span class="hljs-keyword">await</span> pow.ffs.newAddr(<span class="hljs-string">&quot;my new addr&quot;</span>)
+
+  <span class="hljs-comment">// get general info about your ffs instance</span>
+  <span class="hljs-keyword">const</span> { info } = <span class="hljs-keyword">await</span> pow.ffs.info()
+
+  <span class="hljs-comment">// cache data in IPFS in preparation to store it using FFS</span>
+  <span class="hljs-keyword">const</span> buffer = fs.readFileSync(<span class="hljs-string">`path/to/a/file`</span>)
+  <span class="hljs-keyword">const</span> { cid } = <span class="hljs-keyword">await</span> pow.ffs.stage(buffer)
+
+  <span class="hljs-comment">// store the data in FFS using the default storage configuration</span>
+  <span class="hljs-keyword">const</span> { jobId } = <span class="hljs-keyword">await</span> pow.ffs.pushStorageConfig(cid)
+
+  <span class="hljs-comment">// watch the FFS job status to see the storage process progressing</span>
+  <span class="hljs-keyword">const</span> jobsCancel = pow.ffs.watchJobs(<span class="hljs-function">(<span class="hljs-params">job</span>) =&gt;</span> {
+    <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.JOB_STATUS_CANCELED) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job canceled&quot;</span>)
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.JOB_STATUS_FAILED) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job failed&quot;</span>)
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job success!&quot;</span>)
+    }
+  }, jobId)
+
+  <span class="hljs-comment">// watch all FFS events for a cid</span>
+  <span class="hljs-keyword">const</span> logsCancel = pow.ffs.watchLogs(<span class="hljs-function">(<span class="hljs-params">logEvent</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`received event for cid <span class="hljs-subst">${logEvent.cid}</span>`</span>)
+  }, cid)
+
+  <span class="hljs-comment">// get the current desired storage configuration for a cid (this configuration may not be realized yet)</span>
+  <span class="hljs-keyword">const</span> { config } = <span class="hljs-keyword">await</span> pow.ffs.getStorageConfig(cid)
+
+  <span class="hljs-comment">// get the current actual storage configuration for a cid</span>
+  <span class="hljs-keyword">const</span> { cidInfo } = <span class="hljs-keyword">await</span> pow.ffs.show(cid)
+
+  <span class="hljs-comment">// retrieve data from FFS by cid</span>
+  <span class="hljs-keyword">const</span> bytes = <span class="hljs-keyword">await</span> pow.ffs.get(cid)
+
+  <span class="hljs-comment">// senf FIL from an address managed by your FFS instance to any other address</span>
+  <span class="hljs-keyword">await</span> pow.ffs.sendFil(addrsList[<span class="hljs-number">0</span>].addr, <span class="hljs-string">&quot;&lt;some other address&gt;&quot;</span>, <span class="hljs-number">1000</span>)
+}</code></pre>
+				<p>See the <a href="https://github.com/textileio/js-powergate-client/tree/master/examples/node">Node.js example app</a> in this repository&#39;s <code>examples</code> directory.</p>
+				<p>There are also several useful examples included in the <code>*.spec.ts</code> files of this repo.</p>
+				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+					<h2>API</h2>
+				</a>
+				<p>You can read the <a href="https://textileio.github.io/js-powergate-client/">generated API docs</a> to see the available Powergate API.</p>
+				<a href="#maintainers" id="maintainers" style="color: inherit; text-decoration: none;">
+					<h2>Maintainers</h2>
+				</a>
+				<p><a href="https://github.com/textileio">Textile</a></p>
+				<a href="#contributing" id="contributing" style="color: inherit; text-decoration: none;">
+					<h2>Contributing</h2>
+				</a>
+				<p>See <a href="CONTRIBUTING.md">the contributing file</a>!</p>
+				<p>PRs accepted.</p>
+				<p>Small note: If editing the README, please conform to the <a href="https://github.com/RichardLitt/standard-readme">standard-readme</a> specification.</p>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<p><a href="LICENSE">MIT</a> (c) 2020 Textile</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_asks_index_.html">&quot;asks/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_asks_util_.html">&quot;asks/util&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_faults_index_.html">&quot;faults/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_ffs_index_.html">&quot;ffs/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_ffs_options_.html">&quot;ffs/options&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_ffs_util_.html">&quot;ffs/util&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_health_index_.html">&quot;health/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_index_.html">&quot;index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_miners_index_.html">&quot;miners/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_net_index_.html">&quot;net/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_options_.html">&quot;options&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_reputation_index_.html">&quot;reputation/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_.html">&quot;types&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_util_grpc_helpers_.html">&quot;util/grpc-<wbr>helpers&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_util_index_.html">&quot;util/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_util_util_.html">&quot;util/util&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_wallet_index_.html">&quot;wallet/index&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
