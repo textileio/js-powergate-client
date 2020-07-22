@@ -37,5 +37,8 @@ jobs:
 
       - name: Test Node
         run: npm run test:node
+
+      - name: Test Docs
+        run: npm run docs:test
       # - name: Test Browser
       #   run: npm run test:browser

@@ -2,12 +2,21 @@ import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/net/rpc/rp
 import { Config, netTypes } from "../types"
 import { promise } from "../util"
 
+export interface Net {
+  listenAddr: () => Promise<netTypes.ListenAddrResponse.AsObject>
+  peers: () => Promise<netTypes.PeersResponse.AsObject>
+  findPeer: (peerId: string) => Promise<netTypes.FindPeerResponse.AsObject>
+  connectPeer: (peerInfo: netTypes.PeerAddrInfo.AsObject) => Promise<void>
+  connectedness: (peerId: string) => Promise<netTypes.ConnectednessResponse.AsObject>
+  disconnectPeer: (peerId: string) => Promise<void>
+}
+
 /**
  * Creates the Net API client
  * @param config A config object that changes the behavior of the client
  * @returns The Net API client
  */
-export const createNet = (config: Config) => {
+export const createNet = (config: Config): Net => {
   const client = new RPCServiceClient(config.host, config)
   return {
     /**
