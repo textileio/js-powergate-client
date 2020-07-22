@@ -133,7 +133,7 @@ async function ffsMethods (pow: POW) {
   // get the current actual storage configuration for a cid
   const { cidInfo } = await pow.ffs.show(cid)
 
-  // retreive data from FFS by cid
+  // retrieve data from FFS by cid
   const bytes = await pow.ffs.get(cid)
 
   // senf FIL from an address managed by your FFS instance to any other address
