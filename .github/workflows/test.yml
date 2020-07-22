@@ -35,6 +35,9 @@ jobs:
       - name: Install
         run: npm install
 
+      - name: Test Build
+        run: npm run build
+
       - name: Test Node
         run: npm run test:node
 
