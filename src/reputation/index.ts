@@ -1,5 +1,10 @@
+import {
+  AddSourceRequest,
+  GetTopMinersRequest,
+  GetTopMinersResponse,
+} from "@textile/grpc-powergate-client/dist/reputation/rpc/rpc_pb"
 import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/reputation/rpc/rpc_pb_service"
-import { Config, reputationTypes } from "../types"
+import { Config } from "../types"
 import { promise } from "../util"
 
 export interface Reputation {
@@ -15,7 +20,7 @@ export interface Reputation {
    * @param limit Limits the number of results.
    * @returns The list of miner scores.
    */
-  getTopMiners: (limit: number) => Promise<reputationTypes.GetTopMinersResponse.AsObject>
+  getTopMiners: (limit: number) => Promise<GetTopMinersResponse.AsObject>
 }
 
 /**
@@ -25,7 +30,7 @@ export const createReputation = (config: Config): Reputation => {
   const client = new RPCServiceClient(config.host, config)
   return {
     addSource: (id: string, multiaddress: string) => {
-      const req = new reputationTypes.AddSourceRequest()
+      const req = new AddSourceRequest()
       req.setId(id)
       req.setMaddr(multiaddress)
       return promise(
@@ -37,11 +42,11 @@ export const createReputation = (config: Config): Reputation => {
     },
 
     getTopMiners: (limit: number) => {
-      const req = new reputationTypes.GetTopMinersRequest()
+      const req = new GetTopMinersRequest()
       req.setLimit(limit)
       return promise(
         (cb) => client.getTopMiners(req, cb),
-        (resp: reputationTypes.GetTopMinersResponse) => resp.toObject(),
+        (resp: GetTopMinersResponse) => resp.toObject(),
       )
     },
   }

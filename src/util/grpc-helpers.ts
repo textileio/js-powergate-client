@@ -24,7 +24,12 @@ export function promise<U, V, W>(
   })
 }
 
-export const useToken = (initialToken?: string) => {
+export const useToken = (
+  initialToken?: string,
+): Readonly<{
+  getMeta: () => grpc.Metadata
+  setToken: (t: string) => void
+}> => {
   let token = initialToken
 
   const getMeta = () => {
@@ -42,4 +47,5 @@ export const useToken = (initialToken?: string) => {
   return Object.freeze({ getMeta, setToken })
 }
 
-export const getTransport = () => (isNode ? NodeHttpTransport() : undefined)
+export const getTransport = (): grpc.TransportFactory | undefined =>
+  isNode ? NodeHttpTransport() : undefined

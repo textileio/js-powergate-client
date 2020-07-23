@@ -1,5 +1,14 @@
+import {
+  BalanceRequest,
+  BalanceResponse,
+  ListRequest,
+  ListResponse,
+  NewAddressRequest,
+  NewAddressResponse,
+  SendFilRequest,
+} from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc_pb"
 import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc_pb_service"
-import { Config, walletTypes } from "../types"
+import { Config } from "../types"
 import { promise } from "../util"
 
 export interface Wallet {
@@ -8,20 +17,20 @@ export interface Wallet {
    * @param type The type of address to create, bls or secp256k1.
    * @returns The new address.
    */
-  newAddress: (type?: "bls" | "secp256k1") => Promise<walletTypes.NewAddressResponse.AsObject>
+  newAddress: (type?: "bls" | "secp256k1") => Promise<NewAddressResponse.AsObject>
 
   /**
    * List all wallet addresses.
    * @returns The list of wallet addresses.
    */
-  list: () => Promise<walletTypes.ListResponse.AsObject>
+  list: () => Promise<ListResponse.AsObject>
 
   /**
    * Get the balance for a wallet address.
    * @param address The address to get the balance for.
    * @returns The address balance.
    */
-  balance: (address: string) => Promise<walletTypes.BalanceResponse.AsObject>
+  balance: (address: string) => Promise<BalanceResponse.AsObject>
 
   /**
    * Send Fil from one address to another.
@@ -39,31 +48,31 @@ export const createWallet = (config: Config): Wallet => {
   const client = new RPCServiceClient(config.host, config)
   return {
     newAddress: (type: "bls" | "secp256k1" = "bls") => {
-      const req = new walletTypes.NewAddressRequest()
+      const req = new NewAddressRequest()
       req.setType(type)
       return promise(
         (cb) => client.newAddress(req, cb),
-        (resp: walletTypes.NewAddressResponse) => resp.toObject(),
+        (resp: NewAddressResponse) => resp.toObject(),
       )
     },
 
     list: () =>
       promise(
-        (cb) => client.list(new walletTypes.ListRequest(), cb),
-        (resp: walletTypes.ListResponse) => resp.toObject(),
+        (cb) => client.list(new ListRequest(), cb),
+        (resp: ListResponse) => resp.toObject(),
       ),
 
     balance: (address: string) => {
-      const req = new walletTypes.BalanceRequest()
+      const req = new BalanceRequest()
       req.setAddress(address)
       return promise(
         (cb) => client.balance(req, cb),
-        (resp: walletTypes.BalanceResponse) => resp.toObject(),
+        (resp: BalanceResponse) => resp.toObject(),
       )
     },
 
     sendFil: (from: string, to: string, amount: number) => {
-      const req = new walletTypes.SendFilRequest()
+      const req = new SendFilRequest()
       req.setFrom(from)
       req.setTo(to)
       req.setAmount(amount)

@@ -1,5 +1,6 @@
+import { CheckRequest, CheckResponse } from "@textile/grpc-powergate-client/dist/health/rpc/rpc_pb"
 import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/health/rpc/rpc_pb_service"
-import { Config, healthTypes } from "../types"
+import { Config } from "../types"
 import { promise } from "../util"
 
 export interface Health {
@@ -7,7 +8,7 @@ export interface Health {
    * Checks the Powergate node health.
    * @returns Information about the health of the Powergate node.
    */
-  check: () => Promise<healthTypes.CheckResponse.AsObject>
+  check: () => Promise<CheckResponse.AsObject>
 }
 
 /**
@@ -18,8 +19,8 @@ export const createHealth = (config: Config): Health => {
   return {
     check: () =>
       promise(
-        (cb) => client.check(new healthTypes.CheckRequest(), cb),
-        (resp: healthTypes.CheckResponse) => resp.toObject(),
+        (cb) => client.check(new CheckRequest(), cb),
+        (resp: CheckResponse) => resp.toObject(),
       ),
   }
 }

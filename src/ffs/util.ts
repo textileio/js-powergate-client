@@ -1,10 +1,15 @@
-import { ffsTypes } from "../types"
-
-export function coldObjToMessage(obj: ffsTypes.ColdConfig.AsObject): ffsTypes.ColdConfig {
-  const cold = new ffsTypes.ColdConfig()
+import {
+  ColdConfig,
+  FilConfig,
+  FilRenew,
+  HotConfig,
+  IpfsConfig,
+} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
+export function coldObjToMessage(obj: ColdConfig.AsObject): ColdConfig {
+  const cold = new ColdConfig()
   cold.setEnabled(obj.enabled)
   if (obj.filecoin) {
-    const fc = new ffsTypes.FilConfig()
+    const fc = new FilConfig()
     fc.setAddr(obj.filecoin.addr)
     fc.setCountryCodesList(obj.filecoin.countryCodesList)
     fc.setDealMinDuration(obj.filecoin.dealMinDuration)
@@ -13,7 +18,7 @@ export function coldObjToMessage(obj: ffsTypes.ColdConfig.AsObject): ffsTypes.Co
     fc.setRepFactor(obj.filecoin.repFactor)
     fc.setTrustedMinersList(obj.filecoin.trustedMinersList)
     if (obj.filecoin.renew) {
-      const renew = new ffsTypes.FilRenew()
+      const renew = new FilRenew()
       renew.setEnabled(obj.filecoin.renew.enabled)
       renew.setThreshold(obj.filecoin.renew.threshold)
       fc.setRenew(renew)
@@ -23,12 +28,12 @@ export function coldObjToMessage(obj: ffsTypes.ColdConfig.AsObject): ffsTypes.Co
   return cold
 }
 
-export function hotObjToMessage(obj: ffsTypes.HotConfig.AsObject): ffsTypes.HotConfig {
-  const hot = new ffsTypes.HotConfig()
+export function hotObjToMessage(obj: HotConfig.AsObject): HotConfig {
+  const hot = new HotConfig()
   hot.setAllowUnfreeze(obj.allowUnfreeze)
   hot.setEnabled(obj.enabled)
   if (obj?.ipfs) {
-    const ipfs = new ffsTypes.IpfsConfig()
+    const ipfs = new IpfsConfig()
     ipfs.setAddTimeout(obj.ipfs.addTimeout)
     hot.setIpfs(ipfs)
   }
