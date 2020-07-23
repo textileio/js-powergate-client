@@ -40,8 +40,6 @@ jobs:
 
       - name: Test Node
         run: npm run test:node
-      # - name: Test Browser
-      #   run: npm run test:browser
   test-docs:
     name: Test Docs
     runs-on: ubuntu-latest
