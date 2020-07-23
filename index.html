@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Powergate Client</title>
-	<meta name="description" content="Documentation for Powergate Client">
+	<title>@textile/powergate-client</title>
+	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -13,7 +13,7 @@
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">Powergate Client</a>
+					<a href="index.html" class="title">@textile/powergate-client</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>Powergate Client</h1>
+			<h1>@textile/powergate-client</h1>
 		</div>
 	</div>
 </header>
@@ -75,7 +75,7 @@
 				<blockquote>
 					<p>Typescript/Javascript client for Textile&#39;s <a href="https://github.com/textileio/powergate">Powergate</a>.</p>
 				</blockquote>
-				<p>Use Powergate&#39;s multitiered file storage API built on Filecoin and IPFS from javascript environments such as Node, React Native, web browsers, and more.</p>
+				<p>Use Powergate&#39;s multi-tiered file storage API built on Filecoin and IPFS from javascript environments such as Node, React Native, web browsers, and more.</p>
 				<a href="#table-of-contents" id="table-of-contents" style="color: inherit; text-decoration: none;">
 					<h2>Table of Contents</h2>
 				</a>
@@ -104,15 +104,15 @@
 					<h2>Usage</h2>
 				</a>
 				<p>Start by creating an instance of the client.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
-<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
 
 <span class="hljs-keyword">const</span> pow = createPow({ host })</code></pre>
 				<p>Many APIs are immediately available and don&#39;t require authorization.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
-<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
 
 <span class="hljs-keyword">const</span> pow = createPow({ host })
 
@@ -122,9 +122,9 @@
   <span class="hljs-keyword">const</span> { peersList } = <span class="hljs-keyword">await</span> pow.net.peers()
 }</code></pre>
 				<p>Other APIs require authorization. The main API you&#39;ll interact with is the Filecoin File System (FFS), and it requires authorization. First, create a new FFS instance.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
-<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
 
 <span class="hljs-keyword">const</span> pow = createPow({ host })
 
@@ -134,25 +134,30 @@
 }</code></pre>
 				<p>Currently, the returned auth token is the only thing that gives you access to your FFS instance at a later time, so be sure to save it securely.</p>
 				<p>Once you have an auth token, either by creating a new FFS instance or by reading one you previously saved, set the auth token you&#39;d like the Powergate client to use.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
-<span class="hljs-keyword">const</span> host = <span class="hljs-string">&quot;http://0.0.0.0:6002&quot;</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
 
 <span class="hljs-keyword">const</span> pow = createPow({ host })
 
-<span class="hljs-keyword">const</span> authToken = <span class="hljs-string">&#x27;&lt;generated token&gt;&#x27;</span>
+<span class="hljs-keyword">const</span> authToken = <span class="hljs-string">'&lt;generated token&gt;'</span>
 
 pow.setToken(authToken)</code></pre>
 				<p>Now, the FFS API is available for you to use.</p>
-				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;fs&quot;</span>
-<span class="hljs-keyword">import</span> { ffsTypes, POW } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;@textile/powergate-client&quot;</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { JobStatus } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"</span>
+<span class="hljs-keyword">import</span> fs <span class="hljs-keyword">from</span> <span class="hljs-string">"fs"</span>
+<span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ffsMethods</span> (<span class="hljs-params">pow: POW</span>) </span>{
+<span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
+
+<span class="hljs-keyword">const</span> pow = createPow({ host })
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exampleCode</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// get wallet addresses associated with your FFS instance</span>
   <span class="hljs-keyword">const</span> { addrsList } = <span class="hljs-keyword">await</span> pow.ffs.addrs()
 
   <span class="hljs-comment">// create a new address associated with your ffs instance</span>
-  <span class="hljs-keyword">const</span> { addr } = <span class="hljs-keyword">await</span> pow.ffs.newAddr(<span class="hljs-string">&quot;my new addr&quot;</span>)
+  <span class="hljs-keyword">const</span> { addr } = <span class="hljs-keyword">await</span> pow.ffs.newAddr(<span class="hljs-string">"my new addr"</span>)
 
   <span class="hljs-comment">// get general info about your ffs instance</span>
   <span class="hljs-keyword">const</span> { info } = <span class="hljs-keyword">await</span> pow.ffs.info()
@@ -166,12 +171,12 @@ pow.setToken(authToken)</code></pre>
 
   <span class="hljs-comment">// watch the FFS job status to see the storage process progressing</span>
   <span class="hljs-keyword">const</span> jobsCancel = pow.ffs.watchJobs(<span class="hljs-function">(<span class="hljs-params">job</span>) =&gt;</span> {
-    <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.JOB_STATUS_CANCELED) {
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job canceled&quot;</span>)
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.JOB_STATUS_FAILED) {
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job failed&quot;</span>)
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;job success!&quot;</span>)
+    <span class="hljs-keyword">if</span> (job.status === JobStatus.JOB_STATUS_CANCELED) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"job canceled"</span>)
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === JobStatus.JOB_STATUS_FAILED) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"job failed"</span>)
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (job.status === JobStatus.JOB_STATUS_SUCCESS) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"job success!"</span>)
     }
   }, jobId)
 
@@ -189,8 +194,8 @@ pow.setToken(authToken)</code></pre>
   <span class="hljs-comment">// retrieve data from FFS by cid</span>
   <span class="hljs-keyword">const</span> bytes = <span class="hljs-keyword">await</span> pow.ffs.get(cid)
 
-  <span class="hljs-comment">// senf FIL from an address managed by your FFS instance to any other address</span>
-  <span class="hljs-keyword">await</span> pow.ffs.sendFil(addrsList[<span class="hljs-number">0</span>].addr, <span class="hljs-string">&quot;&lt;some other address&gt;&quot;</span>, <span class="hljs-number">1000</span>)
+  <span class="hljs-comment">// send FIL from an address managed by your FFS instance to any other address</span>
+  <span class="hljs-keyword">await</span> pow.ffs.sendFil(addrsList[<span class="hljs-number">0</span>].addr, <span class="hljs-string">"&lt;some other address&gt;"</span>, <span class="hljs-number">1000</span>)
 }</code></pre>
 				<p>See the <a href="https://github.com/textileio/js-powergate-client/tree/master/examples/node">Node.js example app</a> in this repository&#39;s <code>examples</code> directory.</p>
 				<p>There are also several useful examples included in the <code>*.spec.ts</code> files of this repo.</p>
@@ -220,83 +225,143 @@ pow.setToken(authToken)</code></pre>
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_asks_index_.html">&quot;asks/index&quot;</a>
+					<li class="label tsd-is-external">
+						<span>Externals</span>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_asks_util_.html">&quot;asks/util&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_ffs_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/ffs/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_faults_index_.html">&quot;faults/index&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_health_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/health/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_ffs_index_.html">&quot;ffs/index&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_index_ask_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/index/ask/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_ffs_options_.html">&quot;ffs/options&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_index_faults_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/index/faults/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_ffs_util_.html">&quot;ffs/util&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_index_miner_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/index/miner/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_health_index_.html">&quot;health/index&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_net_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/net/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_index_.html">&quot;index&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_reputation_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/reputation/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_miners_index_.html">&quot;miners/index&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_node_modules__textile_grpc_powergate_client_dist_wallet_rpc_rpc_pb_d_.html">&quot;node_<wbr>modules/@textile/grpc-<wbr>powergate-<wbr>client/dist/wallet/rpc/rpc_<wbr>pb.d&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_net_index_.html">&quot;net/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_options_.html">&quot;options&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_reputation_index_.html">&quot;reputation/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_.html">&quot;types&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_util_grpc_helpers_.html">&quot;util/grpc-<wbr>helpers&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_util_index_.html">&quot;util/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_util_util_.html">&quot;util/util&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_wallet_index_.html">&quot;wallet/index&quot;</a>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_ffs_options_.html">&quot;src/ffs/options&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/asks.html" class="tsd-kind-icon">Asks</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/config.html" class="tsd-kind-icon">Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ffs.html" class="tsd-kind-icon">FFS</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/faults.html" class="tsd-kind-icon">Faults</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/health.html" class="tsd-kind-icon">Health</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/miners.html" class="tsd-kind-icon">Miners</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/net.html" class="tsd-kind-icon">Net</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pow.html" class="tsd-kind-icon">Pow</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/reputation.html" class="tsd-kind-icon">Reputation</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/wallet.html" class="tsd-kind-icon">Wallet</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createpow" class="tsd-kind-icon">create<wbr>Pow</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
 	</div>
 </div>
-<footer>
+<footer class="with-border-bottom">
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 		</div>
 	</div>
 </footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
