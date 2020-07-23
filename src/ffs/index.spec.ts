@@ -1,7 +1,11 @@
+import {
+  JobStatus,
+  JobStatusMap,
+  StorageConfig,
+} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import { expect } from "chai"
 import fs from "fs"
 import { createFFS } from "."
-import { ffsTypes } from "../types"
 import { getTransport, host, useToken } from "../util"
 import {
   PushStorageConfigOption,
@@ -85,7 +89,7 @@ describe("ffs", function () {
     await waitForBalance(addrs[0].addr, 0)
     const cid = await expectStage("sample-data/samplefile")
     const jobId = await expectPushStorageConfig(cid)
-    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
+    await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
   })
 
   it("should watch logs", async () => {
@@ -127,9 +131,9 @@ describe("ffs", function () {
     const jobId3 = await expectPushStorageConfig(cid3)
 
     await Promise.all([
-      waitForJobStatus(jobId1, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
-      waitForJobStatus(jobId2, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
-      waitForJobStatus(jobId3, ffsTypes.JobStatus.JOB_STATUS_EXECUTING),
+      waitForJobStatus(jobId1, JobStatus.JOB_STATUS_EXECUTING),
+      waitForJobStatus(jobId2, JobStatus.JOB_STATUS_EXECUTING),
+      waitForJobStatus(jobId3, JobStatus.JOB_STATUS_EXECUTING),
     ])
 
     // wait for a second so some async work of actually starting a deal happens
@@ -148,9 +152,9 @@ describe("ffs", function () {
     expect(finalRecords, "final empty").empty
 
     await Promise.all([
-      waitForJobStatus(jobId1, ffsTypes.JobStatus.JOB_STATUS_SUCCESS),
-      waitForJobStatus(jobId2, ffsTypes.JobStatus.JOB_STATUS_SUCCESS),
-      waitForJobStatus(jobId3, ffsTypes.JobStatus.JOB_STATUS_SUCCESS),
+      waitForJobStatus(jobId1, JobStatus.JOB_STATUS_SUCCESS),
+      waitForJobStatus(jobId2, JobStatus.JOB_STATUS_SUCCESS),
+      waitForJobStatus(jobId3, JobStatus.JOB_STATUS_SUCCESS),
     ])
 
     const { recordsList: pendingRecords2 } = await c.listStorageDealRecords(
@@ -187,7 +191,7 @@ describe("ffs", function () {
     await waitForBalance(addrs[0].addr, 0)
     const cid = await expectStage("sample-data/samplefile")
     const jobId = await expectPushStorageConfig(cid)
-    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
+    await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
     const res = await c.show(cid)
     expect(res.cidInfo).not.undefined
   })
@@ -198,7 +202,7 @@ describe("ffs", function () {
     await waitForBalance(addrs[0].addr, 0)
     const cid = await expectStage("sample-data/samplefile")
     const jobId = await expectPushStorageConfig(cid)
-    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
+    await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
     const res = await c.showAll()
     expect(res.cidInfosList).not.empty
   })
@@ -209,7 +213,7 @@ describe("ffs", function () {
     await waitForBalance(addrs[0].addr, 0)
     const cid = await expectStage("sample-data/samplefile")
     const jobId = await expectPushStorageConfig(cid)
-    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
+    await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
     const cid2 = await expectStage("sample-data/samplefile2")
     const res = await c.replace(cid, cid2)
     expect(res.jobId).length.greaterThan(0)
@@ -221,7 +225,7 @@ describe("ffs", function () {
     await waitForBalance(addrs[0].addr, 0)
     const cid = await expectStage("sample-data/samplefile")
     const jobId = await expectPushStorageConfig(cid)
-    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
+    await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
     const bytes = await c.get(cid)
     expect(bytes.byteLength).greaterThan(0)
   })
@@ -248,7 +252,7 @@ describe("ffs", function () {
   it("should remove", async () => {
     await expectNewInstance()
     const cid = await expectStage("sample-data/samplefile")
-    const conf: ffsTypes.StorageConfig.AsObject = {
+    const conf: StorageConfig.AsObject = {
       repairable: false,
       cold: {
         enabled: false,
@@ -259,7 +263,7 @@ describe("ffs", function () {
       },
     }
     const jobId = await expectPushStorageConfig(cid, false, conf)
-    await waitForJobStatus(jobId, ffsTypes.JobStatus.JOB_STATUS_SUCCESS)
+    await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
     await c.remove(cid)
   })
 
@@ -313,7 +317,7 @@ describe("ffs", function () {
   async function expectPushStorageConfig(
     cid: string,
     override: boolean = false,
-    config?: ffsTypes.StorageConfig.AsObject,
+    config?: StorageConfig.AsObject,
   ) {
     const opts: PushStorageConfigOption[] = []
     opts.push(withOverride(override))
@@ -325,20 +329,17 @@ describe("ffs", function () {
     return res.jobId
   }
 
-  function waitForJobStatus(
-    jobId: string,
-    status: ffsTypes.JobStatusMap[keyof ffsTypes.JobStatusMap],
-  ) {
+  function waitForJobStatus(jobId: string, status: JobStatusMap[keyof JobStatusMap]) {
     return new Promise<void>((resolve, reject) => {
       try {
         const cancel = c.watchJobs((job) => {
           if (job.errCause.length > 0) {
             reject(job.errCause)
           }
-          if (job.status === ffsTypes.JobStatus.JOB_STATUS_CANCELED) {
+          if (job.status === JobStatus.JOB_STATUS_CANCELED) {
             reject("job canceled")
           }
-          if (job.status === ffsTypes.JobStatus.JOB_STATUS_FAILED) {
+          if (job.status === JobStatus.JOB_STATUS_FAILED) {
             reject("job failed")
           }
           if (job.status === status) {
