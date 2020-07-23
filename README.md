@@ -12,7 +12,7 @@ Powergate JS Client _(@textile/powergate-client)_
 
 > Typescript/Javascript client for Textile's [Powergate](https://github.com/textileio/powergate).
 
-Use Powergate's multitiered file storage API built on Filecoin and IPFS from javascript environments such as Node, React Native, web browsers, and more.
+Use Powergate's multi-tiered file storage API built on Filecoin and IPFS from javascript environments such as Node, React Native, web browsers, and more.
 
 ## Table of Contents
 
@@ -99,10 +99,15 @@ pow.setToken(authToken)
 Now, the FFS API is available for you to use.
 
 ```typescript
+import { JobStatus } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import fs from "fs"
-import { ffsTypes, POW } from "@textile/powergate-client"
+import { createPow } from "@textile/powergate-client"
 
-async function ffsMethods (pow: POW) {
+const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
+
+const pow = createPow({ host })
+
+async function exampleCode() {
   // get wallet addresses associated with your FFS instance
   const { addrsList } = await pow.ffs.addrs()
 
@@ -121,11 +126,11 @@ async function ffsMethods (pow: POW) {
 
   // watch the FFS job status to see the storage process progressing
   const jobsCancel = pow.ffs.watchJobs((job) => {
-    if (job.status === ffsTypes.JobStatus.JOB_STATUS_CANCELED) {
+    if (job.status === JobStatus.JOB_STATUS_CANCELED) {
       console.log("job canceled")
-    } else if (job.status === ffsTypes.JobStatus.JOB_STATUS_FAILED) {
+    } else if (job.status === JobStatus.JOB_STATUS_FAILED) {
       console.log("job failed")
-    } else if (job.status === ffsTypes.JobStatus.JOB_STATUS_SUCCESS) {
+    } else if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
       console.log("job success!")
     }
   }, jobId)
@@ -144,7 +149,7 @@ async function ffsMethods (pow: POW) {
   // retrieve data from FFS by cid
   const bytes = await pow.ffs.get(cid)
 
-  // senf FIL from an address managed by your FFS instance to any other address
+  // send FIL from an address managed by your FFS instance to any other address
   await pow.ffs.sendFil(addrsList[0].addr, "<some other address>", 1000)
 }
 ```
