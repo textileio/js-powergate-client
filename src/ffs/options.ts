@@ -1,7 +1,12 @@
-import { ffsTypes } from "../types"
+import {
+  ListDealRecordsConfig,
+  PushStorageConfigRequest,
+  StorageConfig,
+  WatchLogsRequest,
+} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
-export type PushStorageConfigOption = (req: ffsTypes.PushStorageConfigRequest) => void
+export type PushStorageConfigOption = (req: PushStorageConfigRequest) => void
 
 /**
  * Allows you to override an existing storage configuration
@@ -9,7 +14,7 @@ export type PushStorageConfigOption = (req: ffsTypes.PushStorageConfigRequest) =
  * @returns The resulting option
  */
 export const withOverride = (override: boolean): PushStorageConfigOption => {
-  return (req: ffsTypes.PushStorageConfigRequest) => {
+  return (req: PushStorageConfigRequest) => {
     req.setHasOverrideConfig(true)
     req.setOverrideConfig(override)
   }
@@ -20,11 +25,9 @@ export const withOverride = (override: boolean): PushStorageConfigOption => {
  * @param config The storage configuration to use
  * @returns The resulting option
  */
-export const withStorageConfig = (
-  config: ffsTypes.StorageConfig.AsObject,
-): PushStorageConfigOption => {
-  return (req: ffsTypes.PushStorageConfigRequest) => {
-    const c = new ffsTypes.StorageConfig()
+export const withStorageConfig = (config: StorageConfig.AsObject): PushStorageConfigOption => {
+  return (req: PushStorageConfigRequest) => {
+    const c = new StorageConfig()
     c.setRepairable(config.repairable)
     if (config.hot) {
       c.setHot(hotObjToMessage(config.hot))
@@ -37,7 +40,7 @@ export const withStorageConfig = (
   }
 }
 
-export type WatchLogsOption = (res: ffsTypes.WatchLogsRequest) => void
+export type WatchLogsOption = (res: WatchLogsRequest) => void
 
 /**
  * Control whether or not to include the history of log events
@@ -45,7 +48,7 @@ export type WatchLogsOption = (res: ffsTypes.WatchLogsRequest) => void
  * @returns The resulting option
  */
 export const withHistory = (includeHistory: boolean): WatchLogsOption => {
-  return (req: ffsTypes.WatchLogsRequest) => {
+  return (req: WatchLogsRequest) => {
     req.setHistory(includeHistory)
   }
 }
@@ -56,12 +59,12 @@ export const withHistory = (includeHistory: boolean): WatchLogsOption => {
  * @returns The resulting option
  */
 export const withJobId = (jobId: string): WatchLogsOption => {
-  return (req: ffsTypes.WatchLogsRequest) => {
+  return (req: WatchLogsRequest) => {
     req.setJid(jobId)
   }
 }
 
-export type ListDealRecordsOption = (req: ffsTypes.ListDealRecordsConfig) => void
+export type ListDealRecordsOption = (req: ListDealRecordsConfig) => void
 
 /**
  * Limits the results deals initiated from the provided wallet addresses
@@ -69,7 +72,7 @@ export type ListDealRecordsOption = (req: ffsTypes.ListDealRecordsConfig) => voi
  * @returns The resulting option
  */
 export const withFromAddresses = (...addresses: string[]): ListDealRecordsOption => {
-  return (req: ffsTypes.ListDealRecordsConfig) => {
+  return (req: ListDealRecordsConfig) => {
     req.setFromAddrsList(addresses)
   }
 }
@@ -80,7 +83,7 @@ export const withFromAddresses = (...addresses: string[]): ListDealRecordsOption
  * @returns The resulting option
  */
 export const withDataCids = (...cids: string[]): ListDealRecordsOption => {
-  return (req: ffsTypes.ListDealRecordsConfig) => {
+  return (req: ListDealRecordsConfig) => {
     req.setDataCidsList(cids)
   }
 }
@@ -93,7 +96,7 @@ export const withDataCids = (...cids: string[]): ListDealRecordsOption => {
  * @returns The resulting option
  */
 export const withIncludePending = (includePending: boolean): ListDealRecordsOption => {
-  return (req: ffsTypes.ListDealRecordsConfig) => {
+  return (req: ListDealRecordsConfig) => {
     req.setIncludePending(includePending)
   }
 }
@@ -106,7 +109,7 @@ export const withIncludePending = (includePending: boolean): ListDealRecordsOpti
  * @returns The resulting option
  */
 export const withIncludeFinal = (includeFinal: boolean): ListDealRecordsOption => {
-  return (req: ffsTypes.ListDealRecordsConfig) => {
+  return (req: ListDealRecordsConfig) => {
     req.setIncludeFinal(includeFinal)
   }
 }
@@ -119,7 +122,7 @@ export const withIncludeFinal = (includeFinal: boolean): ListDealRecordsOption =
  * @returns The resulting option
  */
 export const withAscending = (ascending: boolean): ListDealRecordsOption => {
-  return (req: ffsTypes.ListDealRecordsConfig) => {
+  return (req: ListDealRecordsConfig) => {
     req.setAscending(ascending)
   }
 }

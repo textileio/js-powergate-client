@@ -1,7 +1,6 @@
-import { Connectedness } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
+import { Connectedness, PeersResponse } from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
 import { assert, expect } from "chai"
 import { createNet } from "."
-import { netTypes } from "../types"
 import { getTransport, host } from "../util"
 
 describe("net", () => {
@@ -44,7 +43,7 @@ describe("net", () => {
     return peers
   }
 
-  function expectPeerInfo(peersResp: netTypes.PeersResponse.AsObject) {
+  function expectPeerInfo(peersResp: PeersResponse.AsObject) {
     const peerInfo = peersResp.peersList[0].addrInfo
     if (!peerInfo) {
       assert.fail("no peer info")

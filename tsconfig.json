@@ -7,7 +7,6 @@
       "dom",
       "esnext"
     ],
-    "composite": true,
     "moduleResolution": "node",
     "allowJs": false,
     "declaration": true,

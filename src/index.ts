@@ -1,101 +1,106 @@
-import { createAsks } from "./asks"
-import { createFaults } from "./faults"
-import { createFFS } from "./ffs"
-import { createHealth } from "./health"
-import { createMiners } from "./miners"
-import { createNet } from "./net"
-import { ffsOptions } from "./options"
-import { createReputation } from "./reputation"
-import {
-  asksTypes,
-  Config,
-  faultsTypes,
-  ffsTypes,
-  healthTypes,
-  minersTypes,
-  netTypes,
-  reputationTypes,
-  walletTypes,
-} from "./types"
+import { Asks, createAsks } from "./asks"
+import { createFaults, Faults } from "./faults"
+import { createFFS, FFS, options as ffsOptions } from "./ffs"
+import { createHealth, Health } from "./health"
+import { createMiners, Miners } from "./miners"
+import { createNet, Net } from "./net"
+import { createReputation, Reputation } from "./reputation"
+import { Config } from "./types"
 import { getTransport, host, useToken } from "./util"
-import { createWallet } from "./wallet"
+import { createWallet, Wallet } from "./wallet"
 
+export * as ffsTypes from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
+export * as healthTypes from "@textile/grpc-powergate-client/dist/health/rpc/rpc_pb"
+export * as asksTypes from "@textile/grpc-powergate-client/dist/index/ask/rpc/rpc_pb"
+export * as faultsTypes from "@textile/grpc-powergate-client/dist/index/faults/rpc/rpc_pb"
+export * as minersTypes from "@textile/grpc-powergate-client/dist/index/miner/rpc/rpc_pb"
+export * as netTypes from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
+export * as reputationTypes from "@textile/grpc-powergate-client/dist/reputation/rpc/rpc_pb"
+export * as walletTypes from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc_pb"
 export { ffsOptions }
-export {
-  asksTypes,
-  Config,
-  faultsTypes,
-  ffsTypes,
-  healthTypes,
-  minersTypes,
-  netTypes,
-  reputationTypes,
-  walletTypes,
-}
+export { Config }
+export { Asks, Faults, FFS, Health, Miners, Net, Reputation, Wallet }
 
 const defaultConfig: Config = {
   host,
   transport: getTransport(),
 }
 
-export type POW = ReturnType<typeof createPow>
+export interface Pow {
+  /**
+   * Set the active auth token
+   * @param t The token to set
+   */
+  setToken: (t: string) => void
+
+  /**
+   * The Asks API
+   */
+  asks: Asks
+
+  /**
+   * The Faults API
+   */
+  faults: Faults
+
+  /**
+   * The FFS API
+   */
+  ffs: FFS
+
+  /**
+   * The Health API
+   */
+  health: Health
+
+  /**
+   * The Miners API
+   */
+  miners: Miners
+
+  /**
+   * The Net API
+   */
+  net: Net
+
+  /**
+   * The Reputation API
+   */
+  reputation: Reputation
+
+  /**
+   * The Wallet API
+   */
+  wallet: Wallet
+}
 
 /**
  * Creates a new Powergate client
  * @param config A config object that changes the behavior of the client
  * @returns A Powergate client API
  */
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const createPow = (config?: Partial<Config>) => {
+export const createPow = (config?: Partial<Config>): Pow => {
   const c = { ...defaultConfig, ...removeEmpty(config) }
 
   const { getMeta, setToken } = useToken(c.authToken)
 
   return {
-    /**
-     * Set the active auth token
-     * @param t The token to set
-     */
     setToken,
 
-    /**
-     * The Asks API
-     */
     asks: createAsks(c),
 
-    /**
-     * The Faults API
-     */
     faults: createFaults(c),
 
-    /**
-     * The FFS API
-     */
     ffs: createFFS(c, getMeta),
 
-    /**
-     * The Health API
-     */
     health: createHealth(c),
 
-    /**
-     * The Miners API
-     */
     miners: createMiners(c),
 
-    /**
-     * The Net API
-     */
     net: createNet(c),
 
-    /**
-     * The Reputation API
-     */
     reputation: createReputation(c),
 
-    /**
-     * The Wallet API
-     */
     wallet: createWallet(c),
   }
 }

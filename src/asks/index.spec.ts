@@ -1,6 +1,6 @@
+import { Query } from "@textile/grpc-powergate-client/dist/index/ask/rpc/rpc_pb"
 import { expect } from "chai"
 import { createAsks } from "."
-import { asksTypes } from "../types"
 import { getTransport, host } from "../util"
 
 describe("asks", () => {
@@ -12,7 +12,7 @@ describe("asks", () => {
   })
 
   it("should query", async () => {
-    const q = new asksTypes.Query().toObject()
+    const q = new Query().toObject()
     const { asksList } = await c.query(q)
     expect(asksList).not.undefined
   })
