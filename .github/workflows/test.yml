@@ -68,7 +68,10 @@ jobs:
         run: npm install
 
       - name: Install typedoc
-        run: npm install typedoc
+        run: npm install typedoc --save-dev
+
+      - name: Build
+        run: npm run build
 
       - name: Test Docs
         run: npm run docs:test
