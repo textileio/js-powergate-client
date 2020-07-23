@@ -38,40 +38,8 @@ jobs:
       - name: Test Build
         run: npm run build
 
-      - name: Test Node
-        run: npm run test:node
-  test-docs:
-    name: Test Docs
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, 'skip-ci')"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Setup
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12
-
-      - name: Install
-        run: npm install
-
-      - name: Install typedoc
-        run: npm install typedoc --save-dev
-
-      - name: Build
-        run: npm run build
-
       - name: Test Docs
         run: npm run docs:test
+
+      - name: Test Node
+        run: npm run test:node

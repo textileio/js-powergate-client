@@ -9,6 +9,7 @@ import { Config } from "./types"
 import { getTransport, host, useToken } from "./util"
 import { createWallet, Wallet } from "./wallet"
 
+export * as ffsTypes from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 export * as healthTypes from "@textile/grpc-powergate-client/dist/health/rpc/rpc_pb"
 export * as asksTypes from "@textile/grpc-powergate-client/dist/index/ask/rpc/rpc_pb"
 export * as faultsTypes from "@textile/grpc-powergate-client/dist/index/faults/rpc/rpc_pb"
