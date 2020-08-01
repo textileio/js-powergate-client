@@ -90,6 +90,10 @@ describe("ffs", function () {
     const cid = await expectStage("sample-data/samplefile")
     const jobId = await expectPushStorageConfig(cid)
     await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
+    // Test that if we call watchJobs again after the job has finished
+    // that is calls us back with the latest status
+    await new Promise((r) => setTimeout(r, 10000))
+    await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
   })
 
   it("should watch logs", async () => {
