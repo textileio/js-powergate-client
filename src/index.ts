@@ -1,3 +1,8 @@
+import {
+  BuildInfoRequest,
+  BuildInfoResponse,
+} from "@textile/grpc-powergate-client/dist/buildInfo/rpc/rpc_pb"
+import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/buildInfo/rpc/rpc_pb_service"
 import { Asks, createAsks } from "./asks"
 import { createFaults, Faults } from "./faults"
 import { createFFS, FFS, options as ffsOptions } from "./ffs"
@@ -6,7 +11,7 @@ import { createMiners, Miners } from "./miners"
 import { createNet, Net } from "./net"
 import { createReputation, Reputation } from "./reputation"
 import { Config } from "./types"
-import { getTransport, host, useToken } from "./util"
+import { getTransport, host, promise, useToken } from "./util"
 import { createWallet, Wallet } from "./wallet"
 
 export * as ffsTypes from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
@@ -32,6 +37,17 @@ export interface Pow {
    * @param t The token to set
    */
   setToken: (t: string) => void
+
+  /**
+   * Returns build information about the server
+   * @returns An object containing build information about the server
+   */
+  buildInfo: () => Promise<BuildInfoResponse.AsObject>
+
+  /**
+   * The host address the client is using
+   */
+  host: string
 
   /**
    * The Asks API
@@ -84,8 +100,18 @@ export const createPow = (config?: Partial<Config>): Pow => {
 
   const { getMeta, setToken } = useToken(c.authToken)
 
+  const buildInfoClient = new RPCServiceClient(c.host, c)
+
   return {
     setToken,
+
+    buildInfo: () =>
+      promise(
+        (cb) => buildInfoClient.buildInfo(new BuildInfoRequest(), cb),
+        (resp: BuildInfoResponse) => resp.toObject(),
+      ),
+
+    host: c.host,
 
     asks: createAsks(c),
 
