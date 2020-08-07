@@ -485,7 +485,6 @@ export const createFFS = (
       for await (const file of ipfs.get(cid, { headers, ...conf })) {
         const noCidPath = file.path.replace(cid, "")
         const fullFilePath = path.join(output, noCidPath)
-        console.log(fullFilePath)
         if (file.content) {
           await fs.promises.mkdir(path.join(output, path.dirname(file.path)), { recursive: true })
           const stream = fs.createWriteStream(fullFilePath)
