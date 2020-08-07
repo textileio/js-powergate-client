@@ -126,3 +126,15 @@ export const withAscending = (ascending: boolean): ListDealRecordsOption => {
     req.setAscending(ascending)
   }
 }
+
+export type GetFolderConfig = {
+  timeout: number
+}
+
+export type GetFolderOption = (req: GetFolderConfig) => void
+
+export const withTimeout = (timeout: number): GetFolderOption => {
+  return (conf: GetFolderConfig) => {
+    conf.timeout = timeout
+  }
+}

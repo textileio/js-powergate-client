@@ -52,6 +52,9 @@ import {
   RPCService,
   RPCServiceClient,
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
+import fs from "fs"
+import ipfsClient from "ipfs-http-client"
+import path from "path"
 import { Config } from "../types"
 import { promise } from "../util"
 import * as options from "./options"
@@ -190,6 +193,14 @@ export interface FFS {
   get: (cid: string) => Promise<Uint8Array>
 
   /**
+   * Retrieve a folder stored in the current FFS instance.
+   * @param cid The root cid of the folder to retrieve.
+   * @param outputPath The location to write the folder to
+   * @param opts Options controlling the behavior of retrieving the folder
+   */
+  getFolder: (cid: string, output: string, ...opts: options.GetFolderOption[]) => Promise<void>
+
+  /**
    * Send FIL from an address associated with the current FFS instance to any other address.
    * @param from The address to send FIL from.
    * @param to The address to send FIL to.
@@ -203,12 +214,20 @@ export interface FFS {
   close: () => Promise<void>
 
   /**
-   * A helper method to cache data in IPFS in preparation for storing in
+   * A helper method to stage data in IPFS in preparation for storing using ffs.pushStorageConfig.
    * This doesn't actually store data in FFS, you'll want to call pushStorageConfig for that.
    * @param input The raw data to add.
    * @returns The cid of the added data.
    */
   stage: (input: Uint8Array) => Promise<StageResponse.AsObject>
+
+  /**
+   * A helper method to stage a folder recursively in IPFS in preparation for storing using ffs.pushStorageConfig.
+   * This doesn't actually store data in FFS, you'll want to call pushStorageConfig for that.
+   * @param path The path to the folder to add.
+   * @returns The cid of the added folder.
+   */
+  stageFolder: (path: string) => Promise<string>
 
   /**
    * List all payment channels for the current FFS instance.
@@ -263,8 +282,13 @@ export interface FFS {
 /**
  * @ignore
  */
-export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => {
+export const createFFS = (
+  config: Config,
+  getMeta: () => grpc.Metadata,
+  getHeaders: () => Record<string, string>,
+): FFS => {
   const client = new RPCServiceClient(config.host, config)
+  const ipfs = ipfsClient(config.host)
   return {
     create: () =>
       promise(
@@ -450,6 +474,40 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
       })
     },
 
+    getFolder: async (cid: string, output: string, ...opts: options.GetFolderOption[]) => {
+      const conf: options.GetFolderConfig = {
+        timeout: 60000,
+      }
+      opts.forEach((opt) => {
+        opt(conf)
+      })
+      const headers = getHeaders()
+      for await (const file of ipfs.get(cid, { headers, ...conf })) {
+        const noCidPath = file.path.replace(cid, "")
+        const fullFilePath = path.join(output, noCidPath)
+        console.log(fullFilePath)
+        if (file.content) {
+          await fs.promises.mkdir(path.join(output, path.dirname(file.path)), { recursive: true })
+          const stream = fs.createWriteStream(fullFilePath)
+          for await (const chunk of file.content) {
+            const slice = chunk.slice()
+            await new Promise((resolve, reject) => {
+              stream.write(slice, (err) => {
+                if (err) {
+                  reject(err)
+                } else {
+                  resolve()
+                }
+              })
+            })
+          }
+        } else {
+          // this is a dir
+          await fs.promises.mkdir(fullFilePath, { recursive: true })
+        }
+      }
+    },
+
     sendFil: (from: string, to: string, amount: number) => {
       const req = new SendFilRequest()
       req.setFrom(from)
@@ -491,6 +549,13 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
         client.send(req)
         client.finishSend()
       })
+    },
+
+    stageFolder: async (path: string) => {
+      const src = ipfsClient.globSource(path, { recursive: true })
+      const headers = getHeaders()
+      const res = await ipfs.add(src, { headers })
+      return res.cid.string
     },
 
     listPayChannels: () =>

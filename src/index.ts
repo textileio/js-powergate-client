@@ -98,7 +98,7 @@ export interface Pow {
 export const createPow = (config?: Partial<Config>): Pow => {
   const c = { ...defaultConfig, ...removeEmpty(config) }
 
-  const { getMeta, setToken } = useToken(c.authToken)
+  const { getMeta, getHeaders, setToken } = useToken(c.authToken)
 
   const buildInfoClient = new RPCServiceClient(c.host, c)
 
@@ -117,7 +117,7 @@ export const createPow = (config?: Partial<Config>): Pow => {
 
     faults: createFaults(c),
 
-    ffs: createFFS(c, getMeta),
+    ffs: createFFS(c, getMeta, getHeaders),
 
     health: createHealth(c),
 

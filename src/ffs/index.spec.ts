@@ -22,9 +22,9 @@ import {
 describe("ffs", function () {
   this.timeout(180000)
 
-  const { getMeta, setToken } = useToken("")
+  const { getMeta, getHeaders, setToken } = useToken("")
 
-  const c = createFFS({ host, transport: getTransport() }, getMeta)
+  const c = createFFS({ host, transport: getTransport() }, getMeta, getHeaders)
 
   it("should create an instance", async () => {
     await expectNewInstance()
@@ -74,6 +74,12 @@ describe("ffs", function () {
   it("should add to hot", async () => {
     await expectNewInstance()
     await expectStage("sample-data/samplefile")
+  })
+
+  it("should add a folder to hot", async () => {
+    await expectNewInstance()
+    const res = await c.stageFolder("./sample-data")
+    expect(res).length.greaterThan(0)
   })
 
   it("should push config", async () => {
@@ -232,6 +238,13 @@ describe("ffs", function () {
     await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
     const bytes = await c.get(cid)
     expect(bytes.byteLength).greaterThan(0)
+  })
+
+  it("should get a folder", async () => {
+    await expectNewInstance()
+    const res = await c.stageFolder("./sample-data")
+    expect(res).length.greaterThan(0)
+    await c.getFolder(res, "./output")
   })
 
   it("should cancel a job", async () => {
