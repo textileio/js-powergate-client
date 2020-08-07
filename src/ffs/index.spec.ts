@@ -71,12 +71,12 @@ describe("ffs", function () {
     expect(res.info).not.undefined
   })
 
-  it("should add to hot", async () => {
+  it("should stage", async () => {
     await expectNewInstance()
     await expectStage("sample-data/samplefile")
   })
 
-  it("should add a folder to hot", async () => {
+  it("should stage a folder", async () => {
     await expectNewInstance()
     const res = await c.stageFolder("./sample-data")
     expect(res).length.greaterThan(0)
