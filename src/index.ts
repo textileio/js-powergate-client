@@ -103,6 +103,8 @@ export const createPow = (config?: Partial<Config>): Pow => {
   const buildInfoClient = new RPCServiceClient(c.host, c)
 
   return {
+    host: c.host,
+
     setToken,
 
     buildInfo: () =>
@@ -110,8 +112,6 @@ export const createPow = (config?: Partial<Config>): Pow => {
         (cb) => buildInfoClient.buildInfo(new BuildInfoRequest(), cb),
         (resp: BuildInfoResponse) => resp.toObject(),
       ),
-
-    host: c.host,
 
     asks: createAsks(c),
 
