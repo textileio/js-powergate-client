@@ -14,6 +14,9 @@ beforeEach(async function () {
   await wait({
     resources: ["http://0.0.0.0:6002"],
     timeout: 120000,
+    validateStatus: function () {
+      return true // the call expectedly returns 404, so just allow that
+    },
   })
 })
 
