@@ -1,8 +1,8 @@
 import {
   BuildInfoRequest,
   BuildInfoResponse,
-} from "@textile/grpc-powergate-client/dist/buildInfo/rpc/rpc_pb"
-import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/buildInfo/rpc/rpc_pb_service"
+} from "@textile/grpc-powergate-client/dist/buildinfo/rpc/rpc_pb"
+import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/buildinfo/rpc/rpc_pb_service"
 import { Asks, createAsks } from "./asks"
 import { createFaults, Faults } from "./faults"
 import { createFFS, FFS, options as ffsOptions } from "./ffs"
