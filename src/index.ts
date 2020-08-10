@@ -5,7 +5,14 @@ import {
 import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/buildinfo/rpc/rpc_pb_service"
 import { Asks, createAsks } from "./asks"
 import { createFaults, Faults } from "./faults"
-import { createFFS, FFS, options as ffsOptions } from "./ffs"
+import {
+  createFFS,
+  FFS,
+  GetFolderOptions,
+  ListDealRecordsOptions,
+  PushStorageConfigOptions,
+  WatchLogsOptions,
+} from "./ffs"
 import { createHealth, Health } from "./health"
 import { createMiners, Miners } from "./miners"
 import { createNet, Net } from "./net"
@@ -22,7 +29,7 @@ export * as minersTypes from "@textile/grpc-powergate-client/dist/index/miner/rp
 export * as netTypes from "@textile/grpc-powergate-client/dist/net/rpc/rpc_pb"
 export * as reputationTypes from "@textile/grpc-powergate-client/dist/reputation/rpc/rpc_pb"
 export * as walletTypes from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc_pb"
-export { ffsOptions }
+export { GetFolderOptions, PushStorageConfigOptions, WatchLogsOptions, ListDealRecordsOptions }
 export { Config }
 export { Asks, Faults, FFS, Health, Miners, Net, Reputation, Wallet }
 

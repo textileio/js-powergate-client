@@ -57,10 +57,15 @@ import ipfsClient from "ipfs-http-client"
 import path from "path"
 import { Config } from "../types"
 import { promise } from "../util"
-import * as options from "./options"
+import {
+  GetFolderOptions,
+  ListDealRecordsOptions,
+  PushStorageConfigOptions,
+  WatchLogsOptions,
+} from "./types"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
-export { options }
+export { GetFolderOptions, ListDealRecordsOptions, WatchLogsOptions, PushStorageConfigOptions }
 
 export interface FFS {
   /**
@@ -156,7 +161,7 @@ export interface FFS {
   watchLogs: (
     handler: (event: LogEntry.AsObject) => void,
     cid: string,
-    ...opts: options.WatchLogsOption[]
+    opts?: WatchLogsOptions,
   ) => () => void
 
   /**
@@ -176,7 +181,7 @@ export interface FFS {
    */
   pushStorageConfig: (
     cid: string,
-    ...opts: options.PushStorageConfigOption[]
+    opts?: PushStorageConfigOptions,
   ) => Promise<PushStorageConfigResponse.AsObject>
 
   /**
@@ -198,7 +203,7 @@ export interface FFS {
    * @param outputPath The location to write the folder to
    * @param opts Options controlling the behavior of retrieving the folder
    */
-  getFolder: (cid: string, output: string, ...opts: options.GetFolderOption[]) => Promise<void>
+  getFolder: (cid: string, output: string, opts?: GetFolderOptions) => Promise<void>
 
   /**
    * Send FIL from an address associated with the current FFS instance to any other address.
@@ -260,7 +265,7 @@ export interface FFS {
    * @returns A list of storage deal records.
    */
   listStorageDealRecords: (
-    ...opts: options.ListDealRecordsOption[]
+    opts?: ListDealRecordsOptions,
   ) => Promise<ListStorageDealRecordsResponse.AsObject>
 
   /**
@@ -269,7 +274,7 @@ export interface FFS {
    * @returns A list of retrieval deal records.
    */
   listRetrievalDealRecords: (
-    ...opts: options.ListDealRecordsOption[]
+    opts?: ListDealRecordsOptions,
   ) => Promise<ListRetrievalDealRecordsResponse.AsObject>
 
   /**
@@ -401,11 +406,16 @@ export const createFFS = (
     watchLogs: (
       handler: (event: LogEntry.AsObject) => void,
       cid: string,
-      ...opts: options.WatchLogsOption[]
+      opts: WatchLogsOptions = {},
     ) => {
       const req = new WatchLogsRequest()
       req.setCid(cid)
-      opts.forEach((opt) => opt(req))
+      if (opts.includeHistory) {
+        req.setHistory(opts.includeHistory)
+      }
+      if (opts.jobId) {
+        req.setJid(opts.jobId)
+      }
       const stream = client.watchLogs(req, getMeta())
       stream.on("data", (res) => {
         const logEntry = res.getLogEntry()?.toObject()
@@ -426,12 +436,25 @@ export const createFFS = (
       )
     },
 
-    pushStorageConfig: (cid: string, ...opts: options.PushStorageConfigOption[]) => {
+    pushStorageConfig: (cid: string, opts: PushStorageConfigOptions = {}) => {
       const req = new PushStorageConfigRequest()
       req.setCid(cid)
-      opts.forEach((opt) => {
-        opt(req)
-      })
+      if (opts.override) {
+        req.setOverrideConfig(opts.override)
+        req.setHasOverrideConfig(true)
+      }
+      if (opts.storageConfig) {
+        const c = new StorageConfig()
+        c.setRepairable(opts.storageConfig.repairable)
+        if (opts.storageConfig.hot) {
+          c.setHot(hotObjToMessage(opts.storageConfig.hot))
+        }
+        if (opts.storageConfig.cold) {
+          c.setCold(coldObjToMessage(opts.storageConfig.cold))
+        }
+        req.setConfig(c)
+        req.setHasConfig(true)
+      }
       return promise(
         (cb) => client.pushStorageConfig(req, getMeta(), cb),
         (res: PushStorageConfigResponse) => res.toObject(),
@@ -474,15 +497,13 @@ export const createFFS = (
       })
     },
 
-    getFolder: async (cid: string, output: string, ...opts: options.GetFolderOption[]) => {
-      const conf: options.GetFolderConfig = {
-        timeout: 60000,
-      }
-      opts.forEach((opt) => {
-        opt(conf)
-      })
+    getFolder: async (cid: string, output: string, opts: GetFolderOptions = {}) => {
       const headers = getHeaders()
-      for await (const file of ipfs.get(cid, { headers, ...conf })) {
+      const options: Record<string, unknown> = { headers }
+      if (opts.timeout) {
+        options["timeout"] = opts.timeout
+      }
+      for await (const file of ipfs.get(cid, options)) {
         const noCidPath = file.path.replace(cid, "")
         const fullFilePath = path.join(output, noCidPath)
         if (file.content) {
@@ -585,26 +606,18 @@ export const createFFS = (
       )
     },
 
-    listStorageDealRecords: (...opts: options.ListDealRecordsOption[]) => {
-      const conf = new ListDealRecordsConfig()
-      opts.forEach((opt) => {
-        opt(conf)
-      })
+    listStorageDealRecords: (opts: ListDealRecordsOptions = {}) => {
       const req = new ListStorageDealRecordsRequest()
-      req.setConfig(conf)
+      req.setConfig(listDealRecordsOptionsToConfig(opts))
       return promise(
         (cb) => client.listStorageDealRecords(req, getMeta(), cb),
         (res: ListStorageDealRecordsResponse) => res.toObject(),
       )
     },
 
-    listRetrievalDealRecords: (...opts: options.ListDealRecordsOption[]) => {
-      const conf = new ListDealRecordsConfig()
-      opts.forEach((opt) => {
-        opt(conf)
-      })
+    listRetrievalDealRecords: (opts: ListDealRecordsOptions = {}) => {
       const req = new ListRetrievalDealRecordsRequest()
-      req.setConfig(conf)
+      req.setConfig(listDealRecordsOptionsToConfig(opts))
       return promise(
         (cb) => client.listRetrievalDealRecords(req, getMeta(), cb),
         (res: ListRetrievalDealRecordsResponse) => res.toObject(),
@@ -617,4 +630,24 @@ export const createFFS = (
         (res: ShowAllResponse) => res.toObject(),
       ),
   }
+}
+
+function listDealRecordsOptionsToConfig(opts: ListDealRecordsOptions) {
+  const conf = new ListDealRecordsConfig()
+  if (opts.ascending) {
+    conf.setAscending(opts.ascending)
+  }
+  if (opts.dataCids) {
+    conf.setDataCidsList(opts.dataCids)
+  }
+  if (opts.fromAddresses) {
+    conf.setFromAddrsList(opts.fromAddresses)
+  }
+  if (opts.includeFinal) {
+    conf.setIncludeFinal(opts.includeFinal)
+  }
+  if (opts.includePending) {
+    conf.setIncludePending(opts.includePending)
+  }
+  return conf
 }

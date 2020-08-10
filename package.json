@@ -15,7 +15,7 @@
     "test:node": "npm run powergate-docker && TS_NODE_FILES=true mocha --exit",
     "test:browser": "npm run powergate-docker && polendina --timeout 3000 --cleanup src/**/*.spec.ts --webpack-config ./webpack.test.js",
     "lint": "eslint --fix --ext .js,.ts src/**/*",
-    "docs": "npx -p typescript -p typedoc@next typedoc --plugin none --mode library --out docs --excludeNotExported --includeDeclarations src/index.ts",
+    "docs": "npx -p typescript -p typedoc@next typedoc --plugin none --mode library --out docs --excludeNotExported --includeDeclarations --ignoreCompilerErrors src/index.ts",
     "docs:test": "npm run docs:clean && npm run docs:md && npm run docs:verify",
     "docs:clean": "rm -rf docs",
     "docs:md": "typedoc --plugin typedoc-plugin-markdown",
