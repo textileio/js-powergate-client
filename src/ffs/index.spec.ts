@@ -163,7 +163,7 @@ describe("ffs", function () {
     expect(pendingRecords2, "pending2 empty").empty
 
     const { recordsList: finalRecords2 } = await c.listStorageDealRecords({
-      includePending: true,
+      includeFinal: true,
       ascending: true,
       fromAddresses: [addrs[0].addr],
       dataCids: [cid1, cid2, cid3],
