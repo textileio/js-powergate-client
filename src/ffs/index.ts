@@ -3,7 +3,6 @@ import {
   AddrsRequest,
   AddrsResponse,
   CancelJobRequest,
-  CloseRequest,
   CreatePayChannelRequest,
   CreatePayChannelResponse,
   CreateRequest,
@@ -212,11 +211,6 @@ export interface FFS {
    * @param amount The amount of FIL to send.
    */
   sendFil: (from: string, to: string, amount: number) => Promise<void>
-
-  /**
-   * Close the current FFS instance
-   */
-  close: () => Promise<void>
 
   /**
    * A helper method to stage data in IPFS in preparation for storing using ffs.pushStorageConfig.
@@ -540,14 +534,6 @@ export const createFFS = (
         },
       )
     },
-
-    close: () =>
-      promise(
-        (cb) => client.close(new CloseRequest(), getMeta(), cb),
-        () => {
-          // nothing to return
-        },
-      ),
 
     stage: (input: Uint8Array) => {
       // TODO: figure out how to stream data in here, or at least stream to the server

@@ -282,11 +282,6 @@ describe("ffs", function () {
     await c.sendFil(addrs[0].addr, addr, 10)
   })
 
-  it("should close", async () => {
-    await expectNewInstance()
-    await c.close()
-  })
-
   async function expectNewInstance() {
     const res = await c.create()
     expect(res.id).not.empty
