@@ -28,6 +28,7 @@ export const useToken = (
   initialToken?: string,
 ): Readonly<{
   getMeta: () => grpc.Metadata
+  getHeaders: () => Record<string, string>
   setToken: (t: string) => void
 }> => {
   let token = initialToken
@@ -40,11 +41,19 @@ export const useToken = (
     return meta
   }
 
+  const getHeaders = () => {
+    const headers: Record<string, string> = {}
+    if (token) {
+      headers["x-ipfs-ffs-auth"] = token
+    }
+    return headers
+  }
+
   const setToken = (t: string) => {
     token = t
   }
 
-  return Object.freeze({ getMeta, setToken })
+  return Object.freeze({ getMeta, getHeaders, setToken })
 }
 
 export const getTransport = (): grpc.TransportFactory | undefined =>

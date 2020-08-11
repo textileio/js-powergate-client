@@ -14,6 +14,9 @@ beforeEach(async function () {
   await wait({
     resources: ["http://0.0.0.0:6002"],
     timeout: 120000,
+    validateStatus: function () {
+      return true // the call expectedly returns 404, so just allow that
+    },
   })
 })
 
@@ -30,11 +33,18 @@ afterEach(async function () {
 })
 
 describe("client", () => {
+  const pow = createPow({ host })
+
   it("should create a client", () => {
-    const pow = createPow({ host })
     expect(pow.ffs).not.undefined
     expect(pow.health).not.undefined
     expect(pow.net).not.undefined
     expect(pow.miners).not.undefined
+    expect(pow.host).equal(host)
+  })
+
+  it("should get build info", async () => {
+    const res = await pow.buildInfo()
+    expect(res.gitSummary).not.empty
   })
 })

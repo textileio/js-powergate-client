@@ -3,7 +3,6 @@ import {
   AddrsRequest,
   AddrsResponse,
   CancelJobRequest,
-  CloseRequest,
   CreatePayChannelRequest,
   CreatePayChannelResponse,
   CreateRequest,
@@ -52,12 +51,20 @@ import {
   RPCService,
   RPCServiceClient,
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
+import fs from "fs"
+import ipfsClient from "ipfs-http-client"
+import path from "path"
 import { Config } from "../types"
 import { promise } from "../util"
-import * as options from "./options"
+import {
+  GetFolderOptions,
+  ListDealRecordsOptions,
+  PushStorageConfigOptions,
+  WatchLogsOptions,
+} from "./types"
 import { coldObjToMessage, hotObjToMessage } from "./util"
 
-export { options }
+export { GetFolderOptions, ListDealRecordsOptions, WatchLogsOptions, PushStorageConfigOptions }
 
 export interface FFS {
   /**
@@ -153,7 +160,7 @@ export interface FFS {
   watchLogs: (
     handler: (event: LogEntry.AsObject) => void,
     cid: string,
-    ...opts: options.WatchLogsOption[]
+    opts?: WatchLogsOptions,
   ) => () => void
 
   /**
@@ -173,7 +180,7 @@ export interface FFS {
    */
   pushStorageConfig: (
     cid: string,
-    ...opts: options.PushStorageConfigOption[]
+    opts?: PushStorageConfigOptions,
   ) => Promise<PushStorageConfigResponse.AsObject>
 
   /**
@@ -190,6 +197,14 @@ export interface FFS {
   get: (cid: string) => Promise<Uint8Array>
 
   /**
+   * Retrieve a folder stored in the current FFS instance.
+   * @param cid The root cid of the folder to retrieve.
+   * @param outputPath The location to write the folder to
+   * @param opts Options controlling the behavior of retrieving the folder
+   */
+  getFolder: (cid: string, output: string, opts?: GetFolderOptions) => Promise<void>
+
+  /**
    * Send FIL from an address associated with the current FFS instance to any other address.
    * @param from The address to send FIL from.
    * @param to The address to send FIL to.
@@ -198,17 +213,20 @@ export interface FFS {
   sendFil: (from: string, to: string, amount: number) => Promise<void>
 
   /**
-   * Close the current FFS instance
-   */
-  close: () => Promise<void>
-
-  /**
-   * A helper method to cache data in IPFS in preparation for storing in
+   * A helper method to stage data in IPFS in preparation for storing using ffs.pushStorageConfig.
    * This doesn't actually store data in FFS, you'll want to call pushStorageConfig for that.
    * @param input The raw data to add.
    * @returns The cid of the added data.
    */
   stage: (input: Uint8Array) => Promise<StageResponse.AsObject>
+
+  /**
+   * A helper method to stage a folder recursively in IPFS in preparation for storing using ffs.pushStorageConfig.
+   * This doesn't actually store data in FFS, you'll want to call pushStorageConfig for that.
+   * @param path The path to the folder to add.
+   * @returns The cid of the added folder.
+   */
+  stageFolder: (path: string) => Promise<string>
 
   /**
    * List all payment channels for the current FFS instance.
@@ -241,7 +259,7 @@ export interface FFS {
    * @returns A list of storage deal records.
    */
   listStorageDealRecords: (
-    ...opts: options.ListDealRecordsOption[]
+    opts?: ListDealRecordsOptions,
   ) => Promise<ListStorageDealRecordsResponse.AsObject>
 
   /**
@@ -250,7 +268,7 @@ export interface FFS {
    * @returns A list of retrieval deal records.
    */
   listRetrievalDealRecords: (
-    ...opts: options.ListDealRecordsOption[]
+    opts?: ListDealRecordsOptions,
   ) => Promise<ListRetrievalDealRecordsResponse.AsObject>
 
   /**
@@ -263,8 +281,13 @@ export interface FFS {
 /**
  * @ignore
  */
-export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => {
+export const createFFS = (
+  config: Config,
+  getMeta: () => grpc.Metadata,
+  getHeaders: () => Record<string, string>,
+): FFS => {
   const client = new RPCServiceClient(config.host, config)
+  const ipfs = ipfsClient(config.host)
   return {
     create: () =>
       promise(
@@ -377,11 +400,16 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
     watchLogs: (
       handler: (event: LogEntry.AsObject) => void,
       cid: string,
-      ...opts: options.WatchLogsOption[]
+      opts: WatchLogsOptions = {},
     ) => {
       const req = new WatchLogsRequest()
       req.setCid(cid)
-      opts.forEach((opt) => opt(req))
+      if (opts.includeHistory) {
+        req.setHistory(opts.includeHistory)
+      }
+      if (opts.jobId) {
+        req.setJid(opts.jobId)
+      }
       const stream = client.watchLogs(req, getMeta())
       stream.on("data", (res) => {
         const logEntry = res.getLogEntry()?.toObject()
@@ -402,12 +430,25 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
       )
     },
 
-    pushStorageConfig: (cid: string, ...opts: options.PushStorageConfigOption[]) => {
+    pushStorageConfig: (cid: string, opts: PushStorageConfigOptions = {}) => {
       const req = new PushStorageConfigRequest()
       req.setCid(cid)
-      opts.forEach((opt) => {
-        opt(req)
-      })
+      if (opts.override) {
+        req.setOverrideConfig(opts.override)
+        req.setHasOverrideConfig(true)
+      }
+      if (opts.storageConfig) {
+        const c = new StorageConfig()
+        c.setRepairable(opts.storageConfig.repairable)
+        if (opts.storageConfig.hot) {
+          c.setHot(hotObjToMessage(opts.storageConfig.hot))
+        }
+        if (opts.storageConfig.cold) {
+          c.setCold(coldObjToMessage(opts.storageConfig.cold))
+        }
+        req.setConfig(c)
+        req.setHasConfig(true)
+      }
       return promise(
         (cb) => client.pushStorageConfig(req, getMeta(), cb),
         (res: PushStorageConfigResponse) => res.toObject(),
@@ -450,6 +491,37 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
       })
     },
 
+    getFolder: async (cid: string, output: string, opts: GetFolderOptions = {}) => {
+      const headers = getHeaders()
+      const options: Record<string, unknown> = { headers }
+      if (opts.timeout) {
+        options["timeout"] = opts.timeout
+      }
+      for await (const file of ipfs.get(cid, options)) {
+        const noCidPath = file.path.replace(cid, "")
+        const fullFilePath = path.join(output, noCidPath)
+        if (file.content) {
+          await fs.promises.mkdir(path.join(output, path.dirname(file.path)), { recursive: true })
+          const stream = fs.createWriteStream(fullFilePath)
+          for await (const chunk of file.content) {
+            const slice = chunk.slice()
+            await new Promise((resolve, reject) => {
+              stream.write(slice, (err) => {
+                if (err) {
+                  reject(err)
+                } else {
+                  resolve()
+                }
+              })
+            })
+          }
+        } else {
+          // this is a dir
+          await fs.promises.mkdir(fullFilePath, { recursive: true })
+        }
+      }
+    },
+
     sendFil: (from: string, to: string, amount: number) => {
       const req = new SendFilRequest()
       req.setFrom(from)
@@ -462,14 +534,6 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
         },
       )
     },
-
-    close: () =>
-      promise(
-        (cb) => client.close(new CloseRequest(), getMeta(), cb),
-        () => {
-          // nothing to return
-        },
-      ),
 
     stage: (input: Uint8Array) => {
       // TODO: figure out how to stream data in here, or at least stream to the server
@@ -491,6 +555,13 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
         client.send(req)
         client.finishSend()
       })
+    },
+
+    stageFolder: async (path: string) => {
+      const src = ipfsClient.globSource(path, { recursive: true })
+      const headers = getHeaders()
+      const res = await ipfs.add(src, { headers })
+      return res.cid.string
     },
 
     listPayChannels: () =>
@@ -521,26 +592,18 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
       )
     },
 
-    listStorageDealRecords: (...opts: options.ListDealRecordsOption[]) => {
-      const conf = new ListDealRecordsConfig()
-      opts.forEach((opt) => {
-        opt(conf)
-      })
+    listStorageDealRecords: (opts: ListDealRecordsOptions = {}) => {
       const req = new ListStorageDealRecordsRequest()
-      req.setConfig(conf)
+      req.setConfig(listDealRecordsOptionsToConfig(opts))
       return promise(
         (cb) => client.listStorageDealRecords(req, getMeta(), cb),
         (res: ListStorageDealRecordsResponse) => res.toObject(),
       )
     },
 
-    listRetrievalDealRecords: (...opts: options.ListDealRecordsOption[]) => {
-      const conf = new ListDealRecordsConfig()
-      opts.forEach((opt) => {
-        opt(conf)
-      })
+    listRetrievalDealRecords: (opts: ListDealRecordsOptions = {}) => {
       const req = new ListRetrievalDealRecordsRequest()
-      req.setConfig(conf)
+      req.setConfig(listDealRecordsOptionsToConfig(opts))
       return promise(
         (cb) => client.listRetrievalDealRecords(req, getMeta(), cb),
         (res: ListRetrievalDealRecordsResponse) => res.toObject(),
@@ -553,4 +616,24 @@ export const createFFS = (config: Config, getMeta: () => grpc.Metadata): FFS => 
         (res: ShowAllResponse) => res.toObject(),
       ),
   }
+}
+
+function listDealRecordsOptionsToConfig(opts: ListDealRecordsOptions) {
+  const conf = new ListDealRecordsConfig()
+  if (opts.ascending) {
+    conf.setAscending(opts.ascending)
+  }
+  if (opts.dataCids) {
+    conf.setDataCidsList(opts.dataCids)
+  }
+  if (opts.fromAddresses) {
+    conf.setFromAddrsList(opts.fromAddresses)
+  }
+  if (opts.includeFinal) {
+    conf.setIncludeFinal(opts.includeFinal)
+  }
+  if (opts.includePending) {
+    conf.setIncludePending(opts.includePending)
+  }
+  return conf
 }

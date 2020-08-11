@@ -7,24 +7,14 @@ import { expect } from "chai"
 import fs from "fs"
 import { createFFS } from "."
 import { getTransport, host, useToken } from "../util"
-import {
-  PushStorageConfigOption,
-  withAscending,
-  withDataCids,
-  withFromAddresses,
-  withHistory,
-  withIncludeFinal,
-  withIncludePending,
-  withOverride,
-  withStorageConfig,
-} from "./options"
+import { PushStorageConfigOptions } from "./types"
 
 describe("ffs", function () {
   this.timeout(180000)
 
-  const { getMeta, setToken } = useToken("")
+  const { getMeta, getHeaders, setToken } = useToken("")
 
-  const c = createFFS({ host, transport: getTransport() }, getMeta)
+  const c = createFFS({ host, transport: getTransport() }, getMeta, getHeaders)
 
   it("should create an instance", async () => {
     await expectNewInstance()
@@ -71,16 +61,22 @@ describe("ffs", function () {
     expect(res.info).not.undefined
   })
 
-  it("should add to hot", async () => {
+  it("should stage", async () => {
     await expectNewInstance()
     await expectStage("sample-data/samplefile")
+  })
+
+  it("should stage a folder", async () => {
+    await expectNewInstance()
+    const res = await c.stageFolder("./sample-data")
+    expect(res).length.greaterThan(0)
   })
 
   it("should push config", async () => {
     await expectNewInstance()
     const cid = await expectStage("sample-data/samplefile")
     const config = await expectDefaultStorageConfig()
-    await expectPushStorageConfig(cid, false, config)
+    await expectPushStorageConfig(cid, { override: false, storageConfig: config })
   })
 
   it("should watch job", async () => {
@@ -112,7 +108,7 @@ describe("ffs", function () {
           }
         },
         cid,
-        withHistory(true),
+        { includeHistory: true },
       )
     })
   })
@@ -143,16 +139,16 @@ describe("ffs", function () {
     // wait for a second so some async work of actually starting a deal happens
     await new Promise((r) => setTimeout(r, 1000))
 
-    const { recordsList: pendingRecords } = await c.listStorageDealRecords(
-      withIncludePending(true),
-      withAscending(true),
-      withFromAddresses(addrs[0].addr),
-      withDataCids(cid1, cid2, cid3),
-    )
+    const { recordsList: pendingRecords } = await c.listStorageDealRecords({
+      includePending: true,
+      ascending: true,
+      fromAddresses: [addrs[0].addr],
+      dataCids: [cid1, cid2, cid3],
+    })
     expect(pendingRecords, "pending length").length(3)
     expect(pendingRecords[0].time).lessThan(pendingRecords[1].time).lessThan(pendingRecords[2].time)
 
-    const { recordsList: finalRecords } = await c.listStorageDealRecords(withIncludeFinal(true))
+    const { recordsList: finalRecords } = await c.listStorageDealRecords({ includeFinal: true })
     expect(finalRecords, "final empty").empty
 
     await Promise.all([
@@ -161,17 +157,17 @@ describe("ffs", function () {
       waitForJobStatus(jobId3, JobStatus.JOB_STATUS_SUCCESS),
     ])
 
-    const { recordsList: pendingRecords2 } = await c.listStorageDealRecords(
-      withIncludePending(true),
-    )
+    const { recordsList: pendingRecords2 } = await c.listStorageDealRecords({
+      includePending: true,
+    })
     expect(pendingRecords2, "pending2 empty").empty
 
-    const { recordsList: finalRecords2 } = await c.listStorageDealRecords(
-      withIncludeFinal(true),
-      withAscending(true),
-      withFromAddresses(addrs[0].addr),
-      withDataCids(cid1, cid2, cid3),
-    )
+    const { recordsList: finalRecords2 } = await c.listStorageDealRecords({
+      includeFinal: true,
+      ascending: true,
+      fromAddresses: [addrs[0].addr],
+      dataCids: [cid1, cid2, cid3],
+    })
     expect(finalRecords2, "final2 length").length(3)
     expect(finalRecords2[0].time).lessThan(finalRecords2[1].time).lessThan(finalRecords2[2].time)
   })
@@ -234,6 +230,13 @@ describe("ffs", function () {
     expect(bytes.byteLength).greaterThan(0)
   })
 
+  it("should get a folder", async () => {
+    await expectNewInstance()
+    const res = await c.stageFolder("./sample-data")
+    expect(res).length.greaterThan(0)
+    await c.getFolder(res, "./output", { timeout: 10000 })
+  })
+
   it("should cancel a job", async () => {
     await expectNewInstance()
     const cid = await expectStage("sample-data/samplefile")
@@ -266,7 +269,7 @@ describe("ffs", function () {
         enabled: false,
       },
     }
-    const jobId = await expectPushStorageConfig(cid, false, conf)
+    const jobId = await expectPushStorageConfig(cid, { override: false, storageConfig: conf })
     await waitForJobStatus(jobId, JobStatus.JOB_STATUS_SUCCESS)
     await c.remove(cid)
   })
@@ -277,11 +280,6 @@ describe("ffs", function () {
     await waitForBalance(addrs[0].addr, 0)
     const addr = await expectNewAddr()
     await c.sendFil(addrs[0].addr, addr, 10)
-  })
-
-  it("should close", async () => {
-    await expectNewInstance()
-    await c.close()
   })
 
   async function expectNewInstance() {
@@ -318,17 +316,8 @@ describe("ffs", function () {
     return res.cid
   }
 
-  async function expectPushStorageConfig(
-    cid: string,
-    override: boolean = false,
-    config?: StorageConfig.AsObject,
-  ) {
-    const opts: PushStorageConfigOption[] = []
-    opts.push(withOverride(override))
-    if (config) {
-      opts.push(withStorageConfig(config))
-    }
-    const res = await c.pushStorageConfig(cid, ...opts)
+  async function expectPushStorageConfig(cid: string, opts?: PushStorageConfigOptions) {
+    const res = await c.pushStorageConfig(cid, opts)
     expect(res.jobId).length.greaterThan(0)
     return res.jobId
   }
