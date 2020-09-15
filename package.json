@@ -35,7 +35,7 @@
   "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
-    "@commitlint/config-conventional": "^9.1.1",
+    "@commitlint/config-conventional": "^11.0.0",
     "@types/chai": "^4.2.11",
     "@types/dirty-chai": "^2.0.2",
     "@types/mocha": "^8.0.0",
