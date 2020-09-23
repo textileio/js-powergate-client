@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@improbable-eng/grpc-web-node-http-transport": "^0.13.0",
-    "@textile/grpc-powergate-client": "0.4.0",
+    "@textile/grpc-powergate-client": "0.6.2",
     "ipfs-http-client": "^45.0.0"
   }
 }

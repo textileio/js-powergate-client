@@ -79,6 +79,14 @@ describe("ffs", function () {
     await expectPushStorageConfig(cid, { override: false, storageConfig: config })
   })
 
+  it("should get storage job", async () => {
+    await expectNewInstance()
+    const cid = await expectStage("sample-data/samplefile")
+    const jobId = await expectPushStorageConfig(cid)
+    const res = await c.getStorageJob(jobId)
+    expect(res.job?.cid).eq(cid)
+  })
+
   it("should watch job", async () => {
     await expectNewInstance()
     const addrs = await expectAddrs(1)
@@ -267,6 +275,7 @@ describe("ffs", function () {
       hot: {
         allowUnfreeze: false,
         enabled: false,
+        unfreezeMaxPrice: 0,
       },
     }
     const jobId = await expectPushStorageConfig(cid, { override: false, storageConfig: conf })
