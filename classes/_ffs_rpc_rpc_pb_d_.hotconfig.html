@@ -110,6 +110,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#getextension" class="tsd-kind-icon">get<wbr>Extension</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#getipfs" class="tsd-kind-icon">get<wbr>Ipfs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#getjspbmessageid" class="tsd-kind-icon">get<wbr>JsPb<wbr>Message<wbr>Id</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#getunfreezemaxprice" class="tsd-kind-icon">get<wbr>Unfreeze<wbr>Max<wbr>Price</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#hasipfs" class="tsd-kind-icon">has<wbr>Ipfs</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#readbinaryextension" class="tsd-kind-icon">read<wbr>Binary<wbr>Extension</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#serializebinary" class="tsd-kind-icon">serialize<wbr>Binary</a></li>
@@ -118,6 +119,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#setenabled" class="tsd-kind-icon">set<wbr>Enabled</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#setextension" class="tsd-kind-icon">set<wbr>Extension</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#setipfs" class="tsd-kind-icon">set<wbr>Ipfs</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#setunfreezemaxprice" class="tsd-kind-icon">set<wbr>Unfreeze<wbr>Max<wbr>Price</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#toobject" class="tsd-kind-icon">to<wbr>Object</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
@@ -166,10 +168,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="asobject" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> As<wbr>Object</h3>
-					<div class="tsd-signature tsd-kind-icon">As<wbr>Object<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>allowUnfreeze<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>enabled<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>ipfs<span class="tsd-signature-symbol">?: </span><a href="_ffs_rpc_rpc_pb_d_.ipfsconfig.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">As<wbr>Object<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>allowUnfreeze<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>enabled<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>ipfs<span class="tsd-signature-symbol">?: </span><a href="_ffs_rpc_rpc_pb_d_.ipfsconfig.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">; </span>unfreezeMaxPrice<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:77</li>
+							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:80</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -183,6 +185,9 @@
 							</li>
 							<li class="tsd-parameter">
 								<h5><span class="tsd-flag ts-flagOptional">Optional</span> ipfs<span class="tsd-signature-symbol">?: </span><a href="_ffs_rpc_rpc_pb_d_.ipfsconfig.html#asobject" class="tsd-signature-type">AsObject</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>unfreeze<wbr>Max<wbr>Price<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 							</li>
 						</ul>
 					</div>
@@ -243,7 +248,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Message.extensions</p>
 						<ul>
-							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:69</li>
+							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:72</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -262,7 +267,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Message.extensionsBinary</p>
 						<ul>
-							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:70</li>
+							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:73</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -287,7 +292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:62</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:65</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -404,7 +409,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:63</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:66</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_ffs_rpc_rpc_pb_d_.ipfsconfig.html" class="tsd-signature-type">IpfsConfig</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h4>
@@ -430,6 +435,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="getunfreezemaxprice" class="tsd-anchor"></a>
+					<h3>get<wbr>Unfreeze<wbr>Max<wbr>Price</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Unfreeze<wbr>Max<wbr>Price<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:61</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="hasipfs" class="tsd-anchor"></a>
 					<h3>has<wbr>Ipfs</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -439,7 +461,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:61</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:64</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -522,7 +544,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.serializeBinary</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:66</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:69</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4>
@@ -680,13 +702,36 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:64</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:67</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> value: <a href="_ffs_rpc_rpc_pb_d_.ipfsconfig.html" class="tsd-signature-type">IpfsConfig</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="setunfreezemaxprice" class="tsd-anchor"></a>
+					<h3>set<wbr>Unfreeze<wbr>Max<wbr>Price</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Unfreeze<wbr>Max<wbr>Price<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:62</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -722,7 +767,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.toObject</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:67</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:70</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1125,7 +1170,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.deserializeBinary</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:72</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:75</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1149,7 +1194,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.deserializeBinaryFromReader</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:73</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:76</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1563,7 +1608,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.serializeBinaryToWriter</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:71</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:74</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1809,7 +1854,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.toObject</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:68</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb.d.ts:71</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2029,6 +2074,9 @@
 								<a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#getjspbmessageid" class="tsd-kind-icon">get<wbr>JsPb<wbr>Message<wbr>Id</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#getunfreezemaxprice" class="tsd-kind-icon">get<wbr>Unfreeze<wbr>Max<wbr>Price</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#hasipfs" class="tsd-kind-icon">has<wbr>Ipfs</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
@@ -2051,6 +2099,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#setipfs" class="tsd-kind-icon">set<wbr>Ipfs</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#setunfreezemaxprice" class="tsd-kind-icon">set<wbr>Unfreeze<wbr>Max<wbr>Price</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="_ffs_rpc_rpc_pb_d_.hotconfig.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
