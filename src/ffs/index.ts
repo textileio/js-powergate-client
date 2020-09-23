@@ -12,6 +12,8 @@ import {
   GetRequest,
   GetStorageConfigRequest,
   GetStorageConfigResponse,
+  GetStorageJobRequest,
+  GetStorageJobResponse,
   IDRequest,
   IDResponse,
   InfoRequest,
@@ -135,6 +137,13 @@ export interface FFS {
    * @returns Information about the FFS instance.
    */
   info: () => Promise<InfoResponse.AsObject>
+
+  /**
+   * Get the current state of a storage job.
+   * @param jobId The job id to query.
+   * @returns The current state of the storage job.
+   */
+  getStorageJob: (jobId: string) => Promise<GetStorageJobResponse.AsObject>
 
   /**
    * Listen for job updates for the provided job ids.
@@ -372,6 +381,15 @@ export const createFFS = (
         (cb) => client.info(new InfoRequest(), getMeta(), cb),
         (res: InfoResponse) => res.toObject(),
       ),
+
+    getStorageJob: (jobId: string) => {
+      const req = new GetStorageJobRequest()
+      req.setJid(jobId)
+      return promise(
+        (cb) => client.getStorageJob(req, getMeta(), cb),
+        (res: GetStorageJobResponse) => res.toObject(),
+      )
+    },
 
     watchJobs: (handler: (event: Job.AsObject) => void, ...jobs: string[]) => {
       const req = new WatchJobsRequest()
