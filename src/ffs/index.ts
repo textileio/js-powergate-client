@@ -55,9 +55,11 @@ import {
 } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb_service"
 import fs from "fs"
 import ipfsClient from "ipfs-http-client"
+import block from "it-block"
 import path from "path"
 import { Config } from "../types"
 import { promise } from "../util"
+import { File, normaliseInput } from "./normalize"
 import {
   GetFolderOptions,
   ListDealRecordsOptions,
@@ -553,9 +555,11 @@ export const createFFS = (
       )
     },
 
-    stage: (input: Uint8Array) => {
-      // TODO: figure out how to stream data in here, or at least stream to the server
-      return new Promise<StageResponse.AsObject>((resolve, reject) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    stage: async (input: any) => {
+      // Only process the first  input if there are more than one
+      const source: File | undefined = (await normaliseInput(input).next()).value
+      return new Promise<StageResponse.AsObject>(async (resolve, reject) => {
         const client = grpc.client(RPCService.Stage, config)
         client.onMessage((message) => {
           resolve(message.toObject() as StageResponse.AsObject)
@@ -567,11 +571,19 @@ export const createFFS = (
             reject("ended with no message")
           }
         })
-        client.start(getMeta())
-        const req = new StageRequest()
-        req.setChunk(input)
-        client.send(req)
-        client.finishSend()
+        if (source?.content) {
+          client.start(getMeta())
+          const process = await block({ size: 32000, noPad: true })
+          for await (const chunk of process(source.content)) {
+            const buf = chunk.slice()
+            const req = new StageRequest()
+            req.setChunk(buf as Buffer)
+            client.send(req)
+          }
+          client.finishSend()
+        } else {
+          reject(new Error("no content to stage"))
+        }
       })
     },
 
