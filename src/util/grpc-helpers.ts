@@ -1,6 +1,5 @@
 import { grpc } from "@improbable-eng/grpc-web"
-import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport"
-import { isNode } from "./util"
+import { WebsocketTransport } from "@textile/grpc-transport"
 
 export const host = "http://0.0.0.0:6002"
 
@@ -56,5 +55,4 @@ export const useToken = (
   return Object.freeze({ getMeta, getHeaders, setToken })
 }
 
-export const getTransport = (): grpc.TransportFactory | undefined =>
-  isNode ? NodeHttpTransport() : undefined
+export const getTransport = (): grpc.TransportFactory => WebsocketTransport()
