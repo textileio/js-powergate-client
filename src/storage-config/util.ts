@@ -4,18 +4,19 @@ import {
   FilRenew,
   HotConfig,
   IpfsConfig,
-} from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
+} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
+
 export function coldObjToMessage(obj: ColdConfig.AsObject): ColdConfig {
   const cold = new ColdConfig()
   cold.setEnabled(obj.enabled)
   if (obj.filecoin) {
     const fc = new FilConfig()
-    fc.setAddr(obj.filecoin.addr)
+    fc.setAddress(obj.filecoin.address)
     fc.setCountryCodesList(obj.filecoin.countryCodesList)
     fc.setDealMinDuration(obj.filecoin.dealMinDuration)
     fc.setExcludedMinersList(obj.filecoin.excludedMinersList)
     fc.setMaxPrice(obj.filecoin.maxPrice)
-    fc.setRepFactor(obj.filecoin.repFactor)
+    fc.setReplicationFactor(obj.filecoin.replicationFactor)
     fc.setTrustedMinersList(obj.filecoin.trustedMinersList)
     if (obj.filecoin.renew) {
       const renew = new FilRenew()

@@ -4,6 +4,7 @@ import { WebsocketTransport } from "@textile/grpc-transport"
 export const host = "http://0.0.0.0:6002"
 
 const tokenKey = "X-ffs-Token"
+const adminTokenKey = "X-pow-admin-token"
 
 export function promise<U, V, W>(
   handler: (callback: (error: V | null, resp: U | null) => void) => void,
@@ -23,19 +24,25 @@ export function promise<U, V, W>(
   })
 }
 
-export const useToken = (
+export const useTokens = (
   initialToken?: string,
+  initialAdminToken?: string,
 ): Readonly<{
   getMeta: () => grpc.Metadata
   getHeaders: () => Record<string, string>
   setToken: (t: string) => void
+  setAdminToken: (t: string) => void
 }> => {
   let token = initialToken
+  let adminToken = initialAdminToken
 
   const getMeta = () => {
     const meta = new grpc.Metadata()
     if (token) {
       meta.set(tokenKey, token)
+    }
+    if (adminToken) {
+      meta.set(adminTokenKey, adminToken)
     }
     return meta
   }
@@ -52,7 +59,11 @@ export const useToken = (
     token = t
   }
 
-  return Object.freeze({ getMeta, getHeaders, setToken })
+  const setAdminToken = (t: string) => {
+    adminToken = t
+  }
+
+  return Object.freeze({ getMeta, getHeaders, setToken, setAdminToken })
 }
 
 export const getTransport = (): grpc.TransportFactory => WebsocketTransport()
