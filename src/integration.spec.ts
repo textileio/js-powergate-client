@@ -168,7 +168,7 @@ describe("pow", () => {
         const res1 = await pow.admin.wallet.newAddress()
         await waitForBalance(pow, res0.address)
         const bal = await waitForBalance(pow, res1.address)
-        await pow.admin.wallet.sendFil(res0.address, res1.address, 10)
+        await pow.admin.wallet.sendFil(res0.address, res1.address, BigInt(10))
         await waitForBalance(pow, res1.address, bal)
       })
     })
