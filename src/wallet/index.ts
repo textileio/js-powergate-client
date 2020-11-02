@@ -50,7 +50,7 @@ export interface Wallet {
    * @param to The address to send FIL to.
    * @param amount The amount of FIL to send.
    */
-  sendFil: (from: string, to: string, amount: number) => Promise<SendFilResponse.AsObject>
+  sendFil: (from: string, to: string, amount: bigint) => Promise<SendFilResponse.AsObject>
 
   /**
    * Sign a message with the specified address.
@@ -106,11 +106,11 @@ export const createWallet = (config: Config, getMeta: () => grpc.Metadata): Wall
         (res: AddressesResponse) => res.toObject(),
       ),
 
-    sendFil: (from: string, to: string, amount: number) => {
+    sendFil: (from: string, to: string, amount: bigint) => {
       const req = new SendFilRequest()
       req.setFrom(from)
       req.setTo(to)
-      req.setAmount(amount)
+      req.setAmount(amount.toString())
       return promise(
         (cb) => client.sendFil(req, getMeta(), cb),
         (res: SendFilResponse) => res.toObject(),

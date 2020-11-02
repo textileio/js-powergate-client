@@ -1,6 +1,5 @@
 import { expect } from "chai"
 import crypto from "crypto"
-import fs from "fs"
 import { ApplyOptions, createPow, Pow, powTypes } from "."
 import { host } from "./util"
 
@@ -63,8 +62,8 @@ describe("pow", () => {
         const pow = newPow()
         const auth = await expectNewInstance(pow)
         const addressees = await expectAddresses(pow, 1)
-        await waitForBalance(pow, addressees[0].address, 0)
-        const cid = await expectStageData(pow, crypto.randomBytes(1024))
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
         const jobId = await expectApplyStorageConfig(pow, cid)
         const res = await pow.admin.storageJobs.executing(auth.id, cid)
         expect(res.storageJobsList).length(1)
@@ -77,8 +76,8 @@ describe("pow", () => {
         const pow = newPow()
         const auth = await expectNewInstance(pow)
         const addressees = await expectAddresses(pow, 1)
-        await waitForBalance(pow, addressees[0].address, 0)
-        const cid = await expectStageData(pow, crypto.randomBytes(1024))
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
         const jobId = await expectApplyStorageConfig(pow, cid)
         let res = await pow.admin.storageJobs.latestFinal(auth.id, cid)
         expect(res.storageJobsList).empty
@@ -94,8 +93,8 @@ describe("pow", () => {
         const pow = newPow()
         const auth = await expectNewInstance(pow)
         const addressees = await expectAddresses(pow, 1)
-        await waitForBalance(pow, addressees[0].address, 0)
-        const cid = await expectStageData(pow, crypto.randomBytes(1024))
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
         const jobId = await expectApplyStorageConfig(pow, cid)
         let res = await pow.admin.storageJobs.latestSuccessful(auth.id, cid)
         expect(res.storageJobsList).empty
@@ -112,8 +111,8 @@ describe("pow", () => {
         const pow = newPow()
         const auth = await expectNewInstance(pow)
         const addressees = await expectAddresses(pow, 1)
-        await waitForBalance(pow, addressees[0].address, 0)
-        const cid = await expectStageData(pow, crypto.randomBytes(1024))
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
         await expectApplyStorageConfig(pow, cid)
         const res = await pow.admin.storageJobs.queued(auth.id, cid)
         expect(res.storageJobsList).length.lessThan(2)
@@ -123,8 +122,8 @@ describe("pow", () => {
         const pow = newPow()
         const auth = await expectNewInstance(pow)
         const addressees = await expectAddresses(pow, 1)
-        await waitForBalance(pow, addressees[0].address, 0)
-        const cid = await expectStageData(pow, crypto.randomBytes(1024))
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
         const jobId = await expectApplyStorageConfig(pow, cid)
         let res = await pow.admin.storageJobs.summary(auth.id, cid)
         expect(res.executingStorageJobsList).length(1)
@@ -163,16 +162,14 @@ describe("pow", () => {
       })
 
       it("should send fil", async function () {
-        this.timeout(120000)
+        this.timeout(20000)
         const pow = newPow()
         const res0 = await pow.admin.wallet.newAddress()
         const res1 = await pow.admin.wallet.newAddress()
-        await waitForBalance(pow, res0.address, 0)
-        const bal2 = await waitForBalance(pow, res1.address, 0)
+        await waitForBalance(pow, res0.address)
+        const bal = await waitForBalance(pow, res1.address)
         await pow.admin.wallet.sendFil(res0.address, res1.address, 10)
-        // ToDo: see why fil is not sending
-        // const bal3 = await waitForBalance(pow, res1.address, bal2)
-        // expect(bal3).equals(bal2 + 10)
+        await waitForBalance(pow, res1.address, bal)
       })
     })
   })
@@ -183,8 +180,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       let res = await pow.data.cidInfo(cid)
       expect(res.cidInfosList).length(1)
@@ -216,8 +213,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addrs = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addrs[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addrs[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
       const bytes = await pow.data.get(cid)
@@ -237,11 +234,11 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addrs = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addrs[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addrs[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
-      const cid2 = await expectStageData(pow, crypto.randomBytes(1024))
+      const cid2 = await expectStage(pow, crypto.randomBytes(1024))
       const res = await pow.data.replaceData(cid, cid2)
       expect(res.jobId).length.greaterThan(0)
       await watchJobUntil(pow, res.jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
@@ -250,7 +247,7 @@ describe("pow", () => {
     it("should stage", async () => {
       const pow = newPow()
       await expectNewInstance(pow)
-      await expectStageData(pow, crypto.randomBytes(1024))
+      await expectStage(pow, crypto.randomBytes(1024))
     })
 
     it("should stage folder", async () => {
@@ -263,7 +260,7 @@ describe("pow", () => {
     it("should watch logs", async function () {
       const pow = newPow()
       await expectNewInstance(pow)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       const event = await new Promise<powTypes.LogEntry.AsObject>((resolve) => {
         pow.data.watchLogs((event) => resolve(event), cid, { includeHistory: true, jobId })
@@ -279,8 +276,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
       const pending = await pow.deals.storageDealRecords({ includePending: true })
@@ -311,14 +308,14 @@ describe("pow", () => {
     it("should apply", async () => {
       const pow = newPow()
       await expectNewInstance(pow)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       await expectApplyStorageConfig(pow, cid)
     })
 
     it("should remove", async () => {
       const pow = newPow()
       await expectNewInstance(pow)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const conf = await expectDefaultStorageConfig(pow)
       conf.cold = { ...conf.cold, enabled: false }
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -333,8 +330,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       await pow.storageJobs.cancel(jobId)
     })
@@ -343,8 +340,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       let res = await pow.storageJobs.executing()
       expect(res.storageJobsList).length(1)
@@ -359,8 +356,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       let res = await pow.storageJobs.latestFinal()
       expect(res.storageJobsList).empty
@@ -378,8 +375,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       let res = await pow.storageJobs.latestSuccessful()
       expect(res.storageJobsList).empty
@@ -396,8 +393,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       await expectApplyStorageConfig(pow, cid)
       const res = await pow.storageJobs.queued(cid)
       expect(res.storageJobsList).length.lessThan(2)
@@ -407,8 +404,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       const res = await pow.storageJobs.storageConfigForJob(jobId)
       expect(res.storageConfig).not.undefined
@@ -418,8 +415,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       const res = await pow.storageJobs.storageJob(jobId)
       expect(res.job?.id).equals(jobId)
@@ -429,8 +426,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       let res = await pow.storageJobs.summary()
       expect(res.executingStorageJobsList).length(1)
@@ -448,8 +445,8 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
-      const cid = await expectStageData(pow, crypto.randomBytes(1024))
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_EXECUTING)
     })
@@ -466,7 +463,7 @@ describe("pow", () => {
       const pow = newPow()
       await expectNewInstance(pow)
       const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address, 0)
+      await waitForBalance(pow, addressees[0].address)
     })
 
     it("should create new address", async function () {
@@ -482,11 +479,10 @@ describe("pow", () => {
       await expectNewInstance(pow)
       await pow.wallet.newAddress("new one")
       const addressees = await expectAddresses(pow, 2)
-      await waitForBalance(pow, addressees[0].address, 0)
-      await waitForBalance(pow, addressees[1].address, 0)
-      await pow.wallet.sendFil(addressees[0].address, addressees[1].address, 10)
-      // ToDo: Check that sendFil is working on the back end
-      // await waitForBalance(pow, addressees[1].address, bal + 9)
+      await waitForBalance(pow, addressees[0].address)
+      const bal = await waitForBalance(pow, addressees[1].address)
+      await pow.wallet.sendFil(addressees[0].address, addressees[1].address, BigInt(10))
+      await waitForBalance(pow, addressees[1].address, bal)
     })
 
     it("should sign message", async function () {
@@ -510,7 +506,7 @@ describe("pow", () => {
 })
 
 function newPow(): Pow {
-  return createPow({ host })
+  return createPow({ host, debug: true })
 }
 
 async function expectNewInstance(pow: Pow) {
@@ -530,14 +526,7 @@ async function expectDefaultStorageConfig(pow: Pow) {
   return res.defaultStorageConfig!
 }
 
-async function expectStage(pow: Pow, path: string) {
-  const buffer = fs.readFileSync(path)
-  const res = await pow.data.stage(buffer)
-  expect(res.cid).length.greaterThan(0)
-  return res.cid
-}
-
-async function expectStageData(pow: Pow, data: Buffer) {
+async function expectStage(pow: Pow, data: Buffer) {
   const res = await pow.data.stage(data)
   expect(res.cid).length.greaterThan(0)
   return res.cid
@@ -583,14 +572,15 @@ async function expectAddresses(pow: Pow, length: number) {
   return res.addressesList
 }
 
-function waitForBalance(pow: Pow, address: string, greaterThan: number) {
-  return new Promise<number>(async (resolve, reject) => {
+function waitForBalance(pow: Pow, address: string, greaterThan?: bigint) {
+  return new Promise<bigint>(async (resolve, reject) => {
     while (true) {
       try {
         const res = await pow.wallet.balance(address)
-        if (res.balance > greaterThan) {
-          resolve(res.balance)
-          return
+        const balace = BigInt(res.balance)
+        if (balace > (greaterThan || BigInt(0))) {
+          resolve(balace)
+          break
         }
       } catch (e) {
         reject(e)
