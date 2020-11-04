@@ -42,7 +42,7 @@ export const createWallet = (config: Config, getMeta: () => grpc.Metadata): Wall
   return {
     newAddress: (type: "bls" | "secp256k1" = "bls") => {
       const req = new NewAddressRequest()
-      req.setType(type)
+      req.setAddressType(type)
       return promise(
         (cb) => client.newAddress(req, getMeta(), cb),
         (resp: NewAddressResponse) => resp.toObject(),

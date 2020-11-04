@@ -38,14 +38,39 @@ export interface StorageJobs {
    */
   storageConfigForJob: (jobId: string) => Promise<StorageConfigForJobResponse.AsObject>
 
+  /**
+   * Get queued jobs in the storage profile for the specified cids or all cids.
+   * @param cids A list of cids to get jobs for, providing no cids means all cids.
+   * @returns An object containing a list of jobs.
+   */
   queued: (...cids: string[]) => Promise<QueuedStorageJobsResponse.AsObject>
 
+  /**
+   * Get executing jobs in the storage profile for the specified cids or all cids.
+   * @param cids A list of cids to get jobs for, providing no cids means all cids.
+   * @returns An object containing a list of jobs.
+   */
   executing: (...cids: string[]) => Promise<ExecutingStorageJobsResponse.AsObject>
 
+  /**
+   * Get the latest final jobs in the storage profile for the specified cids or all cids.
+   * @param cids A list of cids to get jobs for, providing no cids means all cids.
+   * @returns An object containing a list of jobs.
+   */
   latestFinal: (...cids: string[]) => Promise<LatestFinalStorageJobsResponse.AsObject>
 
+  /**
+   * Get latest successful jobs in the storage profile for the specified cids or all cids.
+   * @param cids A list of cids to get jobs for, providing no cids means all cids.
+   * @returns An object containing a list of jobs.
+   */
   latestSuccessful: (...cids: string[]) => Promise<LatestSuccessfulStorageJobsResponse.AsObject>
 
+  /**
+   * Get a summary of jobs in the storage profile for the specified cids or all cids.
+   * @param cids A list of cids to get a job summary for, providing no cids means all cids.
+   * @returns An object containing a summary of jobs.
+   */
   summary: (...cids: string[]) => Promise<StorageJobsSummaryResponse.AsObject>
 
   /**
