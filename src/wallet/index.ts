@@ -1,30 +1,23 @@
+import { grpc } from "@improbable-eng/grpc-web"
 import {
+  AddressesRequest,
+  AddressesResponse,
   BalanceRequest,
   BalanceResponse,
-  ListRequest,
-  ListResponse,
   NewAddressRequest,
   NewAddressResponse,
   SendFilRequest,
-} from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc_pb"
-import { RPCServiceClient } from "@textile/grpc-powergate-client/dist/wallet/rpc/rpc_pb_service"
+  SendFilResponse,
+  SignMessageRequest,
+  SignMessageResponse,
+  VerifyMessageRequest,
+  VerifyMessageResponse,
+} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
+import { PowergateServiceClient } from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb_service"
 import { Config } from "../types"
 import { promise } from "../util"
 
 export interface Wallet {
-  /**
-   * Create a new wallet address.
-   * @param type The type of address to create, bls or secp256k1.
-   * @returns The new address.
-   */
-  newAddress: (type?: "bls" | "secp256k1") => Promise<NewAddressResponse.AsObject>
-
-  /**
-   * List all wallet addresses.
-   * @returns The list of wallet addresses.
-   */
-  list: () => Promise<ListResponse.AsObject>
-
   /**
    * Get the balance for a wallet address.
    * @param address The address to get the balance for.
@@ -33,54 +26,115 @@ export interface Wallet {
   balance: (address: string) => Promise<BalanceResponse.AsObject>
 
   /**
-   * Send Fil from one address to another.
-   * @param from The address to send from.
-   * @param to The address to send to.
-   * @param amount The amount of Fil to send.
+   * Create a new wallet address associates with the current storage profile.
+   * @param name A human readable name for the address.
+   * @param type Address type, defaults to bls.
+   * @param makeDefault Specify if the new address should become the default address for this Storage Profile, defaults to false.
+   * @returns Information about the newly created address.
    */
-  sendFil: (from: string, to: string, amount: number) => Promise<void>
+  newAddress: (
+    name: string,
+    type?: "bls" | "secp256k1" | undefined,
+    makeDefault?: boolean | undefined,
+  ) => Promise<NewAddressResponse.AsObject>
+
+  /**
+   * Get all wallet addresses associated with the current storage profile.
+   * @returns A list of wallet addresses.
+   */
+  addresses: () => Promise<AddressesResponse.AsObject>
+
+  /**
+   * Send FIL from an address associated with the current storage profile to any other address.
+   * @param from The address to send FIL from.
+   * @param to The address to send FIL to.
+   * @param amount The amount of FIL to send.
+   */
+  sendFil: (from: string, to: string, amount: bigint) => Promise<SendFilResponse.AsObject>
+
+  /**
+   * Sign a message with the specified address.
+   * @param address The address used to sign the message.
+   * @param message The message to sign.
+   * @returns The signature.
+   */
+  signMessage: (address: string, message: Uint8Array) => Promise<SignMessageResponse.AsObject>
+
+  /**
+   * Verify a signed message.
+   * @param address The address that should have signed the message.
+   * @param message The message to verify.
+   * @param signatre The signature to verify.
+   * @returns Whether or not the signature is valid for the provided address and message.
+   */
+  verifyMessage: (
+    address: string,
+    message: Uint8Array,
+    signature: Uint8Array | string,
+  ) => Promise<VerifyMessageResponse.AsObject>
 }
 
 /**
  * @ignore
  */
-export const createWallet = (config: Config): Wallet => {
-  const client = new RPCServiceClient(config.host, config)
+export const createWallet = (config: Config, getMeta: () => grpc.Metadata): Wallet => {
+  const client = new PowergateServiceClient(config.host, config)
   return {
-    newAddress: (type: "bls" | "secp256k1" = "bls") => {
-      const req = new NewAddressRequest()
-      req.setType(type)
-      return promise(
-        (cb) => client.newAddress(req, cb),
-        (resp: NewAddressResponse) => resp.toObject(),
-      )
-    },
-
-    list: () =>
-      promise(
-        (cb) => client.list(new ListRequest(), cb),
-        (resp: ListResponse) => resp.toObject(),
-      ),
-
     balance: (address: string) => {
       const req = new BalanceRequest()
       req.setAddress(address)
       return promise(
-        (cb) => client.balance(req, cb),
-        (resp: BalanceResponse) => resp.toObject(),
+        (cb) => client.balance(req, getMeta(), cb),
+        (res: BalanceResponse) => res.toObject(),
       )
     },
 
-    sendFil: (from: string, to: string, amount: number) => {
+    newAddress: (name: string, type?: "bls" | "secp256k1", makeDefault?: boolean) => {
+      const req = new NewAddressRequest()
+      req.setName(name)
+      req.setAddressType(type || "bls")
+      req.setMakeDefault(makeDefault || false)
+      return promise(
+        (cb) => client.newAddress(req, getMeta(), cb),
+        (res: NewAddressResponse) => res.toObject(),
+      )
+    },
+
+    addresses: () =>
+      promise(
+        (cb) => client.addresses(new AddressesRequest(), getMeta(), cb),
+        (res: AddressesResponse) => res.toObject(),
+      ),
+
+    sendFil: (from: string, to: string, amount: bigint) => {
       const req = new SendFilRequest()
       req.setFrom(from)
       req.setTo(to)
-      req.setAmount(amount)
+      req.setAmount(amount.toString())
       return promise(
-        (cb) => client.sendFil(req, cb),
-        () => {
-          // nothing to return
-        },
+        (cb) => client.sendFil(req, getMeta(), cb),
+        (res: SendFilResponse) => res.toObject(),
+      )
+    },
+
+    signMessage: (address: string, message: Uint8Array) => {
+      const req = new SignMessageRequest()
+      req.setAddress(address)
+      req.setMessage(message)
+      return promise(
+        (cb) => client.signMessage(req, getMeta(), cb),
+        (res: SignMessageResponse) => res.toObject(),
+      )
+    },
+
+    verifyMessage: (address: string, message: Uint8Array, signature: Uint8Array | string) => {
+      const req = new VerifyMessageRequest()
+      req.setAddress(address)
+      req.setMessage(message)
+      req.setSignature(signature)
+      return promise(
+        (cb) => client.verifyMessage(req, getMeta(), cb),
+        (res: VerifyMessageResponse) => res.toObject(),
       )
     },
   }
