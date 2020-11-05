@@ -1,35 +1,37 @@
 import { expect } from "chai"
+import cp from "child_process"
 import crypto from "crypto"
+import wait from "wait-on"
 import { ApplyOptions, createPow, Pow, powTypes } from "."
 import { host } from "./util"
 
-// beforeEach(async function () {
-//   this.timeout(120000)
-//   cp.exec(`cd powergate-docker && BIGSECTORS=false make localnet`, (err) => {
-//     if (err) {
-//       throw err
-//     }
-//   })
-//   await wait({
-//     resources: ["http://0.0.0.0:6002"],
-//     timeout: 120000,
-//     validateStatus: function () {
-//       return true // the call expectedly returns 404, so just allow that
-//     },
-//   })
-// })
+beforeEach(async function () {
+  this.timeout(120000)
+  cp.exec(`cd powergate-docker && BIGSECTORS=false make localnet`, (err) => {
+    if (err) {
+      throw err
+    }
+  })
+  await wait({
+    resources: ["http://0.0.0.0:6002"],
+    timeout: 120000,
+    validateStatus: function () {
+      return true // the call expectedly returns 404, so just allow that
+    },
+  })
+})
 
-// afterEach(async function () {
-//   this.timeout(120000)
-//   await new Promise<string>((resolve, reject) => {
-//     cp.exec(`cd powergate-docker && make localnet-down`, (err, stdout) => {
-//       if (err) {
-//         reject(err)
-//       }
-//       resolve(stdout)
-//     })
-//   })
-// })
+afterEach(async function () {
+  this.timeout(120000)
+  await new Promise<string>((resolve, reject) => {
+    cp.exec(`cd powergate-docker && make localnet-down`, (err, stdout) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(stdout)
+    })
+  })
+})
 
 describe("pow", () => {
   it("should get build info", async () => {
@@ -52,6 +54,7 @@ describe("pow", () => {
 
       it("should list profiles", async () => {
         const pow = newPow()
+        await expectNewInstance(pow)
         const res = await pow.admin.profiles.storageProfiles()
         expect(res.authEntriesList).length.greaterThan(0)
       })
@@ -140,11 +143,19 @@ describe("pow", () => {
 
     describe("all storage jobs", () => {
       it("should get summary", async function () {
+        this.timeout(180000)
         const pow = newPow()
+        await expectNewInstance(pow)
+        const addressees = await expectAddresses(pow, 1)
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
+        const jobId = await expectApplyStorageConfig(pow, cid)
+        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
         const res = await pow.admin.storageJobs.summary("")
         expect(res.jobCounts?.latestFinal).greaterThan(0)
         expect(res.jobCounts?.latestSuccessful).greaterThan(0)
         expect(res.jobCounts?.queued).equals(0)
+        expect(res.jobCounts?.executing).equals(0)
       })
     })
 
@@ -506,7 +517,7 @@ describe("pow", () => {
 })
 
 function newPow(): Pow {
-  return createPow({ host, debug: true })
+  return createPow({ host })
 }
 
 async function expectNewInstance(pow: Pow) {
