@@ -29,7 +29,7 @@ export interface Wallet {
    * Create a new wallet address associates with the current storage profile.
    * @param name A human readable name for the address.
    * @param type Address type, defaults to bls.
-   * @param makeDefault Specify if the new address should become the default address for this FFS instance, defaults to false.
+   * @param makeDefault Specify if the new address should become the default address for this Storage Profile, defaults to false.
    * @returns Information about the newly created address.
    */
   newAddress: (

@@ -15,14 +15,14 @@ export { DealRecordsOptions }
 
 export interface Deals {
   /**
-   * List storage deal records for the FFS instance according to the provided options.
+   * List storage deal records for the Storage Profile according to the provided options.
    * @param opts Options that control the behavior of listing records.
    * @returns A list of storage deal records.
    */
   storageDealRecords: (opts?: DealRecordsOptions) => Promise<StorageDealRecordsResponse.AsObject>
 
   /**
-   * List retrieval deal records for the FFS instance according to the provided options.
+   * List retrieval deal records for the Storage Profile according to the provided options.
    * @param opts Options that control the behavior of listing records.
    * @returns A list of retrieval deal records.
    */

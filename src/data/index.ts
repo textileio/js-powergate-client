@@ -27,16 +27,16 @@ export { GetFolderOptions, WatchLogsOptions }
 
 export interface Data {
   /**
-   * A helper method to stage data in IPFS in preparation for storing using ffs.pushStorageConfig.
-   * This doesn't actually store data in FFS, you'll want to call pushStorageConfig for that.
+   * A helper method to stage data in IPFS in preparation for storing using storageConfig.apply.
+   * This doesn't actually store data in Powergate, you'll want to call storageConfig.apply for that.
    * @param input The raw data to add.
    * @returns The cid of the added data.
    */
   stage: (input: Uint8Array) => Promise<StageResponse.AsObject>
 
   /**
-   * A helper method to stage a folder recursively in IPFS in preparation for storing using ffs.pushStorageConfig.
-   * This doesn't actually store data in FFS, you'll want to call pushStorageConfig for that.
+   * A helper method to stage a folder recursively in IPFS in preparation for storing using storageConfig.apply.
+   * This doesn't actually store data in Powergate, you'll want to call storageConfig.apply for that.
    * @param path The path to the folder to add.
    * @returns The cid of the added folder.
    */
@@ -52,14 +52,14 @@ export interface Data {
   replaceData: (cid1: string, cid2: string) => Promise<ReplaceDataResponse.AsObject>
 
   /**
-   * Retrieve data stored in the current FFS instance.
+   * Retrieve data stored in the current Storage Profile.
    * @param cid The cid of the data to retrieve.
    * @returns The raw data.
    */
   get: (cid: string) => Promise<Uint8Array>
 
   /**
-   * Retrieve a folder stored in the current FFS instance.
+   * Retrieve a folder stored in the current Storage Profile.
    * @param cid The root cid of the folder to retrieve.
    * @param outputPath The location to write the folder to
    * @param opts Options controlling the behavior of retrieving the folder
