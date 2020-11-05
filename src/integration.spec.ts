@@ -45,6 +45,13 @@ describe("pow", () => {
     expect(pow.host).equal(host)
   })
 
+  it("should get profile id", async () => {
+    const pow = newPow()
+    await expectNewInstance(pow)
+    const res = await pow.storageProfileId()
+    expect(res.id).not.empty
+  })
+
   describe("admin", () => {
     describe("profiles", () => {
       it("should create profile", async () => {
