@@ -49,7 +49,7 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 const pow = createPow({ host })
 ```
 
-Many APIs are immediately available and don't require authorization.
+Most Powergate APIs require authorization in the form of a Storage Profile auth token. Storage Profiles are created using the `admin` API. Powergate's backend may be configured to secure the `admin` API with an auth token, and in that case, you'll neeed to set the admin auth token on the client as shown below.
 
 ```typescript
 import { createPow } from "@textile/powergate-client"
@@ -58,14 +58,18 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 
 const pow = createPow({ host })
 
-async function exampleCode () {
-  const { status, messagesList } = await pow.health.check()
+// Set the admin auth token if required.
+pow.setAdminToken("<an admin auth token>")
 
-  const { peersList } = await pow.net.peers()
+async function exampleCode () {
+  const { authEntry } = await pow.admin.profiles.createStorageProfile() // save this token for later use!
+  return authEntry?.token
 }
 ```
 
-Other APIs require authorization. The main API you'll interact with is the Filecoin File System (FFS), and it requires authorization. First, create a new FFS instance.
+The returned auth token is the only thing that gives access to the corresponding Storage Profile at a later time, so be sure to save it securely.
+
+A Storage Profile auth token can later be set for the Powergate client so that the client authenticates with the Storage Profile associated with the auth token.
 
 ```typescript
 import { createPow } from "@textile/powergate-client"
@@ -74,83 +78,63 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 
 const pow = createPow({ host })
 
-async function exampleCode () {
-  const { token } = await pow.ffs.create() // save this token for later use!
-  return token
-}
+const token = "<previously generated storage profile auth token>"
+
+pow.setToken(token)
 ```
 
-Currently, the returned auth token is the only thing that gives you access to your FFS instance at a later time, so be sure to save it securely.
-
-Once you have an auth token, either by creating a new FFS instance or by reading one you previously saved, set the auth token you'd like the Powergate client to use.
+Now, all authenticated APIs are available for you to use.
 
 ```typescript
-import { createPow } from "@textile/powergate-client"
-
-const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
-
-const pow = createPow({ host })
-
-const authToken = '<generated token>'
-
-pow.setToken(authToken)
-```
-
-Now, the FFS API is available for you to use.
-
-```typescript
-import { JobStatus } from "@textile/grpc-powergate-client/dist/ffs/rpc/rpc_pb"
 import fs from "fs"
-import { createPow } from "@textile/powergate-client"
+import { createPow, powTypes } from "@textile/powergate-client"
 
 const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 
 const pow = createPow({ host })
 
 async function exampleCode() {
-  // get wallet addresses associated with your FFS instance
-  const { addrsList } = await pow.ffs.addrs()
+  // get wallet addresses associated with your storage profile
+  const { addressesList } = await pow.wallet.addresses()
 
-  // create a new address associated with your ffs instance
-  const { addr } = await pow.ffs.newAddr("my new addr")
+  // create a new address associated with your storage profile
+  const { address } = await pow.wallet.newAddress("my new address")
 
-  // get general info about your ffs instance
-  const { info } = await pow.ffs.info()
+  // get build information about the powergate server
+  const res = await pow.buildInfo()
 
-  // cache data in IPFS in preparation to store it using FFS
+  // cache data in IPFS in preparation to store it
   const buffer = fs.readFileSync(`path/to/a/file`)
-  const { cid } = await pow.ffs.stage(buffer)
+  const { cid } = await pow.data.stage(buffer)
 
-  // store the data in FFS using the default storage configuration
-  const { jobId } = await pow.ffs.pushStorageConfig(cid)
+  // store the data using the default storage configuration
+  const { jobId } = await pow.storageConfig.apply(cid)
 
-  // watch the FFS job status to see the storage process progressing
-  const jobsCancel = pow.ffs.watchJobs((job) => {
-    if (job.status === JobStatus.JOB_STATUS_CANCELED) {
+  // watch the job status to see the storage process progressing
+  const jobsCancel = pow.storageJobs.watch((job) => {
+    if (job.status === powTypes.JobStatus.JOB_STATUS_CANCELED) {
       console.log("job canceled")
-    } else if (job.status === JobStatus.JOB_STATUS_FAILED) {
+    } else if (job.status === powTypes.JobStatus.JOB_STATUS_FAILED) {
       console.log("job failed")
-    } else if (job.status === JobStatus.JOB_STATUS_SUCCESS) {
+    } else if (job.status === powTypes.JobStatus.JOB_STATUS_SUCCESS) {
       console.log("job success!")
     }
   }, jobId)
 
-  // watch all FFS events for a cid
-  const logsCancel = pow.ffs.watchLogs((logEvent) => {
+  // watch all log events for a cid
+  const logsCancel = pow.data.watchLogs((logEvent) => {
     console.log(`received event for cid ${logEvent.cid}`)
   }, cid)
 
-  // get the current desired storage configuration for a cid (this configuration may not be realized yet)
-  const { config } = await pow.ffs.getStorageConfig(cid)
+  // get information about the latest applied storage configuration,
+  // current storage state, and all related Powegate storage jobs
+  const { cidInfosList } = await pow.data.cidInfo(cid)
 
-  // get the current actual storage configuration for a cid
-  const { cidInfo } = await pow.ffs.show(cid)
+  // retrieve data stored in the storage profile by cid
+  const bytes = await pow.data.get(cid)
 
-  // retrieve data from FFS by cid
-  const bytes = await pow.ffs.get(cid)
-
-  // send FIL from an address managed by your FFS instance to any other address
-  await pow.ffs.sendFil(addrsList[0].addr, "<some other address>", 1000)
+  // send FIL from an address managed by your storage profile to any other address
+  await pow.wallet.sendFil(addressesList[0].address, "<some other address>", BigInt(1000))
 }
 ```
 
