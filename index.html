@@ -109,7 +109,7 @@
 <span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
 
 <span class="hljs-keyword">const</span> pow = createPow({ host })</code></pre>
-				<p>Most Powergate APIs require authorization in the form of a Storage Profile auth token. Storage Profiles are created using the <code>admin</code> API. Powergate&#39;s backend may be configured to secure the <code>admin</code> API with an auth token, and in that case, you&#39;ll neeed to set the admin auth token on the client as shown below.</p>
+				<p>Most Powergate APIs require authorization in the form of a user auth token. Users are created using the <code>admin</code> API. Powergate&#39;s backend may be configured to secure the <code>admin</code> API with an auth token, and in that case, you&#39;ll neeed to set the admin auth token on the client as shown below.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
 <span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
@@ -120,18 +120,18 @@
 pow.setAdminToken(<span class="hljs-string">"&lt;an admin auth token&gt;"</span>)
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exampleCode</span> (<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">const</span> { authEntry } = <span class="hljs-keyword">await</span> pow.admin.profiles.createStorageProfile() <span class="hljs-comment">// save this token for later use!</span>
-  <span class="hljs-keyword">return</span> authEntry?.token
+  <span class="hljs-keyword">const</span> { user } = <span class="hljs-keyword">await</span> pow.admin.users.create() <span class="hljs-comment">// save this token for later use!</span>
+  <span class="hljs-keyword">return</span> user?.token
 }</code></pre>
-				<p>The returned auth token is the only thing that gives access to the corresponding Storage Profile at a later time, so be sure to save it securely.</p>
-				<p>A Storage Profile auth token can later be set for the Powergate client so that the client authenticates with the Storage Profile associated with the auth token.</p>
+				<p>The returned auth token is the only thing that gives access to the corresponding user at a later time, so be sure to save it securely.</p>
+				<p>A user auth token can later be set for the Powergate client so that the client authenticates with the user associated with the auth token.</p>
 				<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { createPow } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textile/powergate-client"</span>
 
 <span class="hljs-keyword">const</span> host = <span class="hljs-string">"http://0.0.0.0:6002"</span> <span class="hljs-comment">// or whatever powergate instance you want</span>
 
 <span class="hljs-keyword">const</span> pow = createPow({ host })
 
-<span class="hljs-keyword">const</span> token = <span class="hljs-string">"&lt;previously generated storage profile auth token&gt;"</span>
+<span class="hljs-keyword">const</span> token = <span class="hljs-string">"&lt;previously generated user auth token&gt;"</span>
 
 pow.setToken(token)</code></pre>
 				<p>Now, all authenticated APIs are available for you to use.</p>
@@ -143,10 +143,10 @@ pow.setToken(token)</code></pre>
 <span class="hljs-keyword">const</span> pow = createPow({ host })
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">exampleCode</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-comment">// get wallet addresses associated with your storage profile</span>
+  <span class="hljs-comment">// get wallet addresses associated with the user</span>
   <span class="hljs-keyword">const</span> { addressesList } = <span class="hljs-keyword">await</span> pow.wallet.addresses()
 
-  <span class="hljs-comment">// create a new address associated with your storage profile</span>
+  <span class="hljs-comment">// create a new address associated with the user</span>
   <span class="hljs-keyword">const</span> { address } = <span class="hljs-keyword">await</span> pow.wallet.newAddress(<span class="hljs-string">"my new address"</span>)
 
   <span class="hljs-comment">// get build information about the powergate server</span>
@@ -179,10 +179,10 @@ pow.setToken(token)</code></pre>
   <span class="hljs-comment">// current storage state, and all related Powegate storage jobs</span>
   <span class="hljs-keyword">const</span> { cidInfosList } = <span class="hljs-keyword">await</span> pow.data.cidInfo(cid)
 
-  <span class="hljs-comment">// retrieve data stored in the storage profile by cid</span>
+  <span class="hljs-comment">// retrieve data stored in the user by cid</span>
   <span class="hljs-keyword">const</span> bytes = <span class="hljs-keyword">await</span> pow.data.get(cid)
 
-  <span class="hljs-comment">// send FIL from an address managed by your storage profile to any other address</span>
+  <span class="hljs-comment">// send FIL from an address managed by the user to any other address</span>
   <span class="hljs-keyword">await</span> pow.wallet.sendFil(addressesList[<span class="hljs-number">0</span>].address, <span class="hljs-string">"&lt;some other address&gt;"</span>, BigInt(<span class="hljs-number">1000</span>))
 }</code></pre>
 				<p>See the <a href="https://github.com/textileio/js-powergate-client/tree/master/examples/node">Node.js example app</a> in this repository&#39;s <code>examples</code> directory.</p>
@@ -217,10 +217,10 @@ pow.setToken(token)</code></pre>
 						<span>Externals</span>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_admin_v1_powergate_admin_pb_d_.html">&quot;admin/v1/powergate_<wbr>admin_<wbr>pb.d&quot;</a>
+						<a href="modules/_admin_v1_admin_pb_d_.html">&quot;admin/v1/admin_<wbr>pb.d&quot;</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
-						<a href="modules/_powergate_v1_powergate_pb_d_.html">&quot;powergate/v1/powergate_<wbr>pb.d&quot;</a>
+						<a href="modules/_user_v1_user_pb_d_.html">&quot;user/v1/user_<wbr>pb.d&quot;</a>
 					</li>
 				</ul>
 			</nav>
