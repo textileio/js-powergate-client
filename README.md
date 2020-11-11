@@ -94,10 +94,10 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 const pow = createPow({ host })
 
 async function exampleCode() {
-  // get wallet addresses associated with your user
+  // get wallet addresses associated with the user
   const { addressesList } = await pow.wallet.addresses()
 
-  // create a new address associated with your user
+  // create a new address associated with the user
   const { address } = await pow.wallet.newAddress("my new address")
 
   // get build information about the powergate server
@@ -133,7 +133,7 @@ async function exampleCode() {
   // retrieve data stored in the user by cid
   const bytes = await pow.data.get(cid)
 
-  // send FIL from an address managed by your user to any other address
+  // send FIL from an address managed by the user to any other address
   await pow.wallet.sendFil(addressesList[0].address, "<some other address>", BigInt(1000))
 }
 ```
