@@ -49,7 +49,7 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 const pow = createPow({ host })
 ```
 
-Most Powergate APIs require authorization in the form of a user auth token. users are created using the `admin` API. Powergate's backend may be configured to secure the `admin` API with an auth token, and in that case, you'll neeed to set the admin auth token on the client as shown below.
+Most Powergate APIs require authorization in the form of a user auth token. Users are created using the `admin` API. Powergate's backend may be configured to secure the `admin` API with an auth token, and in that case, you'll neeed to set the admin auth token on the client as shown below.
 
 ```typescript
 import { createPow } from "@textile/powergate-client"
