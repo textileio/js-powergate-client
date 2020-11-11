@@ -5,8 +5,8 @@ import {
   RetrievalDealRecordsResponse,
   StorageDealRecordsRequest,
   StorageDealRecordsResponse,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
-import { PowergateServiceClient } from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb_service"
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
+import { UserServiceClient } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
 import { Config } from "../types"
 import { promise } from "../util"
 import { DealRecordsOptions } from "./types"
@@ -15,14 +15,14 @@ export { DealRecordsOptions }
 
 export interface Deals {
   /**
-   * List storage deal records for the Storage Profile according to the provided options.
+   * List storage deal records for the user according to the provided options.
    * @param opts Options that control the behavior of listing records.
    * @returns A list of storage deal records.
    */
   storageDealRecords: (opts?: DealRecordsOptions) => Promise<StorageDealRecordsResponse.AsObject>
 
   /**
-   * List retrieval deal records for the Storage Profile according to the provided options.
+   * List retrieval deal records for the user according to the provided options.
    * @param opts Options that control the behavior of listing records.
    * @returns A list of retrieval deal records.
    */
@@ -35,7 +35,7 @@ export interface Deals {
  * @ignore
  */
 export const createDeals = (config: Config, getMeta: () => grpc.Metadata): Deals => {
-  const client = new PowergateServiceClient(config.host, config)
+  const client = new UserServiceClient(config.host, config)
   return {
     storageDealRecords: (opts: DealRecordsOptions = {}) => {
       const req = new StorageDealRecordsRequest()

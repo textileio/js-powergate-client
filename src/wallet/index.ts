@@ -12,8 +12,8 @@ import {
   SignMessageResponse,
   VerifyMessageRequest,
   VerifyMessageResponse,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
-import { PowergateServiceClient } from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb_service"
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
+import { UserServiceClient } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
 import { Config } from "../types"
 import { promise } from "../util"
 
@@ -26,10 +26,10 @@ export interface Wallet {
   balance: (address: string) => Promise<BalanceResponse.AsObject>
 
   /**
-   * Create a new wallet address associates with the current storage profile.
+   * Create a new wallet address associates with the current user.
    * @param name A human readable name for the address.
    * @param type Address type, defaults to bls.
-   * @param makeDefault Specify if the new address should become the default address for this Storage Profile, defaults to false.
+   * @param makeDefault Specify if the new address should become the default address for this user, defaults to false.
    * @returns Information about the newly created address.
    */
   newAddress: (
@@ -39,13 +39,13 @@ export interface Wallet {
   ) => Promise<NewAddressResponse.AsObject>
 
   /**
-   * Get all wallet addresses associated with the current storage profile.
+   * Get all wallet addresses associated with the current user.
    * @returns A list of wallet addresses.
    */
   addresses: () => Promise<AddressesResponse.AsObject>
 
   /**
-   * Send FIL from an address associated with the current storage profile to any other address.
+   * Send FIL from an address associated with the current user to any other address.
    * @param from The address to send FIL from.
    * @param to The address to send FIL to.
    * @param amount The amount of FIL to send.
@@ -78,7 +78,7 @@ export interface Wallet {
  * @ignore
  */
 export const createWallet = (config: Config, getMeta: () => grpc.Metadata): Wallet => {
-  const client = new PowergateServiceClient(config.host, config)
+  const client = new UserServiceClient(config.host, config)
   return {
     balance: (address: string) => {
       const req = new BalanceRequest()

@@ -10,7 +10,7 @@ export interface Config extends grpc.RpcOptions {
   host: string
 
   /**
-   * A storage profile auth token
+   * A user auth token
    */
   authToken?: string
 

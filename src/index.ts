@@ -1,10 +1,10 @@
 import {
   BuildInfoRequest,
   BuildInfoResponse,
-  StorageProfileIdentifierRequest,
-  StorageProfileIdentifierResponse,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
-import { PowergateServiceClient } from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb_service"
+  UserIdentifierRequest,
+  UserIdentifierResponse,
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
+import { UserServiceClient } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
 import { Admin, createAdmin } from "./admin"
 import { createData, Data, GetFolderOptions, WatchLogsOptions } from "./data"
 import { createDeals, DealRecordsOptions, Deals } from "./deals"
@@ -14,8 +14,8 @@ import { Config } from "./types"
 import { getTransport, host, promise, useTokens } from "./util"
 import { createWallet, Wallet } from "./wallet"
 
-export * as adminTypes from "@textile/grpc-powergate-client/dist/proto/admin/v1/powergate_admin_pb"
-export * as powTypes from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
+export * as adminTypes from "@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb"
+export * as powTypes from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
 export { GetFolderOptions, ApplyOptions, WatchLogsOptions, DealRecordsOptions }
 export { Config }
 export { Admin, Data, Deals, StorageConfig, StorageJobs, Wallet }
@@ -27,7 +27,7 @@ const defaultConfig: Config = {
 
 export interface Pow {
   /**
-   * Set the active storage profile auth token
+   * Set the active user auth token
    * @param t The token to set
    */
   setToken: (t: string) => void
@@ -45,10 +45,10 @@ export interface Pow {
   buildInfo: () => Promise<BuildInfoResponse.AsObject>
 
   /**
-   * Get the storage profile ID.
-   * @returns A Promise containing the storage profile ID.
+   * Get the user ID.
+   * @returns A Promise containing the user ID.
    */
-  storageProfileId: () => Promise<StorageProfileIdentifierResponse.AsObject>
+  userId: () => Promise<UserIdentifierResponse.AsObject>
 
   /**
    * The host address the client is using
@@ -96,7 +96,7 @@ export const createPow = (config?: Partial<Config>): Pow => {
 
   const { getMeta, getHeaders, setToken, setAdminToken } = useTokens(c.authToken, c.adminToken)
 
-  const client = new PowergateServiceClient(c.host, c)
+  const client = new UserServiceClient(c.host, c)
 
   return {
     host: c.host,
@@ -111,11 +111,10 @@ export const createPow = (config?: Partial<Config>): Pow => {
         (resp: BuildInfoResponse) => resp.toObject(),
       ),
 
-    storageProfileId: () =>
+    userId: () =>
       promise(
-        (cb) =>
-          client.storageProfileIdentifier(new StorageProfileIdentifierRequest(), getMeta(), cb),
-        (res: StorageProfileIdentifierResponse) => res.toObject(),
+        (cb) => client.userIdentifier(new UserIdentifierRequest(), getMeta(), cb),
+        (res: UserIdentifierResponse) => res.toObject(),
       ),
 
     storageConfig: createStorageConfig(c, getMeta),

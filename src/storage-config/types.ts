@@ -1,4 +1,4 @@
-import { StorageConfig } from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
+import { StorageConfig } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
 
 /**
  * Options to control the behavior of pushStorageConfig.
