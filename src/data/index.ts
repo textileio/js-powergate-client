@@ -9,11 +9,11 @@ import {
   StageRequest,
   StageResponse,
   WatchLogsRequest,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
 import {
-  PowergateService,
-  PowergateServiceClient,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb_service"
+  UserService,
+  UserServiceClient,
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
 import fs from "fs"
 import ipfsClient from "ipfs-http-client"
 import block from "it-block"
@@ -52,14 +52,14 @@ export interface Data {
   replaceData: (cid1: string, cid2: string) => Promise<ReplaceDataResponse.AsObject>
 
   /**
-   * Retrieve data stored in the current Storage Profile.
+   * Retrieve data stored by the current user.
    * @param cid The cid of the data to retrieve.
    * @returns The raw data.
    */
   get: (cid: string) => Promise<Uint8Array>
 
   /**
-   * Retrieve a folder stored in the current Storage Profile.
+   * Retrieve a folder stored stored by the current user.
    * @param cid The root cid of the folder to retrieve.
    * @param outputPath The location to write the folder to
    * @param opts Options controlling the behavior of retrieving the folder
@@ -90,7 +90,7 @@ export const createData = (
   getMeta: () => grpc.Metadata,
   getHeaders: () => Record<string, string>,
 ): Data => {
-  const client = new PowergateServiceClient(config.host, config)
+  const client = new UserServiceClient(config.host, config)
   const ipfs = ipfsClient(config.host)
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,7 +98,7 @@ export const createData = (
       // Only process the first  input if there are more than one
       const source: File | undefined = (await normaliseInput(input).next()).value
       return new Promise<StageResponse.AsObject>(async (resolve, reject) => {
-        const client = grpc.client(PowergateService.Stage, config)
+        const client = grpc.client(UserService.Stage, config)
         client.onMessage((message) => {
           resolve(message.toObject() as StageResponse.AsObject)
         })

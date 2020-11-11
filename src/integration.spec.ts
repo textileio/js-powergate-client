@@ -45,32 +45,32 @@ describe("pow", () => {
     expect(pow.host).equal(host)
   })
 
-  it("should get profile id", async () => {
+  it("should get user id", async () => {
     const pow = newPow()
-    await expectNewInstance(pow)
-    const res = await pow.storageProfileId()
+    await expectNewUser(pow)
+    const res = await pow.userId()
     expect(res.id).not.empty
   })
 
   describe("admin", () => {
-    describe("profiles", () => {
-      it("should create profile", async () => {
+    describe("users", () => {
+      it("should create user", async () => {
         const pow = newPow()
-        await expectNewInstance(pow)
+        await expectNewUser(pow)
       })
 
-      it("should list profiles", async () => {
+      it("should list users", async () => {
         const pow = newPow()
-        await expectNewInstance(pow)
-        const res = await pow.admin.profiles.storageProfiles()
-        expect(res.authEntriesList).length.greaterThan(0)
+        await expectNewUser(pow)
+        const res = await pow.admin.users.list()
+        expect(res.usersList).length.greaterThan(0)
       })
     })
 
-    describe("profile storage jobs", async () => {
+    describe("user storage jobs", async () => {
       it("should get executing", async function () {
         const pow = newPow()
-        const auth = await expectNewInstance(pow)
+        const auth = await expectNewUser(pow)
         const addressees = await expectAddresses(pow, 1)
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -84,7 +84,7 @@ describe("pow", () => {
       it("should get latest final", async function () {
         this.timeout(180000)
         const pow = newPow()
-        const auth = await expectNewInstance(pow)
+        const auth = await expectNewUser(pow)
         const addressees = await expectAddresses(pow, 1)
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -101,7 +101,7 @@ describe("pow", () => {
       it("should get latest successful", async function () {
         this.timeout(180000)
         const pow = newPow()
-        const auth = await expectNewInstance(pow)
+        const auth = await expectNewUser(pow)
         const addressees = await expectAddresses(pow, 1)
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -119,7 +119,7 @@ describe("pow", () => {
 
       it("should get queued", async function () {
         const pow = newPow()
-        const auth = await expectNewInstance(pow)
+        const auth = await expectNewUser(pow)
         const addressees = await expectAddresses(pow, 1)
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -130,7 +130,7 @@ describe("pow", () => {
 
       it("should get summary", async function () {
         const pow = newPow()
-        const auth = await expectNewInstance(pow)
+        const auth = await expectNewUser(pow)
         const addressees = await expectAddresses(pow, 1)
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -152,7 +152,7 @@ describe("pow", () => {
       it("should get summary", async function () {
         this.timeout(180000)
         const pow = newPow()
-        await expectNewInstance(pow)
+        await expectNewUser(pow)
         const addressees = await expectAddresses(pow, 1)
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -196,7 +196,7 @@ describe("pow", () => {
     it("should get cid info", async function () {
       this.timeout(180000)
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -229,7 +229,7 @@ describe("pow", () => {
     it("should get", async function () {
       this.timeout(180000)
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addrs = await expectAddresses(pow, 1)
       await waitForBalance(pow, addrs[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -241,7 +241,7 @@ describe("pow", () => {
 
     it("should get a folder", async () => {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const res = await pow.data.stageFolder("./sample-data")
       expect(res).length.greaterThan(0)
       await pow.data.getFolder(res, "./output", { timeout: 10000 })
@@ -250,7 +250,7 @@ describe("pow", () => {
     it("should replace", async function () {
       this.timeout(180000)
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addrs = await expectAddresses(pow, 1)
       await waitForBalance(pow, addrs[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -264,20 +264,20 @@ describe("pow", () => {
 
     it("should stage", async () => {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       await expectStage(pow, crypto.randomBytes(1024))
     })
 
     it("should stage folder", async () => {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const res = await pow.data.stageFolder("sample-data")
       expect(res).not.empty
     })
 
     it("should watch logs", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       const event = await new Promise<powTypes.LogEntry.AsObject>((resolve) => {
@@ -292,7 +292,7 @@ describe("pow", () => {
     it("should get storage deal records", async function () {
       this.timeout(180000)
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -312,27 +312,27 @@ describe("pow", () => {
   describe("storage config", () => {
     it("should get default", async () => {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       await expectDefaultStorageConfig(pow)
     })
 
     it("should set default", async () => {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const conf = await expectDefaultStorageConfig(pow)
       await pow.storageConfig.setDefault(conf)
     })
 
     it("should apply", async () => {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       await expectApplyStorageConfig(pow, cid)
     })
 
     it("should remove", async () => {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const conf = await expectDefaultStorageConfig(pow)
       conf.cold = { ...conf.cold, enabled: false }
@@ -346,7 +346,7 @@ describe("pow", () => {
   describe("storage jobs", () => {
     it("should cancel", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -356,7 +356,7 @@ describe("pow", () => {
 
     it("should get executing", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -372,7 +372,7 @@ describe("pow", () => {
     it("should get latest final", async function () {
       this.timeout(180000)
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -391,7 +391,7 @@ describe("pow", () => {
     it("should get latest successful", async function () {
       this.timeout(180000)
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -409,7 +409,7 @@ describe("pow", () => {
 
     it("should get queued", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -420,7 +420,7 @@ describe("pow", () => {
 
     it("should get storage config for job", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -431,18 +431,18 @@ describe("pow", () => {
 
     it("should get storage job", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       const res = await pow.storageJobs.storageJob(jobId)
-      expect(res.job?.id).equals(jobId)
+      expect(res.storageJob?.id).equals(jobId)
     })
 
     it("should get summary", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -461,7 +461,7 @@ describe("pow", () => {
 
     it("should watch", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
@@ -473,20 +473,20 @@ describe("pow", () => {
   describe("wallet", () => {
     it("should get addresses", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       await expectAddresses(pow, 1)
     })
 
     it("should get balance", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       await waitForBalance(pow, addressees[0].address)
     })
 
     it("should create new address", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const res = await pow.wallet.newAddress("new one")
       expect(res.address).not.empty
     })
@@ -494,7 +494,7 @@ describe("pow", () => {
     it("should send fil", async function () {
       this.timeout(120000)
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       await pow.wallet.newAddress("new one")
       const addressees = await expectAddresses(pow, 2)
       await waitForBalance(pow, addressees[0].address)
@@ -505,7 +505,7 @@ describe("pow", () => {
 
     it("should sign message", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       const res = await pow.wallet.signMessage(addressees[0].address, crypto.randomBytes(1024))
       expect(res.signature).not.empty
@@ -513,7 +513,7 @@ describe("pow", () => {
 
     it("should verify message signature", async function () {
       const pow = newPow()
-      await expectNewInstance(pow)
+      await expectNewUser(pow)
       const addressees = await expectAddresses(pow, 1)
       const message = crypto.randomBytes(1024)
       const res0 = await pow.wallet.signMessage(addressees[0].address, message)
@@ -527,14 +527,14 @@ function newPow(): Pow {
   return createPow({ host })
 }
 
-async function expectNewInstance(pow: Pow) {
-  const res = await pow.admin.profiles.createStorageProfile()
-  expect(res.authEntry?.id).not.empty
-  expect(res.authEntry?.token).not.empty
+async function expectNewUser(pow: Pow) {
+  const res = await pow.admin.users.create()
+  expect(res.user?.id).not.empty
+  expect(res.user?.token).not.empty
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  pow.setToken(res.authEntry!.token)
+  pow.setToken(res.user!.token)
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return res.authEntry!
+  return res.user!
 }
 
 async function expectDefaultStorageConfig(pow: Pow) {

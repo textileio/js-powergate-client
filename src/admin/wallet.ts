@@ -6,8 +6,8 @@ import {
   NewAddressResponse,
   SendFilRequest,
   SendFilResponse,
-} from "@textile/grpc-powergate-client/dist/proto/admin/v1/powergate_admin_pb"
-import { PowergateAdminServiceClient } from "@textile/grpc-powergate-client/dist/proto/admin/v1/powergate_admin_pb_service"
+} from "@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb"
+import { AdminServiceClient } from "@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb_service"
 import { Config } from "../types"
 import { promise } from "../util"
 
@@ -38,7 +38,7 @@ export interface Wallet {
  * @ignore
  */
 export const createWallet = (config: Config, getMeta: () => grpc.Metadata): Wallet => {
-  const client = new PowergateAdminServiceClient(config.host, config)
+  const client = new AdminServiceClient(config.host, config)
   return {
     newAddress: (type: "bls" | "secp256k1" = "bls") => {
       const req = new NewAddressRequest()

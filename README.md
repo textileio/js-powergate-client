@@ -49,7 +49,7 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 const pow = createPow({ host })
 ```
 
-Most Powergate APIs require authorization in the form of a Storage Profile auth token. Storage Profiles are created using the `admin` API. Powergate's backend may be configured to secure the `admin` API with an auth token, and in that case, you'll neeed to set the admin auth token on the client as shown below.
+Most Powergate APIs require authorization in the form of a user auth token. users are created using the `admin` API. Powergate's backend may be configured to secure the `admin` API with an auth token, and in that case, you'll neeed to set the admin auth token on the client as shown below.
 
 ```typescript
 import { createPow } from "@textile/powergate-client"
@@ -62,14 +62,14 @@ const pow = createPow({ host })
 pow.setAdminToken("<an admin auth token>")
 
 async function exampleCode () {
-  const { authEntry } = await pow.admin.profiles.createStorageProfile() // save this token for later use!
-  return authEntry?.token
+  const { user } = await pow.admin.users.create() // save this token for later use!
+  return user?.token
 }
 ```
 
-The returned auth token is the only thing that gives access to the corresponding Storage Profile at a later time, so be sure to save it securely.
+The returned auth token is the only thing that gives access to the corresponding user at a later time, so be sure to save it securely.
 
-A Storage Profile auth token can later be set for the Powergate client so that the client authenticates with the Storage Profile associated with the auth token.
+A user auth token can later be set for the Powergate client so that the client authenticates with the user associated with the auth token.
 
 ```typescript
 import { createPow } from "@textile/powergate-client"
@@ -78,7 +78,7 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 
 const pow = createPow({ host })
 
-const token = "<previously generated storage profile auth token>"
+const token = "<previously generated user auth token>"
 
 pow.setToken(token)
 ```
@@ -94,10 +94,10 @@ const host = "http://0.0.0.0:6002" // or whatever powergate instance you want
 const pow = createPow({ host })
 
 async function exampleCode() {
-  // get wallet addresses associated with your storage profile
+  // get wallet addresses associated with your user
   const { addressesList } = await pow.wallet.addresses()
 
-  // create a new address associated with your storage profile
+  // create a new address associated with your user
   const { address } = await pow.wallet.newAddress("my new address")
 
   // get build information about the powergate server
@@ -130,10 +130,10 @@ async function exampleCode() {
   // current storage state, and all related Powegate storage jobs
   const { cidInfosList } = await pow.data.cidInfo(cid)
 
-  // retrieve data stored in the storage profile by cid
+  // retrieve data stored in the user by cid
   const bytes = await pow.data.get(cid)
 
-  // send FIL from an address managed by your storage profile to any other address
+  // send FIL from an address managed by your user to any other address
   await pow.wallet.sendFil(addressesList[0].address, "<some other address>", BigInt(1000))
 }
 ```

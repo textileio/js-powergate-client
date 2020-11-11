@@ -4,7 +4,7 @@ import {
   FilRenew,
   HotConfig,
   IpfsConfig,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
 
 export function coldObjToMessage(obj: ColdConfig.AsObject): ColdConfig {
   const cold = new ColdConfig()

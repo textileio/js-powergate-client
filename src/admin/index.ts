@@ -1,15 +1,15 @@
 import { grpc } from "@improbable-eng/grpc-web"
 import { Config } from "../types"
-import { createProfiles, Profiles } from "./profiles"
 import { createStorageJobs, StorageJobs } from "./storage-jobs"
+import { createUsers, Users } from "./users"
 import { createWallet, Wallet } from "./wallet"
-export { Profiles, StorageJobs, Wallet }
+export { Users, StorageJobs, Wallet }
 
 export interface Admin {
   /**
-   * The admin Profiles API.
+   * The admin Users API.
    */
-  profiles: Profiles
+  users: Users
 
   /**
    * The admin Wallet API.
@@ -27,7 +27,7 @@ export interface Admin {
  */
 export const createAdmin = (config: Config, getMeta: () => grpc.Metadata): Admin => {
   return {
-    profiles: createProfiles(config, getMeta),
+    users: createUsers(config, getMeta),
     wallet: createWallet(config, getMeta),
     storageJobs: createStorageJobs(config, getMeta),
   }

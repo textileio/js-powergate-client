@@ -9,8 +9,8 @@ import {
   SetDefaultStorageConfigRequest,
   SetDefaultStorageConfigResponse,
   StorageConfig as SConfig,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
-import { PowergateServiceClient } from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb_service"
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
+import { UserServiceClient } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
 import { Config } from "../types"
 import { promise } from "../util"
 import { ApplyOptions } from "./types"
@@ -19,13 +19,13 @@ import { coldObjToMessage, hotObjToMessage } from "./util"
 export { ApplyOptions }
 export interface StorageConfig {
   /**
-   * Get the default storage config associated with the current storage profile.
+   * Get the default storage config associated with the current user.
    * @returns The default storage config.
    */
   default: () => Promise<DefaultStorageConfigResponse.AsObject>
 
   /**
-   * Set the default storage config for this storage profile.
+   * Set the default storage config for this user.
    * @param config The new default storage config.
    */
   setDefault: (config: SConfig.AsObject) => Promise<SetDefaultStorageConfigResponse.AsObject>
@@ -39,7 +39,7 @@ export interface StorageConfig {
   apply: (cid: string, opts?: ApplyOptions) => Promise<ApplyStorageConfigResponse.AsObject>
 
   /**
-   * Remove a cid from the storage profile storage.
+   * Remove a cid from the user storage.
    * @param cid The cid to remove.
    */
   remove: (cid: string) => Promise<RemoveResponse.AsObject>
@@ -49,7 +49,7 @@ export const createStorageConfig = (
   config: Config,
   getMeta: () => grpc.Metadata,
 ): StorageConfig => {
-  const client = new PowergateServiceClient(config.host, config)
+  const client = new UserServiceClient(config.host, config)
   return {
     default: () =>
       promise(

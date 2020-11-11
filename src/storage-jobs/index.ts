@@ -4,7 +4,6 @@ import {
   CancelStorageJobResponse,
   ExecutingStorageJobsRequest,
   ExecutingStorageJobsResponse,
-  Job,
   LatestFinalStorageJobsRequest,
   LatestFinalStorageJobsResponse,
   LatestSuccessfulStorageJobsRequest,
@@ -13,13 +12,14 @@ import {
   QueuedStorageJobsResponse,
   StorageConfigForJobRequest,
   StorageConfigForJobResponse,
+  StorageJob,
   StorageJobRequest,
   StorageJobResponse,
   StorageJobsSummaryRequest,
   StorageJobsSummaryResponse,
   WatchStorageJobsRequest,
-} from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb"
-import { PowergateServiceClient } from "@textile/grpc-powergate-client/dist/proto/powergate/v1/powergate_pb_service"
+} from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
+import { UserServiceClient } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
 import { Config } from "../types"
 import { promise } from "../util"
 
@@ -39,35 +39,35 @@ export interface StorageJobs {
   storageConfigForJob: (jobId: string) => Promise<StorageConfigForJobResponse.AsObject>
 
   /**
-   * Get queued jobs in the storage profile for the specified cids or all cids.
+   * Get queued jobs in the user for the specified cids or all cids.
    * @param cids A list of cids to get jobs for, providing no cids means all cids.
    * @returns An object containing a list of jobs.
    */
   queued: (...cids: string[]) => Promise<QueuedStorageJobsResponse.AsObject>
 
   /**
-   * Get executing jobs in the storage profile for the specified cids or all cids.
+   * Get executing jobs in the user for the specified cids or all cids.
    * @param cids A list of cids to get jobs for, providing no cids means all cids.
    * @returns An object containing a list of jobs.
    */
   executing: (...cids: string[]) => Promise<ExecutingStorageJobsResponse.AsObject>
 
   /**
-   * Get the latest final jobs in the storage profile for the specified cids or all cids.
+   * Get the latest final jobs in the user for the specified cids or all cids.
    * @param cids A list of cids to get jobs for, providing no cids means all cids.
    * @returns An object containing a list of jobs.
    */
   latestFinal: (...cids: string[]) => Promise<LatestFinalStorageJobsResponse.AsObject>
 
   /**
-   * Get latest successful jobs in the storage profile for the specified cids or all cids.
+   * Get latest successful jobs in the user for the specified cids or all cids.
    * @param cids A list of cids to get jobs for, providing no cids means all cids.
    * @returns An object containing a list of jobs.
    */
   latestSuccessful: (...cids: string[]) => Promise<LatestSuccessfulStorageJobsResponse.AsObject>
 
   /**
-   * Get a summary of jobs in the storage profile for the specified cids or all cids.
+   * Get a summary of jobs in the user for the specified cids or all cids.
    * @param cids A list of cids to get a job summary for, providing no cids means all cids.
    * @returns An object containing a summary of jobs.
    */
@@ -79,7 +79,7 @@ export interface StorageJobs {
    * @param jobs A list of job ids to watch.
    * @returns A function that can be used to cancel watching.
    */
-  watch: (handler: (event: Job.AsObject) => void, ...jobs: string[]) => () => void
+  watch: (handler: (event: StorageJob.AsObject) => void, ...jobs: string[]) => () => void
 
   /**
    * Cancel a job.
@@ -92,7 +92,7 @@ export interface StorageJobs {
  * @ignore
  */
 export const createStorageJobs = (config: Config, getMeta: () => grpc.Metadata): StorageJobs => {
-  const client = new PowergateServiceClient(config.host, config)
+  const client = new UserServiceClient(config.host, config)
   return {
     storageJob: (jobId: string) => {
       const req = new StorageJobRequest()
@@ -157,12 +157,12 @@ export const createStorageJobs = (config: Config, getMeta: () => grpc.Metadata):
       )
     },
 
-    watch: (handler: (event: Job.AsObject) => void, ...jobs: string[]) => {
+    watch: (handler: (event: StorageJob.AsObject) => void, ...jobs: string[]) => {
       const req = new WatchStorageJobsRequest()
       req.setJobIdsList(jobs)
       const stream = client.watchStorageJobs(req, getMeta())
       stream.on("data", (res) => {
-        const job = res.getJob()?.toObject()
+        const job = res.getStorageJob()?.toObject()
         if (job) {
           handler(job)
         }
