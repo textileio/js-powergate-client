@@ -17,6 +17,8 @@ export const EXPRESS_PORT = process.env["EXPRESS_PORT"]
 
 export const POW_HOST = process.env["POW_HOST"]
 
+export const POW_ADMIN_TOKEN = process.env["POW_ADMIN_TOKEN"]
+
 export const SESSION_SECRET = mustResolve("SESSION_SECRET")
 
 export const GITHUB_CLIENT_ID = mustResolve("GITHUB_CLIENT_ID")

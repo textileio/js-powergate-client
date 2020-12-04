@@ -34,7 +34,9 @@ Copy `env.example` to `.env` and update `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SE
 
 **Note:** Be sure not to commit your `.env` file to any public repository because it contains application secrets.
 
-This example app needs to connect to a Powergate instance, so update `.env` with your `POW_HOST` address. This would correspond to an instance of Powergate you have running somewhere. 
+This example app needs to connect to a Powergate instance, so update `.env` with your `POW_HOST` address. This would correspond to an instance of Powergate you have running somewhere.
+
+If your Powergate is configured to use an adming auth token, be sure to set a value in `.env` for `POW_ADMIN_TOKEN`.
 
 **- OR -**
 
@@ -44,7 +46,7 @@ Easily fire up a local Powergate instance in localnet mode (along with its depen
 npm run localnet:up
 ```
 
-The default settings for `POW_HOST` will connect to this locally running Powergate instance.
+The default settings for `POW_HOST` will connect to this locally running Powergate instance, an no `POW_ADMIN_TOKEN` is not required in this case.
 
 Next, start up the example Node.js app. Back in the root of this example app, run:
 
@@ -57,19 +59,15 @@ Finally, navigate to `http://localhost:3000` and you should see the app being ru
 
 # How it Works
 
-Powergate is designed to be integrated into other applications. The primary Powergate API is called Filecoin File System (FFS), and Powergate can create and manage one or many FFS instances. These FFS instances map nicely onto the concept of "users" in a typical application -- Each user is given a FFS instance that manages their set of wallet addresses and the data they store in Powergate. This example app demonstrates that exact setup using GitHub OAuth as an authentication provider, creating an FFS instance for each authenticated user, and persisting the association between users and FFS instances.
+Powergate is designed to be integrated into other applications. Powergate "users" map nicely onto the concept of "users" in a typical application -- Each Powergate user manages its own data storage and set of wallet addresses. This example app demonstrates that exact setup using GitHub OAuth as an authentication provider, creating a Powergate user for each authenticated user, and persisting the association between authenticated application users and Powergate users.
 
-There are many things you can do with the FFS API as well as the other APIs provided by the Powergate client, but the keys to the integration shown in this example app are as follows:
+There are many things you can do with the APIs provided by the Powergate client, but the keys to the integration shown in this example app are as follows:
 
-On the main landing page of the web app, we render some basic information about the Powergate instance using some of our Powergate client `pow`'s APIs. These API calls aren't associated with a particular user and don't require any authentication:
+On the main landing page of the web app, we render some basic information about the Powergate instance using some of our Powergate client `pow`'s APIs to get the server build information and host name. These API calls aren't associated with a particular user and don't require any authentication:
 
 ```typescript
-const [respPeers, respAddr, respHealth, respMiners] = await Promise.all([
-  pow.net.peers(),
-  pow.net.listenAddr(),
-  pow.health.check(),
-  pow.miners.get(),
-])
+const { buildDate, gitBranch, gitCommit, gitState, gitSummary, version } = await pow.buildInfo()
+const host = pow.host
 ```
 
 Here is the code from `src/models/user.ts` that defines our `User` model:
@@ -78,22 +76,26 @@ Here is the code from `src/models/user.ts` that defines our `User` model:
 type User = {
   gitHubId: string
   email: string
-  ffsToken?: string
+  authToken?: string
 }
 ```
 
-`gitHubId` is provided by the GitHub OAuth mechanism. `ffsToken` is a token provided by Powergate when we create a new FFS instance and is uniquely associated with that single FFS instance. We save off the user `email` that comes back from the GitHub authentication just to have something nice to display in the we UI.
+`gitHubId` is provided by the GitHub OAuth mechanism. `authToken` is a token provided by Powergate when we create a new user and is uniquely associated with that single user. We save off the user `email` that comes back from the GitHub authentication just to have something nice to display in the we UI.
 
-Most of the magic happens after a user authenticates and we recognize that they don't yet have a FFS instance created. From the authentication callback middleware in `app.ts`, after a user is successfully authenticated and we see they are a new user with no FFS instance:
+Most of the magic happens after a user authenticates and we recognize that they don't yet have a corresponding Poewrgate user created. From the authentication callback middleware in `app.ts`, after a user is successfully authenticated and we see they are a new user with no corresponding Poewergate user:
 
 ```typescript
-const createResp = await pow.ffs.create()
-user.ffsToken = createResp.token
+const createResp = await pow.admin.users.create()
+user.authToken = createResp.user?.token
 await save(user)
-pow.setToken(user.ffsToken)
+if (user.authToken) {
+  pow.setToken(user.authToken)
+} else {
+  throw new Error("no auth token for user")
+}
 ```
 
-Using our Powergate client `pow`, we create a new FFS instance, set the `ffsToken` property of our user with the token that was returned, and save our user in the underlying SQLite database. We then pass the same token into our Powergate client's `setToken` function so that the client, by default, will communicate with this user's FFS instance. Whenever a previously created user authenticates again, the persisted FFS token with be set on the Powergate client using `setToken` and they will resume using their unique FFS instance.
+Using our Powergate client `pow` admin API, we create a new user, set the `authToken` property of our user with the token that was returned, and save our user in the underlying SQLite database. We then pass the same token into our Powergate client's `setToken` function so that the client, by default, will operate within the context of the current Powergate user. Whenever a previously created user authenticates again, the persisted auth token with be set on the Powergate client using `setToken` and they will resume using their unique Powergate user resources.
 
 # Relevant Project Structure
 

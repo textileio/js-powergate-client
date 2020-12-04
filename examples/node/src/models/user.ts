@@ -13,7 +13,7 @@ let db: Database
             CREATE TABLE IF NOT EXISTS users (
                 gitHubId TEXT NOT NULL PRIMARY KEY,
                 email TEXT,
-                ffsToken TEXT
+                authToken TEXT
             );
         `
     await db.run(create)
@@ -26,11 +26,11 @@ let db: Database
 export type User = {
   gitHubId: string
   email: string
-  ffsToken?: string
+  authToken?: string
 }
 
 export const findOne = async function (where: string): Promise<User | undefined> {
-  const q = `SELECT gitHubId, email, ffsToken FROM users WHERE ${where}`
+  const q = `SELECT gitHubId, email, authToken FROM users WHERE ${where}`
   const row = await db.get(q)
   if (!row) {
     return undefined
@@ -38,14 +38,14 @@ export const findOne = async function (where: string): Promise<User | undefined>
     const user: User = {
       gitHubId: row.gitHubId,
       email: row.email,
-      ffsToken: row.ffsToken,
+      authToken: row.authToken,
     }
     return user
   }
 }
 
 export const findByGithubId = async function (gitHubId: string): Promise<User | undefined> {
-  const q = "SELECT gitHubId, email, ffsToken FROM users WHERE gitHubId = ?"
+  const q = "SELECT gitHubId, email, authToken FROM users WHERE gitHubId = ?"
   const row = await db.get(q, gitHubId)
   if (!row) {
     return undefined
@@ -53,7 +53,7 @@ export const findByGithubId = async function (gitHubId: string): Promise<User | 
     const user: User = {
       gitHubId: row.gitHubId,
       email: row.email,
-      ffsToken: row.ffsToken,
+      authToken: row.authToken,
     }
     return user
   }
@@ -65,17 +65,17 @@ export const save = async function (user: User): Promise<void> {
     const sql = `
             UPDATE users
             SET email = ?,
-                ffsToken = ?
+                authToken = ?
             WHERE gitHubId = ?
         `
-    await db.run(sql, user.email, user.ffsToken, user.gitHubId)
+    await db.run(sql, user.email, user.authToken, user.gitHubId)
   } else {
     const sql = `
-            INSERT INTO users(gitHubId, email, ffsToken)
+            INSERT INTO users(gitHubId, email, authToken)
             VALUES
                 (?, ?, ?)
         `
-    await db.run(sql, user.gitHubId, user.email, user.ffsToken)
+    await db.run(sql, user.gitHubId, user.email, user.authToken)
   }
 }
 

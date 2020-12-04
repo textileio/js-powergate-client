@@ -2,23 +2,28 @@ extends layout
 
 block content
   h1 Node Info
-  p.lead A sample of generally available data, no auth required.
+  p.lead Simply displaying the host and build info, no auth required.
   hr
   .row
-    - const jsonPeers = JSON.stringify(peers, null, 4)
-    - const jsonAddr = JSON.stringify(listenAddr, null, 4)
-    - const jsonHealth = JSON.stringify(health, null, 4)
-    - const jsonMiners = JSON.stringify(miners, null, 4)
     .col-sm-6
-      h2 Node Health
-      pre= jsonHealth
+      h2 Host
+      pre= host
     .col-sm-6
-      h2 Listen Address
-      pre= jsonAddr
+      h2 Build Date
+      pre= buildDate
     .col-sm-6
-      h2 Peers
-      pre= jsonPeers
+      h2 Git Branch
+      pre= gitBranch
     .col-sm-6
-      h2 Miners
-      pre= jsonMiners
+      h2 Git Commit
+      pre= gitCommit
+    .col-sm-6
+      h2 Git State
+      pre= gitState
+    .col-sm-6
+      h2 Git Summary
+      pre= gitSummary
+    .col-sm-6
+      h2 Version
+      pre= version
       

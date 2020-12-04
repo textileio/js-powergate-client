@@ -5,10 +5,13 @@ import passport from "passport"
 import path from "path"
 import * as passportConfig from "./config/passport"
 import { save, User } from "./models/user"
-import { EXPRESS_PORT, POW_HOST, SESSION_SECRET } from "./util/env"
+import { EXPRESS_PORT, POW_ADMIN_TOKEN, POW_HOST, SESSION_SECRET } from "./util/env"
 
 // Create the Powergate client
 const pow = createPow({ host: POW_HOST })
+if (POW_ADMIN_TOKEN) {
+  pow.setAdminToken(POW_ADMIN_TOKEN)
+}
 
 // Create Express server
 const app = express()
@@ -31,18 +34,17 @@ app.use((req, res, next) => {
  */
 app.get("/", async (_, res, next) => {
   try {
-    const [respPeers, respAddr, respHealth, respMiners] = await Promise.all([
-      pow.net.peers(),
-      pow.net.listenAddr(),
-      pow.health.check(),
-      pow.miners.get(),
-    ])
+    const { buildDate, gitBranch, gitCommit, gitState, gitSummary, version } = await pow.buildInfo()
+    const host = pow.host
     res.render("home", {
       title: "Home",
-      peers: respPeers.peersList,
-      listenAddr: respAddr.addrInfo,
-      health: respHealth,
-      miners: respMiners.index,
+      host,
+      buildDate,
+      gitBranch,
+      gitCommit,
+      gitState,
+      gitSummary,
+      version,
     })
   } catch (e) {
     next(e)
@@ -51,10 +53,12 @@ app.get("/", async (_, res, next) => {
 
 app.get("/user", passportConfig.isAuthenticated, async (_, res, next) => {
   try {
-    const info = await pow.ffs.info()
+    const { id } = await pow.userId()
+    const { addressesList } = await pow.wallet.addresses()
     res.render("user", {
       title: "User",
-      info: info.info,
+      id,
+      addressesList,
     })
   } catch (e) {
     next(e)
@@ -76,15 +80,19 @@ app.get(
   async (req, _, next) => {
     if (req.user) {
       const user = req.user as User
-      if (user.ffsToken) {
-        pow.setToken(user.ffsToken)
+      if (user.authToken) {
+        pow.setToken(user.authToken)
         return next()
       } else {
         try {
-          const createResp = await pow.ffs.create()
-          user.ffsToken = createResp.token
+          const createResp = await pow.admin.users.create()
+          user.authToken = createResp.user?.token
           await save(user)
-          pow.setToken(user.ffsToken)
+          if (user.authToken) {
+            pow.setToken(user.authToken)
+          } else {
+            throw new Error("no auth token for user")
+          }
           next()
         } catch (e) {
           next(e)

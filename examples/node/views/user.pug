@@ -1,11 +1,15 @@
 extends layout
 
 block content
-  h1 FFS (#{info.id})
-  p.lead Data for your FFS instance.
+  h1 User (ID: #{id})
+  p.lead Wallet address information for the user.
   hr
   .row
-    - const jsonInfo = JSON.stringify(info, null, 4)
     .col-sm-6
-      h2 Instance Info
-      pre= jsonInfo
+    each address, i in addressesList
+        h2= 'Address ' + i
+        ul
+          li= 'Name: ' + address.name
+          li= 'Address: ' + address.address
+          li= 'Type: ' + address.type
+          li= 'Balance: ' + address.balance
