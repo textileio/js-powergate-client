@@ -234,6 +234,22 @@ describe("pow", () => {
   })
 
   describe("data", () => {
+    it("should get cid summary", async function () {
+      this.timeout(180000)
+      const pow = newPow()
+      await expectNewUser(pow)
+      const addressees = await expectAddresses(pow, 1)
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
+      const jobId = await expectApplyStorageConfig(pow, cid)
+      let res = await pow.data.cidSummary()
+      expect(res.cidSummaryList).length(1)
+      res = await pow.data.cidSummary(cid)
+      expect(res.cidSummaryList).length(1)
+      expect(res.cidSummaryList[0].cid).equals(cid)
+      expect(res.cidSummaryList[0].executingJob).equals(jobId)
+    })
+
     it("should get cid info", async function () {
       this.timeout(180000)
       const pow = newPow()
@@ -466,6 +482,38 @@ describe("pow", () => {
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_EXECUTING)
+    })
+  })
+
+  describe("storage info", () => {
+    it("should get", async function () {
+      this.timeout(180000)
+      const pow = newPow()
+      await expectNewUser(pow)
+      const addressees = await expectAddresses(pow, 1)
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
+      const jobId = await expectApplyStorageConfig(pow, cid)
+      await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+      const res = await pow.storageInfo.get(cid)
+      expect(res?.storageInfo).not.undefined
+      expect(res?.storageInfo?.cid).equals(cid)
+    })
+
+    it("should list", async function () {
+      this.timeout(180000)
+      const pow = newPow()
+      await expectNewUser(pow)
+      const addressees = await expectAddresses(pow, 1)
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
+      const jobId = await expectApplyStorageConfig(pow, cid)
+      await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+      let res = await pow.storageInfo.list()
+      expect(res.storageInfoList).length(1)
+      res = await pow.storageInfo.list(cid)
+      expect(res.storageInfoList).length(1)
+      expect(res?.storageInfoList[0].cid).equals(cid)
     })
   })
 
