@@ -6,8 +6,8 @@ import {
   UsersResponse,
 } from "@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb"
 import { AdminServiceClient } from "@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb_service"
-import { Config } from "../types"
-import { promise } from "../util"
+import { Config } from "../../types"
+import { promise } from "../../util"
 
 export interface Users {
   /**

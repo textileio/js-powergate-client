@@ -107,12 +107,16 @@ export const createStorageJobs = (config: Config, getMeta: () => grpc.Metadata):
         switch (opts.select) {
           case ListSelect.All:
             req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_ALL)
+            break
           case ListSelect.Queued:
             req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_QUEUED)
+            break
           case ListSelect.Executing:
             req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_EXECUTING)
+            break
           case ListSelect.Final:
             req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_FINAL)
+            break
         }
       }
       return promise(
