@@ -93,6 +93,12 @@ export const createStorageConfig = (
         req.setConfig(c)
         req.setHasConfig(true)
       }
+      if (opts?.importDealIds) {
+        req.setImportDealIdsList(opts.importDealIds)
+      }
+      if (opts?.noExec) {
+        req.setNoExec(opts.noExec)
+      }
       return promise(
         (cb) => client.applyStorageConfig(req, getMeta(), cb),
         (res: ApplyStorageConfigResponse) => res.toObject(),

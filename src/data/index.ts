@@ -2,6 +2,8 @@ import { grpc } from "@improbable-eng/grpc-web"
 import {
   CidInfoRequest,
   CidInfoResponse,
+  CidSummaryRequest,
+  CidSummaryResponse,
   GetRequest,
   LogEntry,
   ReplaceDataRequest,
@@ -79,7 +81,19 @@ export interface Data {
     opts?: WatchLogsOptions,
   ) => () => void
 
-  cidInfo: (...cids: string[]) => Promise<CidInfoResponse.AsObject>
+  /**
+   * Get high level information about the current state of cids in Powergate.
+   * @param cids A list of cids to filter the results by.
+   * @returns An object containing a list of cid summary info.
+   */
+  cidSummary: (...cids: string[]) => Promise<CidSummaryResponse.AsObject>
+
+  /**
+   * Get detailed information about the current state of a cid in Powergate.
+   * @param cid The cid to get information for.
+   * @returns An object with detailed information about the cid.
+   */
+  cidInfo: (cid: string) => Promise<CidInfoResponse.AsObject>
 }
 
 /**
@@ -171,7 +185,7 @@ export const createData = (
           const stream = fs.createWriteStream(fullFilePath)
           for await (const chunk of file.content) {
             const slice = chunk.slice()
-            await new Promise((resolve, reject) => {
+            await new Promise<void>((resolve, reject) => {
               stream.write(slice, (err) => {
                 if (err) {
                   reject(err)
@@ -221,9 +235,18 @@ export const createData = (
       )
     },
 
-    cidInfo: (...cids: string[]) => {
-      const req = new CidInfoRequest()
+    cidSummary: (...cids: string[]) => {
+      const req = new CidSummaryRequest()
       req.setCidsList(cids)
+      return promise(
+        (cb) => client.cidSummary(req, getMeta(), cb),
+        (res: CidSummaryResponse) => res.toObject(),
+      )
+    },
+
+    cidInfo: (cid: string) => {
+      const req = new CidInfoRequest()
+      req.setCid(cid)
       return promise(
         (cb) => client.cidInfo(req, getMeta(), cb),
         (res: CidInfoResponse) => res.toObject(),

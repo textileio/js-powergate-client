@@ -9,6 +9,7 @@ import { Admin, createAdmin } from "./admin"
 import { createData, Data, GetFolderOptions, WatchLogsOptions } from "./data"
 import { createDeals, DealRecordsOptions, Deals } from "./deals"
 import { ApplyOptions, createStorageConfig, StorageConfig } from "./storage-config"
+import { createStorageInfo, StorageInfo } from "./storage-info"
 import { createStorageJobs, StorageJobs } from "./storage-jobs"
 import { Config } from "./types"
 import { getTransport, host, promise, useTokens } from "./util"
@@ -76,6 +77,11 @@ export interface Pow {
   deals: Deals
 
   /**
+   * The StorageInfo API
+   */
+  storageInfo: StorageInfo
+
+  /**
    * The StorageJobs API
    */
   storageJobs: StorageJobs
@@ -124,6 +130,8 @@ export const createPow = (config?: Partial<Config>): Pow => {
     wallet: createWallet(c, getMeta),
 
     deals: createDeals(c, getMeta),
+
+    storageInfo: createStorageInfo(c, getMeta),
 
     storageJobs: createStorageJobs(c, getMeta),
 

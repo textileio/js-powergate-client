@@ -425,7 +425,7 @@ describe("pow", () => {
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
-      const res = await pow.storageJobs.storageConfigForJob(jobId)
+      const res = await pow.storageJobs.storageConfig(jobId)
       expect(res.storageConfig).not.undefined
     })
 
@@ -436,7 +436,7 @@ describe("pow", () => {
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
-      const res = await pow.storageJobs.storageJob(jobId)
+      const res = await pow.storageJobs.get(jobId)
       expect(res.storageJob?.id).equals(jobId)
     })
 
