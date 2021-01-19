@@ -128,7 +128,7 @@ async function exampleCode() {
 
   // get information about the latest applied storage configuration,
   // current storage state, and all related Powegate storage jobs
-  const { cidInfosList } = await pow.data.cidInfo(cid)
+  const { cidInfo } = await pow.data.cidInfo(cid)
 
   // retrieve data stored in the user by cid
   const bytes = await pow.data.get(cid)
