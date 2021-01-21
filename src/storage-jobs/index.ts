@@ -2,19 +2,14 @@ import { grpc } from "@improbable-eng/grpc-web"
 import {
   CancelStorageJobRequest,
   CancelStorageJobResponse,
-  ExecutingStorageJobsRequest,
-  ExecutingStorageJobsResponse,
-  LatestFinalStorageJobsRequest,
-  LatestFinalStorageJobsResponse,
-  LatestSuccessfulStorageJobsRequest,
-  LatestSuccessfulStorageJobsResponse,
-  QueuedStorageJobsRequest,
-  QueuedStorageJobsResponse,
+  ListStorageJobsRequest,
+  ListStorageJobsResponse,
   StorageConfigForJobRequest,
   StorageConfigForJobResponse,
   StorageJob,
   StorageJobRequest,
   StorageJobResponse,
+  StorageJobsSelector,
   StorageJobsSummaryRequest,
   StorageJobsSummaryResponse,
   WatchStorageJobsRequest,
@@ -22,6 +17,9 @@ import {
 import { UserServiceClient } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
 import { Config } from "../types"
 import { promise } from "../util"
+import { ListOptions, ListSelect } from "./types"
+
+export { ListOptions, ListSelect }
 
 export interface StorageJobs {
   /**
@@ -29,49 +27,28 @@ export interface StorageJobs {
    * @param jobId The job id to query.
    * @returns The current state of the storage job.
    */
-  storageJob: (jobId: string) => Promise<StorageJobResponse.AsObject>
+  get: (jobId: string) => Promise<StorageJobResponse.AsObject>
 
   /**
-   * Get the desired storage config for the provided cid, this config may not yet be realized.
-   * @param cid The cid of the desired storage config.
-   * @returns The storage config for the provided cid.
+   * Get the storage config associated with the specified storage job id.
+   * @param jobId The cid of the desired storage config.
+   * @returns The storage config associated with the provided job id.
    */
-  storageConfigForJob: (jobId: string) => Promise<StorageConfigForJobResponse.AsObject>
+  storageConfig: (jobId: string) => Promise<StorageConfigForJobResponse.AsObject>
 
   /**
-   * Get queued jobs in the user for the specified cids or all cids.
-   * @param cids A list of cids to get jobs for, providing no cids means all cids.
-   * @returns An object containing a list of jobs.
+   * Lists StorageJobs according to the provided ListOptions.
+   * @param opts Optional ListOptions to control the behavior of listing jobs.
+   * @returns An object containing a list of storage jobs.
    */
-  queued: (...cids: string[]) => Promise<QueuedStorageJobsResponse.AsObject>
-
-  /**
-   * Get executing jobs in the user for the specified cids or all cids.
-   * @param cids A list of cids to get jobs for, providing no cids means all cids.
-   * @returns An object containing a list of jobs.
-   */
-  executing: (...cids: string[]) => Promise<ExecutingStorageJobsResponse.AsObject>
-
-  /**
-   * Get the latest final jobs in the user for the specified cids or all cids.
-   * @param cids A list of cids to get jobs for, providing no cids means all cids.
-   * @returns An object containing a list of jobs.
-   */
-  latestFinal: (...cids: string[]) => Promise<LatestFinalStorageJobsResponse.AsObject>
-
-  /**
-   * Get latest successful jobs in the user for the specified cids or all cids.
-   * @param cids A list of cids to get jobs for, providing no cids means all cids.
-   * @returns An object containing a list of jobs.
-   */
-  latestSuccessful: (...cids: string[]) => Promise<LatestSuccessfulStorageJobsResponse.AsObject>
+  list: (opts?: ListOptions) => Promise<ListStorageJobsResponse.AsObject>
 
   /**
    * Get a summary of jobs in the user for the specified cids or all cids.
-   * @param cids A list of cids to get a job summary for, providing no cids means all cids.
+   * @param cid An optional cid to get a job summary for, providing no cid means all cids.
    * @returns An object containing a summary of jobs.
    */
-  summary: (...cids: string[]) => Promise<StorageJobsSummaryResponse.AsObject>
+  summary: (cid?: string) => Promise<StorageJobsSummaryResponse.AsObject>
 
   /**
    * Listen for job updates for the provided job ids.
@@ -94,7 +71,7 @@ export interface StorageJobs {
 export const createStorageJobs = (config: Config, getMeta: () => grpc.Metadata): StorageJobs => {
   const client = new UserServiceClient(config.host, config)
   return {
-    storageJob: (jobId: string) => {
+    get: (jobId: string) => {
       const req = new StorageJobRequest()
       req.setJobId(jobId)
       return promise(
@@ -103,7 +80,7 @@ export const createStorageJobs = (config: Config, getMeta: () => grpc.Metadata):
       )
     },
 
-    storageConfigForJob: (jobId: string) => {
+    storageConfig: (jobId: string) => {
       const req = new StorageConfigForJobRequest()
       req.setJobId(jobId)
       return promise(
@@ -112,45 +89,47 @@ export const createStorageJobs = (config: Config, getMeta: () => grpc.Metadata):
       )
     },
 
-    queued: (...cids: string[]) => {
-      const req = new QueuedStorageJobsRequest()
-      req.setCidsList(cids)
+    list: (opts?: ListOptions) => {
+      const req = new ListStorageJobsRequest()
+      if (opts?.ascending) {
+        req.setAscending(opts.ascending)
+      }
+      if (opts?.cidFilter) {
+        req.setCidFilter(opts.cidFilter)
+      }
+      if (opts?.limit) {
+        req.setLimit(opts.limit)
+      }
+      if (opts?.nextPageToken) {
+        req.setNextPageToken(opts.nextPageToken)
+      }
+      if (opts?.select != undefined) {
+        switch (opts.select) {
+          case ListSelect.All:
+            req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_ALL)
+            break
+          case ListSelect.Queued:
+            req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_QUEUED)
+            break
+          case ListSelect.Executing:
+            req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_EXECUTING)
+            break
+          case ListSelect.Final:
+            req.setSelector(StorageJobsSelector.STORAGE_JOBS_SELECTOR_FINAL)
+            break
+        }
+      }
       return promise(
-        (cb) => client.queuedStorageJobs(req, getMeta(), cb),
-        (res: QueuedStorageJobsResponse) => res.toObject(),
+        (cb) => client.listStorageJobs(req, getMeta(), cb),
+        (res: ListStorageJobsResponse) => res.toObject(),
       )
     },
 
-    executing: (...cids: string[]) => {
-      const req = new ExecutingStorageJobsRequest()
-      req.setCidsList(cids)
-      return promise(
-        (cb) => client.executingStorageJobs(req, getMeta(), cb),
-        (res: ExecutingStorageJobsResponse) => res.toObject(),
-      )
-    },
-
-    latestFinal: (...cids: string[]) => {
-      const req = new LatestFinalStorageJobsRequest()
-      req.setCidsList(cids)
-      return promise(
-        (cb) => client.latestFinalStorageJobs(req, getMeta(), cb),
-        (res: LatestFinalStorageJobsResponse) => res.toObject(),
-      )
-    },
-
-    latestSuccessful: (...cids: string[]) => {
-      const req = new LatestSuccessfulStorageJobsRequest()
-      req.setCidsList(cids)
-      return promise(
-        (cb) => client.latestSuccessfulStorageJobs(req, getMeta(), cb),
-        (res: LatestSuccessfulStorageJobsResponse) => res.toObject(),
-      )
-    },
-
-    summary: (...cids: string[]) => {
+    summary: (cid?: string) => {
       const req = new StorageJobsSummaryRequest()
-      req.setCidsList(cids)
+      if (cid) {
+        req.setCid(cid)
+      }
       return promise(
         (cb) => client.storageJobsSummary(req, getMeta(), cb),
         (res: StorageJobsSummaryResponse) => res.toObject(),

@@ -3,6 +3,7 @@ import cp from "child_process"
 import crypto from "crypto"
 import wait from "wait-on"
 import { ApplyOptions, createPow, Pow, powTypes } from "."
+import { ListSelect } from "./storage-jobs"
 import { host } from "./util"
 
 beforeEach(async function () {
@@ -75,43 +76,12 @@ describe("pow", () => {
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
         const jobId = await expectApplyStorageConfig(pow, cid)
-        const res = await pow.admin.storageJobs.executing(auth.id, cid)
-        expect(res.storageJobsList).length(1)
-        expect(res.storageJobsList[0].id).equals(jobId)
-        expect(res.storageJobsList[0].cid).equals(cid)
-      })
-
-      it("should get latest final", async function () {
-        this.timeout(180000)
-        const pow = newPow()
-        const auth = await expectNewUser(pow)
-        const addressees = await expectAddresses(pow, 1)
-        await waitForBalance(pow, addressees[0].address)
-        const cid = await expectStage(pow, crypto.randomBytes(1024))
-        const jobId = await expectApplyStorageConfig(pow, cid)
-        let res = await pow.admin.storageJobs.latestFinal(auth.id, cid)
-        expect(res.storageJobsList).empty
-        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
-        res = await pow.admin.storageJobs.latestFinal(auth.id, cid)
-        expect(res.storageJobsList).length(1)
-        expect(res.storageJobsList[0].id).equals(jobId)
-        expect(res.storageJobsList[0].cid).equals(cid)
-      })
-
-      it("should get latest successful", async function () {
-        this.timeout(180000)
-        const pow = newPow()
-        const auth = await expectNewUser(pow)
-        const addressees = await expectAddresses(pow, 1)
-        await waitForBalance(pow, addressees[0].address)
-        const cid = await expectStage(pow, crypto.randomBytes(1024))
-        const jobId = await expectApplyStorageConfig(pow, cid)
-        let res = await pow.admin.storageJobs.latestSuccessful(auth.id, cid)
-        expect(res.storageJobsList).empty
-        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
-        res = await pow.admin.storageJobs.latestSuccessful(auth.id, cid)
-        expect(res.storageJobsList).length(1)
-        res = await pow.admin.storageJobs.latestSuccessful(auth.id, cid)
+        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_EXECUTING)
+        const res = await pow.admin.storageJobs.list({
+          userId: auth.id,
+          cidFilter: cid,
+          select: ListSelect.Executing,
+        })
         expect(res.storageJobsList).length(1)
         expect(res.storageJobsList[0].id).equals(jobId)
         expect(res.storageJobsList[0].cid).equals(cid)
@@ -124,7 +94,11 @@ describe("pow", () => {
         await waitForBalance(pow, addressees[0].address)
         const cid = await expectStage(pow, crypto.randomBytes(1024))
         await expectApplyStorageConfig(pow, cid)
-        const res = await pow.admin.storageJobs.queued(auth.id, cid)
+        const res = await pow.admin.storageJobs.list({
+          userId: auth.id,
+          cidFilter: cid,
+          select: ListSelect.Queued,
+        })
         expect(res.storageJobsList).length.lessThan(2)
       })
 
@@ -139,12 +113,7 @@ describe("pow", () => {
         expect(res.executingStorageJobsList).length(1)
         res = await pow.admin.storageJobs.summary(auth.id, cid)
         expect(res.executingStorageJobsList).length(1)
-        expect(res.executingStorageJobsList[0].cid).equals(cid)
-        expect(res.executingStorageJobsList[0].id).equals(jobId)
-        expect(res.jobCounts?.executing).equals(1)
-        expect(res.jobCounts?.latestFinal).equals(0)
-        expect(res.jobCounts?.latestSuccessful).equals(0)
-        expect(res.jobCounts?.queued).equals(0)
+        expect(res.executingStorageJobsList[0]).equals(jobId)
       })
     })
 
@@ -158,11 +127,8 @@ describe("pow", () => {
         const cid = await expectStage(pow, crypto.randomBytes(1024))
         const jobId = await expectApplyStorageConfig(pow, cid)
         await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
-        const res = await pow.admin.storageJobs.summary("")
-        expect(res.jobCounts?.latestFinal).greaterThan(0)
-        expect(res.jobCounts?.latestSuccessful).greaterThan(0)
-        expect(res.jobCounts?.queued).equals(0)
-        expect(res.jobCounts?.executing).equals(0)
+        const res = await pow.admin.storageJobs.summary()
+        expect(res.finalStorageJobsList).length.greaterThan(0)
       })
     })
 
@@ -190,9 +156,100 @@ describe("pow", () => {
         await waitForBalance(pow, res1.address, bal)
       })
     })
+
+    describe("data", () => {
+      it("should gc staged", async function () {
+        this.timeout(180000)
+        const pow = newPow()
+        await expectNewUser(pow)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
+        const res = await pow.admin.data.gcStaged()
+        expect(res.unpinnedCidsList).length(1)
+        expect(res.unpinnedCidsList[0]).equals(cid)
+      })
+
+      it("should get pinned cids", async function () {
+        this.timeout(30000)
+        const pow = newPow()
+        const { id } = await expectNewUser(pow)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
+        const opts: ApplyOptions = {
+          storageConfig: {
+            repairable: false,
+            hot: {
+              enabled: true,
+              allowUnfreeze: false,
+              unfreezeMaxPrice: 0,
+              ipfs: {
+                addTimeout: 300,
+              },
+            },
+          },
+        }
+        const jobId = await expectApplyStorageConfig(pow, cid, opts)
+        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+        const res = await pow.admin.data.pinnedCids()
+        expect(res.cidsList).length(1)
+        expect(res.cidsList[0].cid).equals(cid)
+        expect(res.cidsList[0].usersList).length(1)
+        expect(res.cidsList[0].usersList[0].userId).equals(id)
+      })
+    })
+
+    describe("storage info", () => {
+      it("should get", async function () {
+        this.timeout(180000)
+        const pow = newPow()
+        const { id } = await expectNewUser(pow)
+        const addressees = await expectAddresses(pow, 1)
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
+        const jobId = await expectApplyStorageConfig(pow, cid)
+        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+        const res = await pow.admin.storageInfo.get(id, cid)
+        expect(res?.storageInfo).not.undefined
+        expect(res?.storageInfo?.cid).equals(cid)
+      })
+
+      it("should list", async function () {
+        this.timeout(180000)
+        const pow = newPow()
+        const { id } = await expectNewUser(pow)
+        const addressees = await expectAddresses(pow, 1)
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
+        const jobId = await expectApplyStorageConfig(pow, cid)
+        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+        let res = await pow.admin.storageInfo.list()
+        expect(res.storageInfoList).length(1)
+        res = await pow.admin.storageInfo.list([id])
+        expect(res.storageInfoList).length(1)
+        res = await pow.admin.storageInfo.list([id], [cid])
+        expect(res.storageInfoList).length(1)
+        res = await pow.admin.storageInfo.list(undefined, [cid])
+        expect(res.storageInfoList).length(1)
+        expect(res?.storageInfoList[0].cid).equals(cid)
+      })
+    })
   })
 
   describe("data", () => {
+    it("should get cid summary", async function () {
+      this.timeout(180000)
+      const pow = newPow()
+      await expectNewUser(pow)
+      const addressees = await expectAddresses(pow, 1)
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
+      const jobId = await expectApplyStorageConfig(pow, cid)
+      let res = await pow.data.cidSummary()
+      expect(res.cidSummaryList).length(1)
+      res = await pow.data.cidSummary(cid)
+      expect(res.cidSummaryList).length(1)
+      expect(res.cidSummaryList[0].cid).equals(cid)
+      expect(res.cidSummaryList[0].executingJob).equals(jobId)
+    })
+
     it("should get cid info", async function () {
       this.timeout(180000)
       const pow = newPow()
@@ -202,28 +259,22 @@ describe("pow", () => {
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       let res = await pow.data.cidInfo(cid)
-      expect(res.cidInfosList).length(1)
-      res = await pow.data.cidInfo()
-      expect(res.cidInfosList).length(1)
-      expect(res.cidInfosList[0].cid).equals(cid)
-      expect(res.cidInfosList[0].currentStorageInfo).undefined
-      expect(res.cidInfosList[0].latestFinalStorageJob).undefined
-      expect(res.cidInfosList[0].latestSuccessfulStorageJob).undefined
-      expect(res.cidInfosList[0].latestPushedStorageConfig).not.undefined
-      expect(res.cidInfosList[0].queuedStorageJobsList).length.lessThan(2)
-      if (res.cidInfosList[0].executingStorageJob) {
-        expect(res.cidInfosList[0].executingStorageJob.cid).equals(cid)
+      expect(res.cidInfo).not.undefined
+      expect(res.cidInfo?.cid).equals(cid)
+      expect(res.cidInfo?.currentStorageInfo).undefined
+      expect(res.cidInfo?.latestPushedStorageConfig).not.undefined
+      expect(res.cidInfo?.queuedStorageJobsList).length.lessThan(2)
+      if (res.cidInfo?.executingStorageJob) {
+        expect(res.cidInfo?.executingStorageJob.cid).equals(cid)
       }
       await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
-      res = await pow.data.cidInfo()
-      expect(res.cidInfosList).length(1)
-      expect(res.cidInfosList[0].cid).equals(cid)
-      expect(res.cidInfosList[0].currentStorageInfo?.cid).equals(cid)
-      expect(res.cidInfosList[0].latestFinalStorageJob).not.undefined
-      expect(res.cidInfosList[0].latestSuccessfulStorageJob).not.undefined
-      expect(res.cidInfosList[0].latestPushedStorageConfig).not.undefined
-      expect(res.cidInfosList[0].queuedStorageJobsList).length(0)
-      expect(res.cidInfosList[0].executingStorageJob).undefined
+      res = await pow.data.cidInfo(cid)
+      expect(res.cidInfo).not.undefined
+      expect(res.cidInfo?.cid).equals(cid)
+      expect(res.cidInfo?.currentStorageInfo?.cid).equals(cid)
+      expect(res.cidInfo?.latestPushedStorageConfig).not.undefined
+      expect(res.cidInfo?.queuedStorageJobsList).length(0)
+      expect(res.cidInfo?.executingStorageJob).undefined
     })
 
     it("should get", async function () {
@@ -361,47 +412,13 @@ describe("pow", () => {
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
-      let res = await pow.storageJobs.executing()
+      await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_EXECUTING)
+      let res = await pow.storageJobs.list({ select: ListSelect.Executing })
       expect(res.storageJobsList).length(1)
-      res = await pow.storageJobs.executing(cid)
-      expect(res.storageJobsList).length(1)
-      expect(res.storageJobsList[0].id).equals(jobId)
-      expect(res.storageJobsList[0].cid).equals(cid)
-    })
-
-    it("should get latest final", async function () {
-      this.timeout(180000)
-      const pow = newPow()
-      await expectNewUser(pow)
-      const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address)
-      const cid = await expectStage(pow, crypto.randomBytes(1024))
-      const jobId = await expectApplyStorageConfig(pow, cid)
-      let res = await pow.storageJobs.latestFinal()
-      expect(res.storageJobsList).empty
-      await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
-      res = await pow.storageJobs.latestFinal()
-      expect(res.storageJobsList).length(1)
-      res = await pow.storageJobs.latestFinal(cid)
-      expect(res.storageJobsList).length(1)
-      expect(res.storageJobsList[0].id).equals(jobId)
-      expect(res.storageJobsList[0].cid).equals(cid)
-    })
-
-    it("should get latest successful", async function () {
-      this.timeout(180000)
-      const pow = newPow()
-      await expectNewUser(pow)
-      const addressees = await expectAddresses(pow, 1)
-      await waitForBalance(pow, addressees[0].address)
-      const cid = await expectStage(pow, crypto.randomBytes(1024))
-      const jobId = await expectApplyStorageConfig(pow, cid)
-      let res = await pow.storageJobs.latestSuccessful()
-      expect(res.storageJobsList).empty
-      await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
-      res = await pow.storageJobs.latestSuccessful()
-      expect(res.storageJobsList).length(1)
-      res = await pow.storageJobs.latestSuccessful(cid)
+      res = await pow.storageJobs.list({
+        cidFilter: cid,
+        select: ListSelect.Executing,
+      })
       expect(res.storageJobsList).length(1)
       expect(res.storageJobsList[0].id).equals(jobId)
       expect(res.storageJobsList[0].cid).equals(cid)
@@ -414,7 +431,10 @@ describe("pow", () => {
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       await expectApplyStorageConfig(pow, cid)
-      const res = await pow.storageJobs.queued(cid)
+      const res = await pow.storageJobs.list({
+        cidFilter: cid,
+        select: ListSelect.Queued,
+      })
       expect(res.storageJobsList).length.lessThan(2)
     })
 
@@ -425,7 +445,7 @@ describe("pow", () => {
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
-      const res = await pow.storageJobs.storageConfigForJob(jobId)
+      const res = await pow.storageJobs.storageConfig(jobId)
       expect(res.storageConfig).not.undefined
     })
 
@@ -436,7 +456,7 @@ describe("pow", () => {
       await waitForBalance(pow, addressees[0].address)
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
-      const res = await pow.storageJobs.storageJob(jobId)
+      const res = await pow.storageJobs.get(jobId)
       expect(res.storageJob?.id).equals(jobId)
     })
 
@@ -451,12 +471,7 @@ describe("pow", () => {
       expect(res.executingStorageJobsList).length(1)
       res = await pow.storageJobs.summary(cid)
       expect(res.executingStorageJobsList).length(1)
-      expect(res.executingStorageJobsList[0].cid).equals(cid)
-      expect(res.executingStorageJobsList[0].id).equals(jobId)
-      expect(res.jobCounts?.executing).equals(1)
-      expect(res.jobCounts?.latestFinal).equals(0)
-      expect(res.jobCounts?.latestSuccessful).equals(0)
-      expect(res.jobCounts?.queued).equals(0)
+      expect(res.executingStorageJobsList[0]).equals(jobId)
     })
 
     it("should watch", async function () {
@@ -467,6 +482,38 @@ describe("pow", () => {
       const cid = await expectStage(pow, crypto.randomBytes(1024))
       const jobId = await expectApplyStorageConfig(pow, cid)
       await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_EXECUTING)
+    })
+  })
+
+  describe("storage info", () => {
+    it("should get", async function () {
+      this.timeout(180000)
+      const pow = newPow()
+      await expectNewUser(pow)
+      const addressees = await expectAddresses(pow, 1)
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
+      const jobId = await expectApplyStorageConfig(pow, cid)
+      await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+      const res = await pow.storageInfo.get(cid)
+      expect(res?.storageInfo).not.undefined
+      expect(res?.storageInfo?.cid).equals(cid)
+    })
+
+    it("should list", async function () {
+      this.timeout(180000)
+      const pow = newPow()
+      await expectNewUser(pow)
+      const addressees = await expectAddresses(pow, 1)
+      await waitForBalance(pow, addressees[0].address)
+      const cid = await expectStage(pow, crypto.randomBytes(1024))
+      const jobId = await expectApplyStorageConfig(pow, cid)
+      await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+      let res = await pow.storageInfo.list()
+      expect(res.storageInfoList).length(1)
+      res = await pow.storageInfo.list(cid)
+      expect(res.storageInfoList).length(1)
+      expect(res?.storageInfoList[0].cid).equals(cid)
     })
   })
 
