@@ -177,7 +177,7 @@ pow.setToken(token)</code></pre>
 
   <span class="hljs-comment">// get information about the latest applied storage configuration,</span>
   <span class="hljs-comment">// current storage state, and all related Powegate storage jobs</span>
-  <span class="hljs-keyword">const</span> { cidInfosList } = <span class="hljs-keyword">await</span> pow.data.cidInfo(cid)
+  <span class="hljs-keyword">const</span> { cidInfo } = <span class="hljs-keyword">await</span> pow.data.cidInfo(cid)
 
   <span class="hljs-comment">// retrieve data stored in the user by cid</span>
   <span class="hljs-keyword">const</span> bytes = <span class="hljs-keyword">await</span> pow.data.get(cid)
@@ -230,6 +230,9 @@ pow.setToken(token)</code></pre>
 						<a href="interfaces/admin.html" class="tsd-kind-icon">Admin</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/applyoptions.html" class="tsd-kind-icon">Apply<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/config.html" class="tsd-kind-icon">Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -249,9 +252,6 @@ pow.setToken(token)</code></pre>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/wallet.html" class="tsd-kind-icon">Wallet</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#applyoptions" class="tsd-kind-icon">Apply<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#dealrecordsoptions" class="tsd-kind-icon">Deal<wbr>Records<wbr>Options</a>

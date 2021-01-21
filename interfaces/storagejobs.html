@@ -80,12 +80,9 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#cancel" class="tsd-kind-icon">cancel</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#executing" class="tsd-kind-icon">executing</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#latestfinal" class="tsd-kind-icon">latest<wbr>Final</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#latestsuccessful" class="tsd-kind-icon">latest<wbr>Successful</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#queued" class="tsd-kind-icon">queued</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#storageconfigforjob" class="tsd-kind-icon">storage<wbr>Config<wbr>For<wbr>Job</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#storagejob" class="tsd-kind-icon">storage<wbr>Job</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#list" class="tsd-kind-icon">list</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#storageconfig" class="tsd-kind-icon">storage<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#summary" class="tsd-kind-icon">summary</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="storagejobs.html#watch" class="tsd-kind-icon">watch</a></li>
 							</ul>
@@ -101,7 +98,7 @@
 					<div class="tsd-signature tsd-kind-icon">cancel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.cancelstoragejobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L88">src/storage-jobs/index.ts:88</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/storage-jobs/index.ts#L65">src/storage-jobs/index.ts:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -137,232 +134,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="executing" class="tsd-anchor"></a>
-					<h3>executing</h3>
-					<div class="tsd-signature tsd-kind-icon">executing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.executingstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="get" class="tsd-anchor"></a>
+					<h3>get</h3>
+					<div class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storagejobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L53">src/storage-jobs/index.ts:53</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Get executing jobs in the user for the specified cids or all cids.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>A list of cids to get jobs for, providing no cids means all cids.</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>An object containing a list of jobs.</p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.executingstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>cids: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.executingstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="latestfinal" class="tsd-anchor"></a>
-					<h3>latest<wbr>Final</h3>
-					<div class="tsd-signature tsd-kind-icon">latest<wbr>Final<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.latestfinalstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L60">src/storage-jobs/index.ts:60</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Get the latest final jobs in the user for the specified cids or all cids.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>A list of cids to get jobs for, providing no cids means all cids.</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>An object containing a list of jobs.</p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.latestfinalstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>cids: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.latestfinalstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="latestsuccessful" class="tsd-anchor"></a>
-					<h3>latest<wbr>Successful</h3>
-					<div class="tsd-signature tsd-kind-icon">latest<wbr>Successful<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.latestsuccessfulstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L67">src/storage-jobs/index.ts:67</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Get latest successful jobs in the user for the specified cids or all cids.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>A list of cids to get jobs for, providing no cids means all cids.</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>An object containing a list of jobs.</p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.latestsuccessfulstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>cids: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.latestsuccessfulstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="queued" class="tsd-anchor"></a>
-					<h3>queued</h3>
-					<div class="tsd-signature tsd-kind-icon">queued<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.queuedstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L46">src/storage-jobs/index.ts:46</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Get queued jobs in the user for the specified cids or all cids.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>A list of cids to get jobs for, providing no cids means all cids.</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>An object containing a list of jobs.</p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.queuedstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>cids: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.queuedstoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="storageconfigforjob" class="tsd-anchor"></a>
-					<h3>storage<wbr>Config<wbr>For<wbr>Job</h3>
-					<div class="tsd-signature tsd-kind-icon">storage<wbr>Config<wbr>For<wbr>Job<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storageconfigforjobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L39">src/storage-jobs/index.ts:39</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Get the desired storage config for the provided cid, this config may not yet be realized.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>The cid of the desired storage config.</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>The storage config for the provided cid.</p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storageconfigforjobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>jobId: <span class="tsd-signature-type">string</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storageconfigforjobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="storagejob" class="tsd-anchor"></a>
-					<h3>storage<wbr>Job</h3>
-					<div class="tsd-signature tsd-kind-icon">storage<wbr>Job<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storagejobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L32">src/storage-jobs/index.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/storage-jobs/index.ts#L30">src/storage-jobs/index.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -401,12 +178,100 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="summary" class="tsd-anchor"></a>
-					<h3>summary</h3>
-					<div class="tsd-signature tsd-kind-icon">summary<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.storagejobssummaryresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="list" class="tsd-anchor"></a>
+					<h3>list</h3>
+					<div class="tsd-signature tsd-kind-icon">list<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ListOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.liststoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L74">src/storage-jobs/index.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/storage-jobs/index.ts#L44">src/storage-jobs/index.ts:44</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Lists StorageJobs according to the provided ListOptions.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>Optional ListOptions to control the behavior of listing jobs.</p>
+							</dd>
+							<dt>returns</dt>
+							<dd><p>An object containing a list of storage jobs.</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>opts<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ListOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.liststoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5><span class="tsd-flag ts-flagOptional">Optional</span> opts: <span class="tsd-signature-type">ListOptions</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.liststoragejobsresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="storageconfig" class="tsd-anchor"></a>
+					<h3>storage<wbr>Config</h3>
+					<div class="tsd-signature tsd-kind-icon">storage<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storageconfigforjobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/storage-jobs/index.ts#L37">src/storage-jobs/index.ts:37</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Get the storage config associated with the specified storage job id.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>param</dt>
+							<dd><p>The cid of the desired storage config.</p>
+							</dd>
+							<dt>returns</dt>
+							<dd><p>The storage config associated with the provided job id.</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>jobId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storageconfigforjobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>jobId: <span class="tsd-signature-type">string</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_user_v1_user_pb_d_.storageconfigforjobresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="summary" class="tsd-anchor"></a>
+					<h3>summary</h3>
+					<div class="tsd-signature tsd-kind-icon">summary<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>cid<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.storagejobssummaryresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/storage-jobs/index.ts#L51">src/storage-jobs/index.ts:51</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -415,7 +280,7 @@
 						</div>
 						<dl class="tsd-comment-tags">
 							<dt>param</dt>
-							<dd><p>A list of cids to get a job summary for, providing no cids means all cids.</p>
+							<dd><p>An optional cid to get a job summary for, providing no cid means all cids.</p>
 							</dd>
 							<dt>returns</dt>
 							<dd><p>An object containing a summary of jobs.</p>
@@ -427,14 +292,14 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-signature">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>cids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.storagejobssummaryresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>cid<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.storagejobssummaryresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
-												<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>cids: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+												<h5><span class="tsd-flag ts-flagOptional">Optional</span> cid: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_admin_v1_admin_pb_d_.storagejobssummaryresponse.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -450,7 +315,7 @@
 					<div class="tsd-signature tsd-kind-icon">watch<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>handler<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../classes/_user_v1_user_pb_d_.storagejob.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, <span class="tsd-signature-symbol">...</span>jobs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-jobs/index.ts#L82">src/storage-jobs/index.ts:82</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/storage-jobs/index.ts#L59">src/storage-jobs/index.ts:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -540,6 +405,9 @@
 						<a href="admin.html" class="tsd-kind-icon">Admin</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="applyoptions.html" class="tsd-kind-icon">Apply<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="config.html" class="tsd-kind-icon">Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -563,22 +431,13 @@
 								<a href="storagejobs.html#cancel" class="tsd-kind-icon">cancel</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="storagejobs.html#executing" class="tsd-kind-icon">executing</a>
+								<a href="storagejobs.html#get" class="tsd-kind-icon">get</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="storagejobs.html#latestfinal" class="tsd-kind-icon">latest<wbr>Final</a>
+								<a href="storagejobs.html#list" class="tsd-kind-icon">list</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="storagejobs.html#latestsuccessful" class="tsd-kind-icon">latest<wbr>Successful</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="storagejobs.html#queued" class="tsd-kind-icon">queued</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="storagejobs.html#storageconfigforjob" class="tsd-kind-icon">storage<wbr>Config<wbr>For<wbr>Job</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="storagejobs.html#storagejob" class="tsd-kind-icon">storage<wbr>Job</a>
+								<a href="storagejobs.html#storageconfig" class="tsd-kind-icon">storage<wbr>Config</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="storagejobs.html#summary" class="tsd-kind-icon">summary</a>
@@ -592,9 +451,6 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
 						<a href="wallet.html" class="tsd-kind-icon">Wallet</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#applyoptions" class="tsd-kind-icon">Apply<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#dealrecordsoptions" class="tsd-kind-icon">Deal<wbr>Records<wbr>Options</a>

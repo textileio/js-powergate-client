@@ -76,6 +76,7 @@
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface"><a href="interfaces/admin.html" class="tsd-kind-icon">Admin</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/applyoptions.html" class="tsd-kind-icon">Apply<wbr>Options</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/config.html" class="tsd-kind-icon">Config</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/data.html" class="tsd-kind-icon">Data</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/deals.html" class="tsd-kind-icon">Deals</a></li>
@@ -88,7 +89,6 @@
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias"><a href="globals.html#applyoptions" class="tsd-kind-icon">Apply<wbr>Options</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#dealrecordsoptions" class="tsd-kind-icon">Deal<wbr>Records<wbr>Options</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#getfolderoptions" class="tsd-kind-icon">Get<wbr>Folder<wbr>Options</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#watchlogsoptions" class="tsd-kind-icon">Watch<wbr>Logs<wbr>Options</a></li>
@@ -106,48 +106,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
-					<a name="applyoptions" class="tsd-anchor"></a>
-					<h3>Apply<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">Apply<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>override<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">; </span>storageConfig<span class="tsd-signature-symbol">?: </span><a href="classes/_user_v1_user_pb_d_.storageconfig.html#asobject" class="tsd-signature-type">AsObject</a><span class="tsd-signature-symbol"> }</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/storage-config/types.ts#L6">src/storage-config/types.ts:6</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Options to control the behavior of pushStorageConfig.</p>
-						</div>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> override<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>Allows you to override an existing storage configuration</p>
-									</div>
-								</div>
-							</li>
-							<li class="tsd-parameter">
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> storage<wbr>Config<span class="tsd-signature-symbol">?: </span><a href="classes/_user_v1_user_pb_d_.storageconfig.html#asobject" class="tsd-signature-type">AsObject</a></h5>
-								<div class="tsd-comment tsd-typography">
-									<div class="lead">
-										<p>Allows you to override the default storage config with a custom one</p>
-									</div>
-								</div>
-							</li>
-						</ul>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="dealrecordsoptions" class="tsd-anchor"></a>
 					<h3>Deal<wbr>Records<wbr>Options</h3>
 					<div class="tsd-signature tsd-kind-icon">Deal<wbr>Records<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>ascending<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">; </span>dataCids<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>fromAddresses<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>includeFinal<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">; </span>includePending<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/deals/types.ts#L4">src/deals/types.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/deals/types.ts#L4">src/deals/types.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -213,7 +177,7 @@
 					<div class="tsd-signature tsd-kind-icon">Get<wbr>Folder<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>timeout<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/data/types.ts#L4">src/data/types.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/data/types.ts#L4">src/data/types.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -241,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">Watch<wbr>Logs<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>includeHistory<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">; </span>jobId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/data/types.ts#L14">src/data/types.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/data/types.ts#L14">src/data/types.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -284,7 +248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d43237d/src/index.ts#L94">src/index.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/textileio/js-powergate-client/blob/d131758/src/index.ts#L100">src/index.ts:100</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -333,6 +297,9 @@
 						<a href="interfaces/admin.html" class="tsd-kind-icon">Admin</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/applyoptions.html" class="tsd-kind-icon">Apply<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/config.html" class="tsd-kind-icon">Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -352,9 +319,6 @@
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/wallet.html" class="tsd-kind-icon">Wallet</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#applyoptions" class="tsd-kind-icon">Apply<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#dealrecordsoptions" class="tsd-kind-icon">Deal<wbr>Records<wbr>Options</a>
