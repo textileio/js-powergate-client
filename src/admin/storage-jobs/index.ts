@@ -12,6 +12,8 @@ import { Config } from "../../types"
 import { promise } from "../../util"
 import { AdminListOptions } from "./types"
 
+export { AdminListOptions }
+
 export interface StorageJobs {
   /**
    * Lists StorageJobs according to the provided ListOptions.
