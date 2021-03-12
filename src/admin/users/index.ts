@@ -9,7 +9,7 @@ import { AdminServiceClient } from "@textile/grpc-powergate-client/dist/powergat
 import { Config } from "../../types"
 import { promise } from "../../util"
 
-export interface Users {
+export interface AdminUsers {
   /**
    * Create a new user.
    * @returns Information about the new user.
@@ -26,7 +26,7 @@ export interface Users {
 /**
  * @ignore
  */
-export const createUsers = (config: Config, getMeta: () => grpc.Metadata): Users => {
+export const createUsers = (config: Config, getMeta: () => grpc.Metadata): AdminUsers => {
   const client = new AdminServiceClient(config.host, config)
   return {
     create: () => {

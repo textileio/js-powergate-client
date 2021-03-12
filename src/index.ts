@@ -5,21 +5,54 @@ import {
   UserIdentifierResponse,
 } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
 import { UserServiceClient } from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb_service"
-import { Admin, createAdmin } from "./admin"
+import {
+  Admin,
+  AdminData,
+  AdminGetMinersOptions,
+  AdminIndices,
+  AdminListOptions,
+  AdminRecords,
+  AdminStorageInfo,
+  AdminStorageJobs,
+  AdminUsers,
+  AdminWallet,
+  createAdmin,
+} from "./admin"
 import { createData, Data, GetFolderOptions, WatchLogsOptions } from "./data"
 import { createDeals, DealRecordsOptions, Deals } from "./deals"
 import { ApplyOptions, createStorageConfig, StorageConfig } from "./storage-config"
 import { createStorageInfo, StorageInfo } from "./storage-info"
-import { createStorageJobs, StorageJobs } from "./storage-jobs"
+import { createStorageJobs, ListOptions, ListSelect, StorageJobs } from "./storage-jobs"
 import { Config } from "./types"
 import { getTransport, host, promise, useTokens } from "./util"
 import { createWallet, Wallet } from "./wallet"
 
 export * as adminTypes from "@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb"
 export * as powTypes from "@textile/grpc-powergate-client/dist/powergate/user/v1/user_pb"
-export { GetFolderOptions, ApplyOptions, WatchLogsOptions, DealRecordsOptions }
-export { Config }
-export { Admin, Data, Deals, StorageConfig, StorageJobs, Wallet }
+export {
+  Admin,
+  Config,
+  Data,
+  Deals,
+  StorageConfig,
+  StorageJobs,
+  Wallet,
+  ListOptions,
+  ListSelect,
+  AdminListOptions,
+  AdminGetMinersOptions,
+  GetFolderOptions,
+  ApplyOptions,
+  WatchLogsOptions,
+  DealRecordsOptions,
+  AdminRecords,
+  AdminIndices,
+  AdminData,
+  AdminStorageInfo,
+  AdminStorageJobs,
+  AdminUsers,
+  AdminWallet,
+}
 
 const defaultConfig: Config = {
   host,

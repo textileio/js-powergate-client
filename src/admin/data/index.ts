@@ -9,7 +9,7 @@ import { AdminServiceClient } from "@textile/grpc-powergate-client/dist/powergat
 import { Config } from "../../types"
 import { promise } from "../../util"
 
-export interface Data {
+export interface AdminData {
   /**
    * Unpins staged data not related to queued or executing jobs.
    * @returns An object containing a list of unpinned cids.
@@ -26,7 +26,7 @@ export interface Data {
 /**
  * @ignore
  */
-export const createData = (config: Config, getMeta: () => grpc.Metadata): Data => {
+export const createData = (config: Config, getMeta: () => grpc.Metadata): AdminData => {
   const client = new AdminServiceClient(config.host, config)
   return {
     gcStaged: () => {

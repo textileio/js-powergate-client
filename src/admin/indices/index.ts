@@ -12,7 +12,7 @@ import { AdminGetMinersOptions } from "./types"
 
 export { AdminGetMinersOptions }
 
-export interface Indices {
+export interface AdminIndices {
   /**
    * Gets a list of miner addresses that satisfies the provided filters.
    * @returns An object containing a list of miner addresses.
@@ -29,7 +29,7 @@ export interface Indices {
 /**
  * @ignore
  */
-export const createIndices = (config: Config, getMeta: () => grpc.Metadata): Indices => {
+export const createIndices = (config: Config, getMeta: () => grpc.Metadata): AdminIndices => {
   const client = new AdminServiceClient(config.host, config)
   return {
     getMiners: (opts?: AdminGetMinersOptions) => {

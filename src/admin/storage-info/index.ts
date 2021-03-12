@@ -9,7 +9,7 @@ import { AdminServiceClient } from "@textile/grpc-powergate-client/dist/powergat
 import { Config } from "../../types"
 import { promise } from "../../util"
 
-export interface StorageInfo {
+export interface AdminStorageInfo {
   /**
    * Get the current storage state of a cid.
    * @param userId The user id to query.
@@ -29,7 +29,10 @@ export interface StorageInfo {
 /**
  * @ignore
  */
-export const createStorageInfo = (config: Config, getMeta: () => grpc.Metadata): StorageInfo => {
+export const createStorageInfo = (
+  config: Config,
+  getMeta: () => grpc.Metadata,
+): AdminStorageInfo => {
   const client = new AdminServiceClient(config.host, config)
   return {
     get: (userId: string, cid: string) => {

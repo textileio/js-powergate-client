@@ -10,7 +10,7 @@ import { Timestamp } from "google-protobuf/google/protobuf/timestamp_pb"
 import { Config } from "../../types"
 import { promise } from "../../util"
 
-export interface Records {
+export interface AdminRecords {
   /**
    * Get the retrieval records that were created or modified since the specified date.
    * @returns An object containing a list of retrieval records.
@@ -33,7 +33,7 @@ export interface Records {
 /**
  * @ignore
  */
-export const createRecords = (config: Config, getMeta: () => grpc.Metadata): Records => {
+export const createRecords = (config: Config, getMeta: () => grpc.Metadata): AdminRecords => {
   const client = new AdminServiceClient(config.host, config)
   return {
     getUpdatedRetrievalRecordsSince: (time: Date, limit: number) => {

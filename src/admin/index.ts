@@ -1,49 +1,59 @@
 import { grpc } from "@improbable-eng/grpc-web"
 import { Config } from "../types"
-import { createData, Data } from "./data"
-import { AdminGetMinersOptions, createIndices, Indices } from "./indices"
-import { createRecords, Records } from "./records"
-import { createStorageInfo, StorageInfo } from "./storage-info"
-import { AdminListOptions, createStorageJobs, StorageJobs } from "./storage-jobs"
-import { createUsers, Users } from "./users"
-import { createWallet, Wallet } from "./wallet"
-export { Users, StorageJobs, Wallet, StorageInfo, AdminGetMinersOptions, AdminListOptions }
+import { AdminData, createData } from "./data"
+import { AdminGetMinersOptions, AdminIndices, createIndices } from "./indices"
+import { AdminRecords, createRecords } from "./records"
+import { AdminStorageInfo, createStorageInfo } from "./storage-info"
+import { AdminListOptions, AdminStorageJobs, createStorageJobs } from "./storage-jobs"
+import { AdminUsers, createUsers } from "./users"
+import { AdminWallet, createWallet } from "./wallet"
+export {
+  AdminUsers,
+  AdminStorageJobs,
+  AdminWallet,
+  AdminStorageInfo,
+  AdminGetMinersOptions,
+  AdminListOptions,
+  AdminData,
+  AdminIndices,
+  AdminRecords,
+}
 
 export interface Admin {
   /**
    * The admin Data API.
    */
-  data: Data
+  data: AdminData
 
   /**
    * The admin Records API.
    */
-  records: Records
+  records: AdminRecords
 
   /**
    * The admin Indices API.
    */
-  indices: Indices
+  indices: AdminIndices
 
   /**
    * The admin Users API.
    */
-  users: Users
+  users: AdminUsers
 
   /**
    * The admin Wallet API.
    */
-  wallet: Wallet
+  wallet: AdminWallet
 
   /**
    * The admin StorageInfo API.
    */
-  storageInfo: StorageInfo
+  storageInfo: AdminStorageInfo
 
   /**
    * The admin Storage Jobs API.
    */
-  storageJobs: StorageJobs
+  storageJobs: AdminStorageJobs
 }
 
 /**

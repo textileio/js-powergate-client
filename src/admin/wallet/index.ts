@@ -11,7 +11,7 @@ import { AdminServiceClient } from "@textile/grpc-powergate-client/dist/powergat
 import { Config } from "../../types"
 import { promise } from "../../util"
 
-export interface Wallet {
+export interface AdminWallet {
   /**
    * Create a new wallet address.
    * @param type The type of address to create, bls or secp256k1.
@@ -37,7 +37,7 @@ export interface Wallet {
 /**
  * @ignore
  */
-export const createWallet = (config: Config, getMeta: () => grpc.Metadata): Wallet => {
+export const createWallet = (config: Config, getMeta: () => grpc.Metadata): AdminWallet => {
   const client = new AdminServiceClient(config.host, config)
   return {
     newAddress: (type: "bls" | "secp256k1" = "bls") => {
