@@ -18,7 +18,7 @@
     "docs": "npx -p typescript -p typedoc@next typedoc --plugin none --mode library --out docs --excludeNotExported --includeDeclarations --ignoreCompilerErrors src/index.ts",
     "docs:test": "npm run docs:clean && npm run docs:md && npm run docs:verify",
     "docs:clean": "rm -rf docs",
-    "docs:md": "typedoc --plugin typedoc-plugin-markdown",
+    "docs:md": "typedoc --plugin typedoc-plugin-markdown src/index.ts",
     "docs:verify": "typescript-docs-verifier --input-files=`find docs -type f -name '**.md'`",
     "localnet:up": "cd powergate-docker && make localnet",
     "localnet:down": "cd powergate-docker && make localnet-down",
