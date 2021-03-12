@@ -23,7 +23,7 @@ export interface AdminIndices {
    * Gets all known indices data for the provided miner addresses.
    * @returns An object containing a list of miner info.
    */
-  getMinerInfo: (miners?: string[]) => Promise<GetMinerInfoResponse.AsObject>
+  getMinerInfo: (...miners: string[]) => Promise<GetMinerInfoResponse.AsObject>
 }
 
 /**
@@ -43,7 +43,7 @@ export const createIndices = (config: Config, getMeta: () => grpc.Metadata): Adm
       )
     },
 
-    getMinerInfo: (miners?: string[]) => {
+    getMinerInfo: (...miners: string[]) => {
       const req = new GetMinerInfoRequest()
       if (miners) {
         req.setMinersList(miners)
