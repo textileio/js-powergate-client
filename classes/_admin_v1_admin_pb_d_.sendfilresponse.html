@@ -104,11 +104,13 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#clonemessage" class="tsd-kind-icon">clone<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#getcid" class="tsd-kind-icon">get<wbr>Cid</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#getextension" class="tsd-kind-icon">get<wbr>Extension</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#getjspbmessageid" class="tsd-kind-icon">get<wbr>JsPb<wbr>Message<wbr>Id</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#readbinaryextension" class="tsd-kind-icon">read<wbr>Binary<wbr>Extension</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#serializebinary" class="tsd-kind-icon">serialize<wbr>Binary</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#serializebinaryextensions" class="tsd-kind-icon">serialize<wbr>Binary<wbr>Extensions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#setcid" class="tsd-kind-icon">set<wbr>Cid</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#setextension" class="tsd-kind-icon">set<wbr>Extension</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_admin_v1_admin_pb_d_.sendfilresponse.html#toobject" class="tsd-kind-icon">to<wbr>Object</a></li>
@@ -158,15 +160,18 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="asobject" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> As<wbr>Object</h3>
-					<div class="tsd-signature tsd-kind-icon">As<wbr>Object<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
+					<div class="tsd-signature tsd-kind-icon">As<wbr>Object<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:125</li>
+							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:129</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>cid<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+							</li>
 						</ul>
 					</div>
 				</section>
@@ -226,7 +231,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Message.extensions</p>
 						<ul>
-							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:117</li>
+							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:121</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -245,7 +250,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides Message.extensionsBinary</p>
 						<ul>
-							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:118</li>
+							<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:122</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -293,6 +298,23 @@
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="getcid" class="tsd-anchor"></a>
+					<h3>get<wbr>Cid</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Cid<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:115</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -420,7 +442,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.serializeBinary</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:114</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:118</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Uint8Array</span></h4>
@@ -489,6 +511,29 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="setcid" class="tsd-anchor"></a>
+					<h3>set<wbr>Cid</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Cid<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:116</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 					<a name="setextension" class="tsd-anchor"></a>
 					<h3>set<wbr>Extension</h3>
@@ -551,7 +596,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.toObject</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:115</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:119</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -954,7 +999,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.deserializeBinary</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:120</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:124</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -978,7 +1023,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.deserializeBinaryFromReader</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:121</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:125</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1392,7 +1437,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.serializeBinaryToWriter</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:119</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:123</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1638,7 +1683,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Message.toObject</p>
 								<ul>
-									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:116</li>
+									<li>Defined in node_modules/@textile/grpc-powergate-client/dist/powergate/admin/v1/admin_pb.d.ts:120</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1808,10 +1853,37 @@
 						<a href="_admin_v1_admin_pb_d_.createuserresponse.html" class="tsd-kind-icon">Create<wbr>User<wbr>Response</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.filecoinminer.html" class="tsd-kind-icon">Filecoin<wbr>Miner</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
 						<a href="_admin_v1_admin_pb_d_.gcstagedrequest.html" class="tsd-kind-icon">GCStaged<wbr>Request</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
 						<a href="_admin_v1_admin_pb_d_.gcstagedresponse.html" class="tsd-kind-icon">GCStaged<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getminerinforequest.html" class="tsd-kind-icon">Get<wbr>Miner<wbr>Info<wbr>Request</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getminerinforesponse.html" class="tsd-kind-icon">Get<wbr>Miner<wbr>Info<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getminersrequest.html" class="tsd-kind-icon">Get<wbr>Miners<wbr>Request</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getminersresponse.html" class="tsd-kind-icon">Get<wbr>Miners<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getupdatedretrievalrecordssincerequest.html" class="tsd-kind-icon">Get<wbr>Updated<wbr>Retrieval<wbr>Records<wbr>Since<wbr>Request</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getupdatedretrievalrecordssinceresponse.html" class="tsd-kind-icon">Get<wbr>Updated<wbr>Retrieval<wbr>Records<wbr>Since<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getupdatedstoragedealrecordssincerequest.html" class="tsd-kind-icon">Get<wbr>Updated<wbr>Storage<wbr>Deal<wbr>Records<wbr>Since<wbr>Request</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.getupdatedstoragedealrecordssinceresponse.html" class="tsd-kind-icon">Get<wbr>Updated<wbr>Storage<wbr>Deal<wbr>Records<wbr>Since<wbr>Response</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
 						<a href="_admin_v1_admin_pb_d_.hspinnedcid.html" class="tsd-kind-icon">HSPinned<wbr>Cid</a>
@@ -1830,6 +1902,9 @@
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
 						<a href="_admin_v1_admin_pb_d_.liststoragejobsresponse.html" class="tsd-kind-icon">List<wbr>Storage<wbr>Jobs<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="_admin_v1_admin_pb_d_.minerinfo.html" class="tsd-kind-icon">Miner<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
 						<a href="_admin_v1_admin_pb_d_.newaddressrequest.html" class="tsd-kind-icon">New<wbr>Address<wbr>Request</a>
@@ -1872,6 +1947,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="_admin_v1_admin_pb_d_.sendfilresponse.html#clonemessage" class="tsd-kind-icon">clone<wbr>Message</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="_admin_v1_admin_pb_d_.sendfilresponse.html#getcid" class="tsd-kind-icon">get<wbr>Cid</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 								<a href="_admin_v1_admin_pb_d_.sendfilresponse.html#getextension" class="tsd-kind-icon">get<wbr>Extension</a>
 							</li>
@@ -1886,6 +1964,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="_admin_v1_admin_pb_d_.sendfilresponse.html#serializebinaryextensions" class="tsd-kind-icon">serialize<wbr>Binary<wbr>Extensions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="_admin_v1_admin_pb_d_.sendfilresponse.html#setcid" class="tsd-kind-icon">set<wbr>Cid</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 								<a href="_admin_v1_admin_pb_d_.sendfilresponse.html#setextension" class="tsd-kind-icon">set<wbr>Extension</a>
