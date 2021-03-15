@@ -333,7 +333,7 @@ describe("pow", () => {
     })
 
     it("should replace", async function () {
-      this.timeout(180000)
+      this.timeout(360000)
       const pow = newPow()
       await expectNewUser(pow)
       const addrs = await expectAddresses(pow, 1)
