@@ -12,7 +12,9 @@ import { Config } from "../../types"
 import { promise } from "../../util"
 import { AdminListOptions } from "./types"
 
-export interface StorageJobs {
+export { AdminListOptions }
+
+export interface AdminStorageJobs {
   /**
    * Lists StorageJobs according to the provided ListOptions.
    * @param opts Optional ListOptions to control the behavior of listing jobs.
@@ -32,7 +34,10 @@ export interface StorageJobs {
 /**
  * @ignore
  */
-export const createStorageJobs = (config: Config, getMeta: () => grpc.Metadata): StorageJobs => {
+export const createStorageJobs = (
+  config: Config,
+  getMeta: () => grpc.Metadata,
+): AdminStorageJobs => {
   const client = new AdminServiceClient(config.host, config)
   return {
     list: (opts?: AdminListOptions) => {

@@ -14,7 +14,7 @@ beforeEach(async function () {
     }
   })
   await wait({
-    resources: ["http://0.0.0.0:6002"],
+    resources: ["http://0.0.0.0:6002", "http://0.0.0.0:5001"],
     timeout: 120000,
     validateStatus: function () {
       return true // the call expectedly returns 404, so just allow that
@@ -231,6 +231,40 @@ describe("pow", () => {
         expect(res?.storageInfoList[0].cid).equals(cid)
       })
     })
+
+    describe("records", function () {
+      it("should get updated deal records since", async function () {
+        this.timeout(180000)
+        const t = new Date()
+        const pow = newPow()
+        await expectNewUser(pow)
+        const addressees = await expectAddresses(pow, 1)
+        await waitForBalance(pow, addressees[0].address)
+        const cid = await expectStage(pow, crypto.randomBytes(1024))
+        const jobId = await expectApplyStorageConfig(pow, cid)
+        await watchJobUntil(pow, jobId, powTypes.JobStatus.JOB_STATUS_SUCCESS)
+        const res = await pow.admin.records.getUpdatedStorageDealRecordsSince(t, 10)
+        expect(res.recordsList).length(1)
+        expect(res.recordsList[0].rootCid).eq(cid)
+      })
+
+      // TODO: Figure out how to test retrievals.
+    })
+
+    describe("indices", async function () {
+      it("should get miners", async function () {
+        const pow = newPow()
+        await expectGetMiners(pow)
+      })
+
+      it("should get miner info", async function () {
+        const pow = newPow()
+        const miners = await expectGetMiners(pow)
+        const res = await pow.admin.indices.getMinerInfo(miners[0].address)
+        expect(res.minersInfoList).length(1)
+        expect(res.minersInfoList[0].address).eq(miners[0].address)
+      })
+    })
   })
 
   describe("data", () => {
@@ -299,7 +333,7 @@ describe("pow", () => {
     })
 
     it("should replace", async function () {
-      this.timeout(180000)
+      this.timeout(360000)
       const pow = newPow()
       await expectNewUser(pow)
       const addrs = await expectAddresses(pow, 1)
@@ -653,4 +687,10 @@ function waitForBalance(pow: Pow, address: string, greaterThan?: bigint) {
       await new Promise((r) => setTimeout(r, 1000))
     }
   })
+}
+
+async function expectGetMiners(pow: Pow) {
+  const res = await pow.admin.indices.getMiners()
+  expect(res.minersList).length(1)
+  return res.minersList
 }
