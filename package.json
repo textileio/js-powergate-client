@@ -69,7 +69,7 @@
     }
   },
   "dependencies": {
-    "@textile/grpc-powergate-client": "2.3.1",
+    "@textile/grpc-powergate-client": "2.4.0",
     "@textile/grpc-transport": "^0.4.0",
     "ipfs-http-client": "^47.0.1",
     "it-block": "^2.0.0"
