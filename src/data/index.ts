@@ -105,7 +105,7 @@ export const createData = (
   getHeaders: () => Record<string, string>,
 ): Data => {
   const client = new UserServiceClient(config.host, config)
-  const ipfs = ipfsClient(config.host)
+  const ipfs = ipfsClient.create(config.host)
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     stage: async (input: any) => {
