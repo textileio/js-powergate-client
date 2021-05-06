@@ -52,7 +52,7 @@
     "mocha": "^8.3.2",
     "polendina": "^1.1.0",
     "prettier": "^2.2.1",
-    "prettier-plugin-organize-imports": "^1.1.1",
+    "prettier-plugin-organize-imports": "^2.0.0",
     "rimraf": "^3.0.2",
     "touch": "^3.1.0",
     "ts-loader": "^8.0.18",
