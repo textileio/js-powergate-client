@@ -2,6 +2,10 @@
   "name": "@textile/powergate-client",
   "version": "0.0.0",
   "description": "Client for Textile's Powergate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/textileio/js-powergate-client"
+  },
   "main": "dist/index",
   "types": "dist/index",
   "scripts": {
