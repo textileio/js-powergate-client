@@ -75,7 +75,7 @@
   "dependencies": {
     "@textile/grpc-powergate-client": "2.3.1",
     "@textile/grpc-transport": "^0.4.0",
-    "ipfs-http-client": "next",
+    "ipfs-http-client": "^50.1.1",
     "it-block": "^2.0.0"
   }
 }
